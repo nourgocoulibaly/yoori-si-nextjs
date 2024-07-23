@@ -2,7 +2,6 @@
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
 import * as React from "react";
-import { getData } from './page'; // Importez la fonction depuis le fichier de paramètres
 
 import { db } from '@/lib/firebaseConfig';
 import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
@@ -564,14 +563,5 @@ export async function generateStaticParams() {
 	return paths;
 }
 
-export async function getServerSideProps({ params }: { params: { id: string } }) {
-	const data = await getData(params.id);
-	return {
-		props: {
-			params,
-			data,
-		},
-	};
-}
 
 export default RequestPage;

@@ -1,13 +1,27 @@
+"use client"
+
 import UserNavBar from "@/app/userDashboard/_components/navbar";
+import { useEffect, useState } from 'react';
 import Account from "./_components/accountDetail";
 
+function AccountPage() {
+    const [isClient, setIsClient] = useState(false);
 
-export default function UserDashboard() {
-	return (
-		<div className='flex min-h-screen w-full flex-col'>
-			<UserNavBar>
-				<Account />
-			</UserNavBar>
-		</div>
-	);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+        return null; // ou un loader, ou un message d'attente
+    }
+
+    return (
+        <div className='flex min-h-screen w-full flex-col'>
+            <UserNavBar>
+                <Account />
+            </UserNavBar>
+        </div>
+    );
 }
+
+export default AccountPage;

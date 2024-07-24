@@ -1,6 +1,9 @@
+"use client"
+
 import { File, ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from 'react';
 
 import AdminNavbar from "@/app/adminDashboard/_components/navbar";
 
@@ -43,6 +46,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function InventoryList() {
+	useEffect(() => {
+		// Code qui accède à `document`
+		if (typeof document !== 'undefined') {
+			console.log(document.title);
+		}
+	}, []);
+
 	return (
 		<div className='flex min-h-screen w-full flex-col bg-muted/40'>
 			<AdminNavbar>

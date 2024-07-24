@@ -2,10 +2,9 @@
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
 import * as React from "react";
-import { getData } from './page'; // Importez la fonction depuis le fichier de paramètres
 
 import { db } from '@/lib/firebaseConfig';
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { LegacyRef, useEffect, useRef, useState } from 'react';
 
 import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons";
@@ -58,7 +57,7 @@ const options = [
 
 const RequestPage = ({ params, data }: { params: { id: string }; data: any }) => {
 	const { id } = params;
-	const [request, setRequest] = useState<any>(null);
+	const [request, setRequest] = useState<any>(data);
 	const [formData, setFormData] = useState({
 		userId: '',
 		userName: '',
@@ -86,28 +85,11 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	const requestAdminSolvedRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		if (id) {
-			const fetchRequest = async () => {
-				try {
-					const docRef = doc(db, 'userRequests', id);
-					const docSnap = await getDoc(docRef);
-					if (docSnap.exists()) {
-						setRequest(docSnap.data());
-					} else {
-						console.error("Aucun document trouvé !");
-					}
-				} catch (error) {
-					console.error("Erreur lors de la récupération de la demande :", error);
-				}
-			};
-
-			fetchRequest();
-		}
-	}, [id]);
-
-	useEffect(() => {
 		if (request) {
-			setFormData(request);
+			setFormData({
+				...request,
+				interventionDate: request.interventionDate ? new Date(request.interventionDate).toISOString() : '',
+			});
 		}
 	}, [request]);
 
@@ -139,12 +121,13 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	const handleUpdate = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setLoading(true);
+
 		const updatedFormData = {
 			...formData,
-			requestContent: requestContentRef.current?.value,
+			requestContent: requestContentRef.current?.value || formData.requestContent,
 			requestDomain: requestDomainRef.current?.textContent || formData.requestDomain,
 			requestStatus: requestStatusRef.current?.textContent || formData.requestStatus,
-			requestDescription: requestDescriptionRef.current?.value,
+			requestDescription: requestDescriptionRef.current?.value || formData.requestDescription,
 		};
 
 		if (!updatedFormData.requestContent || !updatedFormData.requestDomain || !updatedFormData.requestStatus) {
@@ -159,6 +142,15 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 				await updateDoc(docRef, updatedFormData);
 				alert('✅ Demande envoyée avec succès !');
 
+				// Réinitialiser les champs du formulaire
+				setFormData({
+					...formData,
+					requestContent: '',
+					requestDomain: '',
+					requestStatus: '',
+					requestDescription: '',
+					requestAdminSolved: []
+				});
 				requestContentRef.current!.value = "";
 				requestDomainRef.current!.textContent = "";
 				requestStatusRef.current!.textContent = "";
@@ -441,9 +433,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																Date d&apos;Intervention {" "}
 																<Badge variant='outline' className='ml-auto sm:ml-0'>
 																	{formData.interventionDate &&
-																		new Date(parseInt(
-																			formData.interventionDate) * 1000
-																		).toLocaleString()}											
+																		new Date(formData.interventionDate).toLocaleString()}											
 																</Badge>
 															</CardTitle>
 															<Popover>
@@ -562,16 +552,6 @@ export async function generateStaticParams() {
 	}));
 
 	return paths;
-}
-
-export async function getServerSideProps({ params }: { params: { id: string } }) {
-	const data = await getData(params.id);
-	return {
-		props: {
-			params,
-			data,
-		},
-	};
 }
 
 export default RequestPage;

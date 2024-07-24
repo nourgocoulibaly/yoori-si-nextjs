@@ -14,26 +14,35 @@ import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { CircleUser, Package2, Search } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Correction de l'importation ici
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 export default function AdminNavbar({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const router = useRouter(); // Utilisation de useRouter
-	const [darkMode, setDarkMode] = React.useState(false);
+	const router = useRouter();
+	const [darkMode, setDarkMode] = useState(false);
+
+	useEffect(() => {
+		if (typeof document !== 'undefined') {
+			setDarkMode(document.body.classList.contains("dark"));
+		}
+	}, []);
 
 	const handleThemeToggle = () => {
-		document.body.classList.toggle("dark");
+		if (typeof document !== 'undefined') {
+			document.body.classList.toggle("dark");
+			setDarkMode(document.body.classList.contains("dark"));
+		}
 	};
 
 	const handleLogout = async () => {
 		try {
 			await signOut(auth);
 			console.log("Déconnexion réussie");
-			router.push("/"); // Redirection après déconnexion
+			router.push("/");
 		} catch (error) {
 			console.error("Erreur lors de la déconnexion:", error);
 		}
@@ -152,7 +161,7 @@ export default function AdminNavbar({
 								<CircleUser className='h-5 w-5' />
 								<span className='sr-only'>Toggle user menu</span>
 							</Button>
-						</DropdownMenuTrigger>q
+						</DropdownMenuTrigger>
 						<DropdownMenuContent align='end'>
 							<a href="/account"><DropdownMenuLabel>Mon Compte</DropdownMenuLabel></a>
 							<DropdownMenuSeparator />
@@ -165,9 +174,7 @@ export default function AdminNavbar({
 						</DropdownMenuContent>
 					</DropdownMenu>
 					<Button onClick={handleThemeToggle}>
-						{document.body.classList.contains("dark")
-							? "Mode Clair"
-							: "Mode Sombre"}
+						{darkMode ? "Mode Clair" : "Mode Sombre"}
 					</Button>
 				</div>
 			</header>

@@ -1,6 +1,10 @@
 // src/app/adminRequests/request/[id]/page.tsx
 import { db } from '@/lib/firebaseConfig';
+<<<<<<< HEAD
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+=======
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+>>>>>>> dcb16239575795dc62594ba23eb71c6420efd8b9
 import RequestPage from './index';
 
 // Fonction pour générer les paramètres statiques (chemins dynamiques)
@@ -33,6 +37,7 @@ export default async function RequestPageWrapper({ params }: { params: { id: str
     const { id } = params;
     const data = await fetchData(id);
 
+<<<<<<< HEAD
     let requestData = null;
     if (data) {
         requestData = {
@@ -45,3 +50,9 @@ export default async function RequestPageWrapper({ params }: { params: { id: str
       id: ''
     }} />;
 }
+=======
+    return <RequestPage data={data} params={{
+      id: ''
+    }} />;
+}
+>>>>>>> dcb16239575795dc62594ba23eb71c6420efd8b9

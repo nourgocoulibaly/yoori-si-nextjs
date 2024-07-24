@@ -554,4 +554,8 @@ export async function generateStaticParams() {
 	return paths;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dcb16239575795dc62594ba23eb71c6420efd8b9
 export default RequestPage;

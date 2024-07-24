@@ -65,12 +65,14 @@ const AdminRequestsBeta = () => {
         querySnapshot.forEach((doc) => {
           const userData = doc.data();
           const userName = userData.userName;
-          requestsData.push({ id: doc.id, ...userData, userName });
+          const createdAt = userData.createdAt && typeof userData.createdAt.toDate === 'function' ? userData.createdAt.toDate() : null;
+          const updatedAt = userData.updatedAt && typeof userData.updatedAt.toDate === 'function' ? userData.updatedAt.toDate() : null;
+          requestsData.push({ id: doc.id, ...userData, userName, createdAt, updatedAt });
         });
 
         requestsData.sort((a, b) => {
-          const dateA = a.createdAt?.toDate() || a.updatedAt?.toDate();
-          const dateB = b.createdAt?.toDate() || b.updatedAt?.toDate();
+          const dateA = a.createdAt || a.updatedAt;
+          const dateB = b.createdAt || b.updatedAt;
           if (dateA && dateB) {
             return dateB.getTime() - dateA.getTime();
           }
@@ -117,7 +119,7 @@ const AdminRequestsBeta = () => {
 
     if (time === 'week') {
         filteredRequests = requests.filter(request => {
-            const requestDate = request.createdAt?.toDate();
+            const requestDate = request.createdAt;
             const currentDate = new Date();
             const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
             return requestDate && requestDate.getTime() >= oneWeekAgo.getTime() && requestDate.getTime() <= currentDate.getTime();
@@ -125,7 +127,7 @@ const AdminRequestsBeta = () => {
         console.log('🤖Filtre Semaine');
     } else if (time === 'month') {
 			filteredRequests = requests.filter(request => {
-				const requestDate = request.createdAt?.toDate();
+				const requestDate = request.createdAt;
             const currentDate = new Date();
             const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
             const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
@@ -134,7 +136,7 @@ const AdminRequestsBeta = () => {
         console.log('🤖Filtre Mois');
     } else if (time === 'year') {
         filteredRequests = requests.filter(request => {
-            const requestDate = request.createdAt?.toDate() || request.updatedAt?.toDate();
+            const requestDate = request.createdAt || request.updatedAt;
             const currentDate = new Date();
             const firstDayOfYear = new Date(currentDate.getFullYear(), 0, 1);
             const lastDayOfYear = new Date(currentDate.getFullYear(), 11, 31);
@@ -147,8 +149,8 @@ const AdminRequestsBeta = () => {
 		}
 
     filteredRequests.sort((a, b) => {
-      const dateA = a.createdAt?.toDate() || a.updatedAt?.toDate();
-      const dateB = b.createdAt?.toDate() || b.updatedAt?.toDate();
+      const dateA = a.createdAt || a.updatedAt;
+      const dateB = b.createdAt || b.updatedAt;
 
       if (dateA && dateB) {
         return dateB.getTime() - dateA.getTime();
@@ -336,7 +338,7 @@ const AdminRequestsBeta = () => {
 													</Badge>       
                           </TableCell>
                           <TableCell className='hidden sm:table-cell'>
-                          {request.createdAt?.toDate()?.toLocaleString() || ''}
+                          {request.createdAt?.toLocaleString() || ''}
                             {/* {request.createdAt ? request.createdAt.dates : ''} */}
                           </TableCell>
 													{/* <TableCell>
@@ -391,7 +393,7 @@ const AdminRequestsBeta = () => {
 													</Badge>       
                           </TableCell>
                           <TableCell className='hidden sm:table-cell'>
-                          {request.createdAt?.toDate()?.toLocaleString() || ''}
+                          {request.createdAt?.toLocaleString() || ''}
                             {/* {request.createdAt ? request.createdAt.dates : ''} */}
                           </TableCell>
 													{/* <TableCell>
@@ -448,7 +450,7 @@ const AdminRequestsBeta = () => {
 													</Badge>       
                           </TableCell>
                           <TableCell className='hidden sm:table-cell'>
-                          {request.createdAt?.toDate()?.toLocaleString() || ''}
+                          {request.createdAt?.toLocaleString() || ''}
                             {/* {request.createdAt ? request.createdAt.dates : ''} */}
                           </TableCell>
 													{/* <TableCell>
@@ -505,7 +507,7 @@ const AdminRequestsBeta = () => {
                 </Badge>       
               </TableCell>
               <TableCell className='hidden sm:table-cell'>
-                {request.createdAt?.toDate()?.toLocaleString() || ''}
+                {request.createdAt?.toLocaleString() || ''}
               </TableCell>
 							{/* <TableCell>
 													<Button onClick={() => handleEditRequest(request.id)}><Settings /></Button>													

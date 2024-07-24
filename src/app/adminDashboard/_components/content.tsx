@@ -211,7 +211,11 @@ export default function UserDashboardContent() {
 										<TableBody>
 				
     		{filteredRequests
-              .sort((a, b) => b.createdAt?.toDate().getTime() - a.createdAt?.toDate().getTime())
+              .sort((a, b) => {
+                const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+                const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+                return dateB - dateA;
+              })
               .slice(0, 5)
               .map((request) => (
                 <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
@@ -264,7 +268,11 @@ export default function UserDashboardContent() {
     </CardHeader>
     <CardContent className='grid gap-5'>
         {filteredRequests
-            .sort((a, b) => b.createdAt?.toDate().getTime() - a.createdAt?.toDate().getTime())
+            .sort((a, b) => {
+                const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+                const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+                return dateB - dateA;
+            })
             .slice(0, 5)
             .reduce((acc: { userName: string; count: number; }[], request) => {
 							const existingUser = acc.find(user => user.userName === request.userName);

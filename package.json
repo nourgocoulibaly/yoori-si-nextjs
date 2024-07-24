@@ -11,7 +11,7 @@
 		"shell": "firebase functions:shell",
 		"deploy": "next build && next export && firebase deploy",
 		"logs": "firebase functions:log",
-		"clean-build": "rm -rf .next && npm run build"
+		"clean-build": "rm -rf .next out && npm run build"
 	},
 	"dependencies": {
 		"@firebase/firestore": "^4.6.3",

@@ -41,7 +41,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 
 
-export default function UserDashboardContent() {
+export default function AdminDashboardContent() {
 
   const [usersList, setUsersList] = useState<any[]>([]);
 	const [requests, setRequests] = useState<any[]>([]);

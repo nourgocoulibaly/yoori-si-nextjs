@@ -130,7 +130,12 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			requestDescription: requestDescriptionRef.current?.value || formData.requestDescription,
 		};
 
-		if (!updatedFormData.requestContent || !updatedFormData.requestDomain || !updatedFormData.requestStatus) {
+		// Filtrer les champs indéfinis
+		const filteredFormData = Object.fromEntries(
+			Object.entries(updatedFormData).filter(([_, v]) => v !== undefined)
+		);
+
+		if (!filteredFormData.requestContent || !filteredFormData.requestDomain || !filteredFormData.requestStatus) {
 			alert("⛔Veuillez remplir tous les champs");
 			setLoading(false);
 			return;
@@ -139,7 +144,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		if (id) {
 			try {
 				const docRef = doc(db, 'userRequests', id as string);
-				await updateDoc(docRef, updatedFormData);
+				await updateDoc(docRef, filteredFormData);
 				alert('✅ Demande envoyée avec succès !');
 
 				// Réinitialiser les champs du formulaire
@@ -554,8 +559,5 @@ export async function generateStaticParams() {
 	return paths;
 }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> dcb16239575795dc62594ba23eb71c6420efd8b9
 export default RequestPage;

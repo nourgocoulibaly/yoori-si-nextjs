@@ -9,10 +9,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { CircleUser, Menu, Package2, Search } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
-import { CircleUser, Package2, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -91,9 +93,9 @@ export default function AdminNavbar({
 						Analytics
 					</Button> */}
 				</nav>
-				{/* <Sheet>
+				<Sheet>
 					<SheetTrigger asChild>
-						<Button
+					<Button
 							variant='outline'
 							size='icon'
 							className='shrink-0 md:hidden'
@@ -104,43 +106,40 @@ export default function AdminNavbar({
 					</SheetTrigger>
 					<SheetContent side='left'>
 						<nav className='grid gap-6 text-lg font-medium'>
-							<Button
-								onClick={() => router.push('#')}
-								className='flex items-center gap-2 text-lg font-semibold'
-							>
-								<Package2 className='h-6 w-6' />
-								<span className='sr-only'>Yoori SI</span>
-							</Button>
-							<Button onClick={() => router.push('#')} className='hover:text-foreground'>
-								Dashboard
-							</Button>
-							<Button
-								onClick={() => router.push('#')}
-								className='text-muted-foreground hover:text-foreground'
-							>
-								Orders
-							</Button>
-							<Button
-								onClick={() => router.push('#')}
-								className='text-muted-foreground hover:text-foreground'
-							>
-								Products
-							</Button>
-							<Button
-								onClick={() => router.push('#')}
-								className='text-muted-foreground hover:text-foreground'
-							>
-								Customers
-							</Button>
-							<Button
-								onClick={() => router.push('#')}
-								className='text-muted-foreground hover:text-foreground'
-							>
-								Analytics
-							</Button>
+					<Link	
+						href="/adminDashboard"
+						className='flex items-center gap-2 text-lg font-semibold md:text-base'
+					>
+						<Package2 className='h-6 w-6' />
+						<span className='sr-only'>Yoori SI</span>
+					</Link>
+					<Link	
+						href="/adminDashboard"
+						className='text-foreground transition-colors hover:text-foreground'
+					>
+						Dashboard
+					</Link>
+					<Link
+						href="/adminRequests"
+						className='text-muted-foreground transition-colors hover:text-foreground w-full'
+					>
+						Intervention
+					</Link>
+					<Link
+						href="/adminInventory"
+						className='text-muted-foreground transition-colors hover:text-foreground'
+					>
+						Inventaires
+					</Link>
+					<Link
+						href="/adminChatbot"
+						className='text-muted-foreground transition-colors hover:text-foreground'
+					>
+						ChatBot
+							</Link>
 						</nav>
 					</SheetContent>
-				</Sheet> */}
+				</Sheet>
 				<div className='flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4'>
 					<form className='ml-auto flex-1 sm:flex-initial'>
 						<div className='relative'>

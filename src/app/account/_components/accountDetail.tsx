@@ -59,12 +59,13 @@ const Account = () => {
 				}
 			} else {
 				console.log("Utilisateur non connecté");
+				router.push("/auth"); // Redirection vers la page d'authentification
 			}
 			setLoading(false);
 		});
 
 		return () => unsubscribe();
-	}, [auth]);
+	}, [auth, router]); // Ajout de router dans les dépendances
 
 	if (loading) {
 		return <p>Chargement...</p>;

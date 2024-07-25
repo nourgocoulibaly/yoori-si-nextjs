@@ -33,13 +33,18 @@ export default async function RequestPageWrapper({ params }: { params: { id: str
     const { id } = params;
     const data = await fetchData(id);
 
-    let requestData = null;
-    if (data) {
-        requestData = {
-            ...data,
-            interventionDate: data.interventionDate ? data.interventionDate.toDate().toISOString() : null,
+    if (!data) {
+        // Gérer le cas où les données ne sont pas trouvées
+        return {
+            notFound: true,
         };
     }
+
+    const interventionDate = data.interventionDate && typeof data.interventionDate.toDate === 'function' ? data.interventionDate.toDate() : null;
+    const requestData = {
+        ...data,
+        interventionDate,
+    };
 
     return <RequestPage data={requestData} params={{ id }} />;
 }

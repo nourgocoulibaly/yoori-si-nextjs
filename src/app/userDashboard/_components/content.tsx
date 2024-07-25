@@ -1,4 +1,7 @@
+"use client"
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import {
 	Activity,
@@ -32,15 +35,17 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function UserDashboardContent() {
+	const router = useRouter();
+
 	return (
 		<>
 			<main className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8'>
 				<div className='grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4'>
-					<Card x-chunk='dashboard-01-chunk-0'>
+					<Card x-chunk='dashboard-01-chunk-0' onClick={() => router.push('/revenue')}>
 						<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
 							<CardTitle className='text-sm font-medium'>
 								Total Revenue
-							</CardTitle>
+								</CardTitle>
 							<DollarSign className='h-4 w-4 text-muted-foreground' />
 						</CardHeader>
 						<CardContent>
@@ -50,7 +55,7 @@ export default function UserDashboardContent() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card x-chunk='dashboard-01-chunk-1'>
+					<Card x-chunk='dashboard-01-chunk-1' onClick={() => router.push('/subscriptions')}>
 						<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
 							<CardTitle className='text-sm font-medium'>
 								Subscriptions
@@ -64,7 +69,7 @@ export default function UserDashboardContent() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card x-chunk='dashboard-01-chunk-2'>
+					<Card x-chunk='dashboard-01-chunk-2' onClick={() => router.push('/sales')}>
 						<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
 							<CardTitle className='text-sm font-medium'>Sales</CardTitle>
 							<CreditCard className='h-4 w-4 text-muted-foreground' />
@@ -76,7 +81,7 @@ export default function UserDashboardContent() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card x-chunk='dashboard-01-chunk-3'>
+					<Card x-chunk='dashboard-01-chunk-3' onClick={() => router.push('/active-now')}>
 						<CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
 							<CardTitle className='text-sm font-medium'>Active Now</CardTitle>
 							<Activity className='h-4 w-4 text-muted-foreground' />
@@ -90,7 +95,7 @@ export default function UserDashboardContent() {
 					</Card>
 				</div>
 				<div className='grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3'>
-					<Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
+					<Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4' onClick={() => router.push('/transactions')}>
 						<CardHeader className='flex flex-row items-center'>
 							<div className='grid gap-2'>
 								<CardTitle>Transactions</CardTitle>
@@ -227,7 +232,7 @@ export default function UserDashboardContent() {
 							</Table>
 						</CardContent>
 					</Card>
-					<Card x-chunk='dashboard-01-chunk-5'>
+					<Card x-chunk='dashboard-01-chunk-5' onClick={() => router.push('/recent-sales')}>
 						<CardHeader>
 							<CardTitle>Recent Sales</CardTitle>
 						</CardHeader>

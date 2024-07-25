@@ -14,8 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation"; // Correction de l'importation ici
+import { useRouter } from "next/navigation"; // Importation de useRouter
 import React from "react";
 
 export default function UserNavbar({
@@ -40,6 +39,10 @@ export default function UserNavbar({
 		}
 	};
 
+	const handleNavigation = (path: string) => {
+		router.push(path);
+	};
+
 	return (
 		<>
 			<header
@@ -48,43 +51,43 @@ export default function UserNavbar({
 			}'
 			>
 				<nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6'>
-					<Link
-						href='#'
-						className='flex items-center gap-2 text-lg font-semibold md:text-base'
+					<a
+						onClick={() => handleNavigation('#')}
+						className='flex items-center gap-2 text-lg font-semibold md:text-base cursor-pointer'
 					>
 						<Package2 className='h-6 w-6' />
 						<span className='sr-only'>Yoori SI</span>
-					</Link>
-					<Link
-						href='/userDashboard'
-						className='text-foreground transition-colors hover:text-foreground'
+					</a>
+					<a
+						onClick={() => handleNavigation('/userDashboard')}
+						className='text-foreground transition-colors hover:text-foreground cursor-pointer'
 					>
 						Dashboard
-					</Link>
-					<Link
-						href='/formRequest'
-						className='text-muted-foreground transition-colors hover:text-foreground w-full'
+					</a>
+					<a
+						onClick={() => handleNavigation('/formRequest')}
+						className='text-muted-foreground transition-colors hover:text-foreground w-full cursor-pointer'
 					>
 						Intervention
-					</Link>
-					<Link
-						href='#'
-						className='text-muted-foreground transition-colors hover:text-foreground'
+					</a>
+					<a
+						onClick={() => handleNavigation('#')}
+						className='text-muted-foreground transition-colors hover:text-foreground cursor-pointer'
 					>
 						Products
-					</Link>
-					<Link
-						href='#'
-						className='text-muted-foreground transition-colors hover:text-foreground'
+					</a>
+					<a
+						onClick={() => handleNavigation('#')}
+						className='text-muted-foreground transition-colors hover:text-foreground cursor-pointer'
 					>
 						Customers
-					</Link>
-					<Link
-						href='#'
-						className='text-muted-foreground transition-colors hover:text-foreground'
+					</a>
+					<a
+						onClick={() => handleNavigation('#')}
+						className='text-muted-foreground transition-colors hover:text-foreground cursor-pointer'
 					>
 						Analytics
-					</Link>
+					</a>
 				</nav>
 				<Sheet>
 					<SheetTrigger asChild>
@@ -99,40 +102,43 @@ export default function UserNavbar({
 					</SheetTrigger>
 					<SheetContent side='left'>
 						<nav className='grid gap-6 text-lg font-medium'>
-							<Link
-								href='#'
-								className='flex items-center gap-2 text-lg font-semibold'
+							<a
+								onClick={() => handleNavigation('#')}
+								className='flex items-center gap-2 text-lg font-semibold cursor-pointer'
 							>
 								<Package2 className='h-6 w-6' />
 								<span className='sr-only'>Acme Inc</span>
-							</Link>
-							<Link href='#' className='hover:text-foreground'>
+							</a>
+							<a
+								onClick={() => handleNavigation('#')}
+								className='hover:text-foreground cursor-pointer'
+							>
 								Dashboard
-							</Link>
-							<Link
-								href='#'
-								className='text-muted-foreground hover:text-foreground'
+							</a>
+							<a
+								onClick={() => handleNavigation('#')}
+								className='text-muted-foreground hover:text-foreground cursor-pointer'
 							>
 								Orders
-							</Link>
-							<Link
-								href='#'
-								className='text-muted-foreground hover:text-foreground'
+							</a>
+							<a
+								onClick={() => handleNavigation('#')}
+								className='text-muted-foreground hover:text-foreground cursor-pointer'
 							>
 								Products
-							</Link>
-							<Link
-								href='#'
-								className='text-muted-foreground hover:text-foreground'
+							</a>
+							<a
+								onClick={() => handleNavigation('#')}
+								className='text-muted-foreground hover:text-foreground cursor-pointer'
 							>
 								Customers
-							</Link>
-							<Link
-								href='#'
-								className='text-muted-foreground hover:text-foreground'
+							</a>
+							<a
+								onClick={() => handleNavigation('#')}
+								className='text-muted-foreground hover:text-foreground cursor-pointer'
 							>
 								Analytics
-							</Link>
+							</a>
 						</nav>
 					</SheetContent>
 				</Sheet>
@@ -155,7 +161,7 @@ export default function UserNavbar({
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align='end'>
-							<a href="/account"><DropdownMenuLabel>Mon compte</DropdownMenuLabel></a>
+							<a onClick={() => handleNavigation("/account")}><DropdownMenuLabel>Mon compte</DropdownMenuLabel></a>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem>Settings</DropdownMenuItem>
 							<DropdownMenuItem>Support</DropdownMenuItem>

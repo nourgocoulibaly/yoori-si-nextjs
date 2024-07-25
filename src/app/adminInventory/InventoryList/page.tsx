@@ -2,7 +2,7 @@
 
 import { File, ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import AdminNavbar from "@/app/adminDashboard/_components/navbar";
@@ -43,9 +43,13 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 
 export default function InventoryList() {
+	const router = useRouter();
+
 	useEffect(() => {
 		// Code qui accède à `document`
 		if (typeof document !== 'undefined') {
@@ -60,23 +64,22 @@ export default function InventoryList() {
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href='/adminDashboard'>Dashboard</Link>
+								<a onClick={() => router.push('/adminDashboard')}>Dashboard</a>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href='/adminInventory'>Ajouter un Inventaire</Link>
+								<a onClick={() => router.push('/adminInventory')}>Ajouter un Inventaire</a>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href='/adminInventory/InventoryList'>
+								<a onClick={() => router.push('/adminInventory/InventoryList')}>
 									Tous les Inventaires
-								</Link>
+								</a>
 							</BreadcrumbLink>
-							{/* <BreadcrumbPage>Tous les inventaires</BreadcrumbPage> */}
 						</BreadcrumbItem>
 					</BreadcrumbList>
 				</Breadcrumb>
@@ -433,8 +436,7 @@ export default function InventoryList() {
 										produits
 									</div>
 								</CardFooter>
-							</Card>
-						</TabsContent>
+							</Card>						</TabsContent>
 					</Tabs>
 				</main>
 			</AdminNavbar>

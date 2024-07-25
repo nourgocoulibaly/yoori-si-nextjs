@@ -78,7 +78,7 @@ export default function Signup() {
 			// Log pour confirmer que les données sont stockées
 			console.log("🤖Données stockées dans Firestore pour UID:", user.uid);
 
-			router.push("/userDashboard");
+			router.push(`/userDashboard/${user.uid}`); // Utilisation d'une route dynamique
 		} catch (error: any) {
 			console.error(
 				"🤖Erreur lors de l'inscription ou de la sauvegarde des données:",

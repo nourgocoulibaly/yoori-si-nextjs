@@ -13,9 +13,9 @@ import { Input } from "@/components/ui/input";
 import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { CircleUser, Package2, Search } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
 
 export default function AdminNavbar({
 	children,
@@ -56,43 +56,43 @@ export default function AdminNavbar({
 			}'
 			>
 				<nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6'>
-					<Link
-						href='#'
+					<Button
+						onClick={() => router.push('#')}
 						className='flex items-center gap-2 text-lg font-semibold md:text-base'
 					>
 						<Package2 className='h-6 w-6' />
 						<span className='sr-only'>Yoori SI</span>
-					</Link>
-					<Link
-						href='/adminDashboard'
+					</Button>
+					<Button
+						onClick={() => router.push('/adminDashboard')}
 						className='text-foreground transition-colors hover:text-foreground'
 					>
 						Dashboard
-					</Link>
-					<Link
-						href='/adminRequests'
+					</Button>
+					<Button
+						onClick={() => router.push('/adminRequests')}
 						className='text-muted-foreground transition-colors hover:text-foreground w-full'
 					>
 						Intervention
-					</Link>
-					<Link
-						href='/adminInventory'
+					</Button>
+					<Button
+						onClick={() => router.push('/adminInventory')}
 						className='text-muted-foreground transition-colors hover:text-foreground'
 					>
 						Inventaires
-					</Link>
-					<Link
-						href='#'
+					</Button>
+					<Button
+						onClick={() => router.push('#')}
 						className='text-muted-foreground transition-colors hover:text-foreground'
 					>
 						ChatBot
-					</Link>
-					{/* <Link
-						href='#'
+					</Button>
+					{/* <Button
+						onClick={() => router.push('#')}
 						className='text-muted-foreground transition-colors hover:text-foreground'
 					>
 						Analytics
-					</Link> */}
+					</Button> */}
 				</nav>
 				{/* <Sheet>
 					<SheetTrigger asChild>
@@ -107,40 +107,40 @@ export default function AdminNavbar({
 					</SheetTrigger>
 					<SheetContent side='left'>
 						<nav className='grid gap-6 text-lg font-medium'>
-							<Link
-								href='#'
+							<Button
+								onClick={() => router.push('#')}
 								className='flex items-center gap-2 text-lg font-semibold'
 							>
 								<Package2 className='h-6 w-6' />
 								<span className='sr-only'>Yoori SI</span>
-							</Link>
-							<Link href='#' className='hover:text-foreground'>
+							</Button>
+							<Button onClick={() => router.push('#')} className='hover:text-foreground'>
 								Dashboard
-							</Link>
-							<Link
-								href='#'
+							</Button>
+							<Button
+								onClick={() => router.push('#')}
 								className='text-muted-foreground hover:text-foreground'
 							>
 								Orders
-							</Link>
-							<Link
-								href='#'
+							</Button>
+							<Button
+								onClick={() => router.push('#')}
 								className='text-muted-foreground hover:text-foreground'
 							>
 								Products
-							</Link>
-							<Link
-								href='#'
+							</Button>
+							<Button
+								onClick={() => router.push('#')}
 								className='text-muted-foreground hover:text-foreground'
 							>
 								Customers
-							</Link>
-							<Link
-								href='#'
+							</Button>
+							<Button
+								onClick={() => router.push('#')}
 								className='text-muted-foreground hover:text-foreground'
 							>
 								Analytics
-							</Link>
+							</Button>
 						</nav>
 					</SheetContent>
 				</Sheet> */}
@@ -163,7 +163,9 @@ export default function AdminNavbar({
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align='end'>
-							<a href="/account"><DropdownMenuLabel>Mon Compte</DropdownMenuLabel></a>
+							<DropdownMenuLabel asChild>
+								<Button onClick={() => router.push('/account')}>Mon Compte</Button>
+							</DropdownMenuLabel>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem>Paramètres</DropdownMenuItem>
 							<DropdownMenuItem>Support</DropdownMenuItem>

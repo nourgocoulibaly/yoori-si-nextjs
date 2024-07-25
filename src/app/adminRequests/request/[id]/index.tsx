@@ -1,10 +1,12 @@
 "use client"
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import * as React from "react";
 
 import { db } from '@/lib/firebaseConfig';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { LegacyRef, useEffect, useRef, useState } from 'react';
 
 import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons";
@@ -56,6 +58,7 @@ const options = [
 ];
 
 const RequestPage = ({ params, data }: { params: { id: string }; data: any }) => {
+	const router = useRouter();
 	const { id } = params;
 	const [request, setRequest] = useState<any>(data);
 	const [formData, setFormData] = useState({
@@ -66,7 +69,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		requestDomain: '',
 		requestStatus: '',
 		createdAt: '',
-		interventionDate: '',
+		interventionDate: 0,
 		requestDescription: '',
 		requestAdminSolved: [] as string[]
 	});
@@ -85,10 +88,16 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	const requestAdminSolvedRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
+		if (!id) {
+			router.push('/404');
+		}
+	}, [id, router]);
+
+	useEffect(() => {
 		if (request) {
 			setFormData({
 				...request,
-				interventionDate: request.interventionDate ? new Date(request.interventionDate).toISOString() : '',
+				interventionDate: request.interventionDate ? new Date(request.interventionDate).getTime() : 0,
 			});
 		}
 	}, [request]);
@@ -132,7 +141,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 
 		// Filtrer les champs indéfinis
 		const filteredFormData = Object.fromEntries(
-			Object.entries(updatedFormData).filter(([_, v]) => v !== undefined)
+			Object.entries(updatedFormData).filter(([key, value]) => value !== undefined && key !== 'createdAt')
 		);
 
 		if (!filteredFormData.requestContent || !filteredFormData.requestDomain || !filteredFormData.requestStatus) {
@@ -147,15 +156,10 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 				await updateDoc(docRef, filteredFormData);
 				alert('✅ Demande envoyée avec succès !');
 
+				// Mettre à jour l'état avec les nouvelles valeurs
+				setFormData(filteredFormData as typeof formData);
+
 				// Réinitialiser les champs du formulaire
-				setFormData({
-					...formData,
-					requestContent: '',
-					requestDomain: '',
-					requestStatus: '',
-					requestDescription: '',
-					requestAdminSolved: []
-				});
 				requestContentRef.current!.value = "";
 				requestDomainRef.current!.textContent = "";
 				requestStatusRef.current!.textContent = "";
@@ -183,8 +187,14 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	const updateDateInFirestore = async (selectedDate: Date) => {
 		try {
 			const docRef = doc(db, 'userRequests', id as string);
-			await updateDoc(docRef, { interventionDate: selectedDate });
+			await updateDoc(docRef, { interventionDate: serverTimestamp() });
 			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
+
+			// Mettre à jour l'état avec la nouvelle date
+			setFormData(prevFormData => ({
+				...prevFormData,
+				interventionDate: selectedDate.getTime()
+			}));
 		} catch (error) {
 			console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
 		}
@@ -223,12 +233,12 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			<AdminNavBar>
 				<div className='bg-muted/40'>
 					<div className='flex items-start gap-4 w-full flex-col bg-muted/40 max-w-[59rem] mx-24 my-4 '>
-						<a href="/adminRequests/">
+						<Link href="/adminRequests/">
 							<Button variant='outline' size='icon' className='h-7 w-7'>
 								<ChevronLeft className='h-4 w-4' />
 								<span className='sr-only'>Retour</span>
 							</Button>
-						</a>
+						</Link>
 					</div>
 
 					<form onSubmit={handleUpdate}>

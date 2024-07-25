@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { auth, db } from "@/lib/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ export default function Signup() {
 	const lastNameRef = useRef<HTMLInputElement>(null);
 	const { signup } = useAuth();
 	const router = useRouter();
+	const pathname = usePathname();
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 
@@ -69,7 +70,7 @@ export default function Signup() {
 			});
 
 			console.log("Redirection vers /dashboard");
-			router.push("/adminDashboard");
+			router.push(`${pathname}/adminDashboard`);
 		} catch (error: any) {
 			console.error(
 				"Erreur lors de l'inscription ou de la sauvegarde des données:",

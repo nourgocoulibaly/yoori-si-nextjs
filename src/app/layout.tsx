@@ -12,7 +12,7 @@ const inter = Inter({
 // Métadonnées de la page
 export const metadata: Metadata = {
   title: "Yoori SI",
-  description: "Your 365 Business App",
+  description: "Systeme Integre de Gestion des Demandes d'Intervention",
 };
 
 // Composant RootLayout

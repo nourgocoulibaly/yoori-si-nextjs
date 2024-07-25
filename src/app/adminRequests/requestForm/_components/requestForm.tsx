@@ -1,15 +1,13 @@
 "use client"
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
-
-// Importer LegacyRef pour convertir le type de référence en HTMLSelectElement
 import { LegacyRef } from 'react';
 
 import { db } from "@/lib/firebaseConfig";
-import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
+import { Timestamp, addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { useRef } from "react";
-
 
 import { ChevronLeft } from "lucide-react";
 
@@ -41,14 +39,13 @@ interface User {
 }
 
 const RequestForm = () => {
+    const router = useRouter();
 
 		const requestUserFullNameRef = useRef<HTMLInputElement>(null);
 		const requestUserDirectionRef =useRef<HTMLInputElement>(null);
     const requestContentRef = useRef<HTMLTextAreaElement>(null);
     const requestDomainRef = useRef<HTMLButtonElement>(null);
     const requestStatusRef = useRef<HTMLButtonElement>(null);
-
-  // Contexte d'Authentification
 
   const { currentUser } = useAuth() as { currentUser: User | null };
 
@@ -67,7 +64,6 @@ const RequestForm = () => {
 			const userDirection = requestUserDirectionRef.current?.value;
       const requestContent = requestContentRef.current?.value;
       const requestDomain = requestDomainRef.current?.textContent;
-      // Définir le statut par défaut à "En attente"
       const requestStatus = requestStatusRef.current?.textContent || "En attente";
 
       console.log("🟢", userName, ",", userDirection, ",", requestContent, ",", requestDomain, ",", requestStatus);
@@ -78,25 +74,25 @@ const RequestForm = () => {
       }
 
       try {
+        const createdAt = Timestamp.now();
+
         await addDoc (collection(db, "userRequests"), {
-          // userId: currentUser?.uid,
           userName,
 					userDirection,
           requestContent,
           requestDomain,
           requestStatus,
-          createdAt: serverTimestamp() // Ajouter la date et l'heure de création
+					createdAt: serverTimestamp(),
         })
         alert ("✅ Demande envoyée avec succès !");
 
 				requestUserFullNameRef.current!.value = "";
 				requestUserDirectionRef.current!.value = "";
         requestContentRef.current!.value = "";
-				requestDomainRef.current!.textContent = ""; // Modifier la réinitialisation
-				requestStatusRef.current!.textContent = ""; // Modifier la réinitialisation
+				requestDomainRef.current!.textContent = "";
+				requestStatusRef.current!.textContent = "";
 
         console.log("✅ Données envoyées avec succès !");
-				// setError(null);
 
       } catch (error) {
         console.log("⛔Impossible d'ajouter au document", error);
@@ -108,12 +104,10 @@ const RequestForm = () => {
 
 <div className='bg-muted/40'>
     <div className='flex items-start gap-4 w-full flex-col bg-muted/40 max-w-[59rem] mx-24 my-4 '>
-      <a href="/adminRequests/">
-								<Button variant='outline' size='icon' className='h-7 w-7'>
-									<ChevronLeft className='h-4 w-4' />
-									<span className='sr-only'>Retour</span>
-								</Button>
-			</a>
+      <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => router.push("/adminRequests/")}>
+        <ChevronLeft className='h-4 w-4' />
+        <span className='sr-only'>Retour</span>
+      </Button>
     </div>
 
     <form onSubmit={handleSubmit}>
@@ -122,12 +116,6 @@ const RequestForm = () => {
 					<main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
 						<div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
 							<div className='flex items-center gap-4'>
-								{/* <a href="/adminRequests/">
-								<Button variant='outline' size='icon' className='h-7 w-7'>
-									<ChevronLeft className='h-4 w-4' />
-									<span className='sr-only'>Retour</span>
-								</Button>
-								</a> */}
 								<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
 									Demande d&apos;Intervention
 								</h1>
@@ -154,11 +142,8 @@ const RequestForm = () => {
 														className='w-full'
 														ref={requestUserFullNameRef}
 														placeholder="Entrer le nom du Demandeur"
-														// defaultValue={fullName}
-														// disabled
 													/>
 												</div>
-												{/* <div className='grid gap-6'> */}
 												<div className='grid gap-3'>
 													<Label htmlFor='name'>Direction/Service</Label>
 													<Input
@@ -167,8 +152,6 @@ const RequestForm = () => {
 														className='w-full'
 														ref={requestUserDirectionRef}
 														placeholder="Entrer sa Direction"
-														// defaultValue={direction}
-														// disabled
 													/>
 												</div>
 												<div className='grid gap-3'>
@@ -230,9 +213,6 @@ const RequestForm = () => {
 															<SelectValue placeholder="selectionner"/>
 														</SelectTrigger>
 														<SelectContent>
-															<SelectItem value='bdfh'>
-																BDFH	
-															</SelectItem>
 															<SelectItem value='sif'>
 																SIF
 															</SelectItem>
@@ -336,27 +316,10 @@ const RequestForm = () => {
 					</main>
 				</div>
 			</div>
-
-
-{/*     
-    <div className="flex justify-center items-center flex-col gap-4">
-      <label htmlFor="content">Demande</label>
-      <textarea ref={requestContentRef} id="content" name="content" placeholder="Votre demande"></textarea>
-      <label htmlFor="domain">Domaine</label>
-      <select ref={requestDomainRef} id="domain" name="domain">
-        <option value="domaine1">Domaine 1</option>
-        <option value="domaine2">Domaine 2</option>
-      </select>
-      <label htmlFor="category">Categorie</label>
-      <select ref={requestCategoryRef} id="category" name="category">
-        <option value="category1">Categorie 1</option>
-        <option value="category2">Categorie 2</option>
-      </select>
-    </div>
-    <button type="submit" className="   bg-blue-500 text-white p-2 rounded-md">Enregistrer</button> */}
     </form>
     </div>
   )
 }
 
-export default RequestForm
+
+export default RequestForm;

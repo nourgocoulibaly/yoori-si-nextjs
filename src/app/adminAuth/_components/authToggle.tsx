@@ -1,14 +1,17 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Login from "./login";
 import Signup from "./signup";
 
 export default function AuthToggle() {
 	const [isSignup, setIsSignup] = useState(false);
+	const router = useRouter();
 
 	const toggleAuthMode = () => {
 		setIsSignup(!isSignup);
+		router.push(isSignup ? '/login' : '/signup');
 	};
 
 	return (

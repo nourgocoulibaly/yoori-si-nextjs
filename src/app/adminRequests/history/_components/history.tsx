@@ -36,9 +36,8 @@ import { collection, getDocs } from "firebase/firestore";
 
 import { useEffect, useState } from "react";
 
+import Link from "next/link"; // Importer Link pour remplacer les balises a href
 import { useRouter } from "next/navigation";
-
-
 
 
 import { db } from "@/lib/firebaseConfig"; // Importer la référence à la base de données Firestore
@@ -46,6 +45,7 @@ import { db } from "@/lib/firebaseConfig"; // Importer la référence à la base
 const RequestHistory = () => {
   const [allRequests, setAllRequests] = useState<any[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
+  const [isTouched, setIsTouched] = useState(false); // Nouvel état pour vérifier si la collection est touchée
   const router = useRouter();
 
 
@@ -71,6 +71,7 @@ const RequestHistory = () => {
 
       setAllRequests(requestsData);
       setFilteredRequests(requestsData); // Initialiser avec toutes les requêtes
+      setIsTouched(requestsData.length > 0); // Vérifier si la collection est touchée
     };
 
     fetchRequests();
@@ -85,12 +86,14 @@ const RequestHistory = () => {
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40'>
       <div className='flex items-start gap-4 w-full flex-col bg-muted/40 max-w-[59rem] mx-24 mt-4 '>
-        <a href="/adminRequests/">
-								<Button variant='outline' size='icon' className='h-7 w-7'>
-									<ChevronLeft className='h-4 w-4' />
-									<span className='sr-only'>Retour</span>
-								</Button>
-			  </a>
+        <Link href="/adminRequests/">
+								<a className='inline-flex items-center gap-2'>
+									<Button variant='outline' size='icon' className='h-7 w-7'>
+										<ChevronLeft className='h-4 w-4' />
+										<span className='sr-only'>Retour</span>
+									</Button>
+								</a>
+			  </Link>
       </div>
     <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3 mt-10'>
       <div className='grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2'>
@@ -104,9 +107,11 @@ const RequestHistory = () => {
               </CardDescription>
             </CardHeader>
             <CardFooter>
-            <a href='/adminRequests/requestForm'>
+            <Link href='/adminRequests/requestForm'>
+            <a className='inline-flex items-center gap-2'>
             <Button>Créer une nouvelle commande</Button>
           </a>
+            </Link>
             </CardFooter>
           </Card>
           <Card x-chunk='dashboard-05-chunk-1'>
@@ -224,4 +229,3 @@ const RequestHistory = () => {
 };
 
 export default RequestHistory;
-

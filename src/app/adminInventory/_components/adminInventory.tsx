@@ -1,7 +1,6 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import {
 	Breadcrumb,
@@ -12,27 +11,29 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export function AdminInventory() {
+	const router = useRouter();
+
 	return (
 		<div className='flex min-h-screen w-full flex-col bg-muted/40'>
 			<Breadcrumb className='hidden md:flex mt-10 ml-14'>
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/adminDashboard'>Dashboard</Link>
+							<a onClick={() => router.push('/adminDashboard')}>Dashboard</a>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/adminInventory'>Ajouter un Inventaire</Link>
+							<a onClick={() => router.push('/adminInventory')}>Ajouter un Inventaire</a>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/adminInventory/InventoryList'>
+							<a onClick={() => router.push('/adminInventory/InventoryList')}>
 								Tous les Inventaires
-							</Link>
+							</a>
 						</BreadcrumbLink>
 						{/* <BreadcrumbPage>Tous les inventaires</BreadcrumbPage> */}
 					</BreadcrumbItem>

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { CircleUser, Package2, Search } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -50,43 +51,39 @@ export default function AdminNavbar({
 
 	return (
 		<>
-			<header
-				className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 ${
-				darkMode ? "bg-dark" : "bg-light"
-			}'
-			>
+			<header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
 				<nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6'>
-					<Button
-						onClick={() => router.push('#')}
+					<Link	
+						href="/adminDashboard"
 						className='flex items-center gap-2 text-lg font-semibold md:text-base'
 					>
 						<Package2 className='h-6 w-6' />
 						<span className='sr-only'>Yoori SI</span>
-					</Button>
-					<Button
-						onClick={() => router.push('/adminDashboard')}
+					</Link>
+					<Link	
+						href="/adminDashboard"
 						className='text-foreground transition-colors hover:text-foreground'
 					>
 						Dashboard
-					</Button>
-					<Button
-						onClick={() => router.push('/adminRequests')}
+					</Link>
+					<Link
+						href="/adminRequests"
 						className='text-muted-foreground transition-colors hover:text-foreground w-full'
 					>
 						Intervention
-					</Button>
-					<Button
-						onClick={() => router.push('/adminInventory')}
+					</Link>
+					<Link
+						href="/adminInventory"
 						className='text-muted-foreground transition-colors hover:text-foreground'
 					>
 						Inventaires
-					</Button>
-					<Button
-						onClick={() => router.push('#')}
+					</Link>
+					<Link
+						href="/adminChatbot"
 						className='text-muted-foreground transition-colors hover:text-foreground'
 					>
 						ChatBot
-					</Button>
+					</Link>
 					{/* <Button
 						onClick={() => router.push('#')}
 						className='text-muted-foreground transition-colors hover:text-foreground'
@@ -164,7 +161,7 @@ export default function AdminNavbar({
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align='end'>
 							<DropdownMenuLabel asChild>
-								<Button onClick={() => router.push('/account')}>Mon Compte</Button>
+								<Link href="/account">Mon Compte</Link>
 							</DropdownMenuLabel>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem>Paramètres</DropdownMenuItem>

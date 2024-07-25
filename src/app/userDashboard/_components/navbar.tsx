@@ -10,10 +10,10 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
-import { CircleUser, Menu, Package2, Search } from "lucide-react";
+import { CircleUser, Search } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation"; // Importation de useRouter
 import React from "react";
 
@@ -45,103 +45,16 @@ export default function UserNavbar({
 
 	return (
 		<>
-			<header
-				className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 ${
-				darkMode ? "bg-dark" : "bg-light"
-			}'
-			>
+			<header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
 				<nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6'>
-					<a
-						onClick={() => handleNavigation('#')}
-						className='flex items-center gap-2 text-lg font-semibold md:text-base cursor-pointer'
-					>
-						<Package2 className='h-6 w-6' />
-						<span className='sr-only'>Yoori SI</span>
-					</a>
-					<a
-						onClick={() => handleNavigation('/userDashboard')}
-						className='text-foreground transition-colors hover:text-foreground cursor-pointer'
-					>
-						Dashboard
-					</a>
-					<a
-						onClick={() => handleNavigation('/formRequest')}
+					<Link
+						href="/formRequest"
 						className='text-muted-foreground transition-colors hover:text-foreground w-full cursor-pointer'
 					>
 						Intervention
-					</a>
-					<a
-						onClick={() => handleNavigation('#')}
-						className='text-muted-foreground transition-colors hover:text-foreground cursor-pointer'
-					>
-						Products
-					</a>
-					<a
-						onClick={() => handleNavigation('#')}
-						className='text-muted-foreground transition-colors hover:text-foreground cursor-pointer'
-					>
-						Customers
-					</a>
-					<a
-						onClick={() => handleNavigation('#')}
-						className='text-muted-foreground transition-colors hover:text-foreground cursor-pointer'
-					>
-						Analytics
-					</a>
+					</Link>
 				</nav>
-				<Sheet>
-					<SheetTrigger asChild>
-						<Button
-							variant='outline'
-							size='icon'
-							className='shrink-0 md:hidden'
-						>
-							<Menu className='h-5 w-5' />
-							<span className='sr-only'>Toggle navigation menu</span>
-						</Button>
-					</SheetTrigger>
-					<SheetContent side='left'>
-						<nav className='grid gap-6 text-lg font-medium'>
-							<a
-								onClick={() => handleNavigation('#')}
-								className='flex items-center gap-2 text-lg font-semibold cursor-pointer'
-							>
-								<Package2 className='h-6 w-6' />
-								<span className='sr-only'>Acme Inc</span>
-							</a>
-							<a
-								onClick={() => handleNavigation('#')}
-								className='hover:text-foreground cursor-pointer'
-							>
-								Dashboard
-							</a>
-							<a
-								onClick={() => handleNavigation('#')}
-								className='text-muted-foreground hover:text-foreground cursor-pointer'
-							>
-								Orders
-							</a>
-							<a
-								onClick={() => handleNavigation('#')}
-								className='text-muted-foreground hover:text-foreground cursor-pointer'
-							>
-								Products
-							</a>
-							<a
-								onClick={() => handleNavigation('#')}
-								className='text-muted-foreground hover:text-foreground cursor-pointer'
-							>
-								Customers
-							</a>
-							<a
-								onClick={() => handleNavigation('#')}
-								className='text-muted-foreground hover:text-foreground cursor-pointer'
-							>
-								Analytics
-							</a>
-						</nav>
-					</SheetContent>
-				</Sheet>
+				
 				<div className='flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4'>
 					<form className='ml-auto flex-1 sm:flex-initial'>
 						<div className='relative'>
@@ -161,7 +74,7 @@ export default function UserNavbar({
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align='end'>
-							<a onClick={() => handleNavigation("/account")}><DropdownMenuLabel>Mon compte</DropdownMenuLabel></a>
+							<Link href="/account"><DropdownMenuLabel>Mon compte</DropdownMenuLabel></Link>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem>Settings</DropdownMenuItem>
 							<DropdownMenuItem>Support</DropdownMenuItem>

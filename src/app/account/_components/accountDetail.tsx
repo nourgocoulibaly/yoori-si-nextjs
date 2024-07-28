@@ -26,7 +26,7 @@ const Account = () => {
 		try {
 			await signOut(auth);
 			console.log("Déconnexion réussie");
-			router.push("/auth");
+			router.push("/");
 		} catch (error) {
 			console.error("Erreur lors de la déconnexion:", error);
 		}

@@ -49,7 +49,7 @@ export default function Login() {
 
 			if (adminSnap.exists()) {
 				// Utilisateur est un admin
-				router.push("/adminDashboard");
+				router.push("/home");
 			} else {
 				// Utilisateur n'est pas un admin
 				throw new Error("Accès refusé. Vous n'êtes pas un administrateur.");

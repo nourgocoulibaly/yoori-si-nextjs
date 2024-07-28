@@ -3,19 +3,6 @@ import { db } from '@/lib/firebaseConfig';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import RequestPage from './index';
 
-// Fonction pour générer les paramètres statiques (chemins dynamiques)
-export async function generateStaticParams() {
-    try {
-        const docRef = collection(db, 'userRequests');
-        const snapshot = await getDocs(docRef);
-        const paths = snapshot.docs.map(doc => ({ id: doc.id }));
-        return paths; // Juste les chemins, pas de propriété 'fallback'
-    } catch (error) {
-        console.error("Erreur lors de la récupération des paramètres statiques :", error);
-        return []; // Retourner un tableau vide en cas d'erreur
-    }
-}
-
 // Fonction pour obtenir les données en fonction de l'ID
 async function fetchData(id: string) {
     try {
@@ -28,6 +15,25 @@ async function fetchData(id: string) {
     }
 }
 
+// Fonction pour générer les paramètres statiques
+export async function generateStaticParams() {
+    const ids = await getAllRequestIds();
+    return ids.map((id) => ({
+        id,
+    }));
+}
+
+// Fonction pour récupérer tous les IDs
+async function getAllRequestIds() {
+    try {
+        const querySnapshot = await getDocs(collection(db, 'userRequests'));
+        return querySnapshot.docs.map(doc => doc.id);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des IDs :", error);
+        return [];
+    }
+}
+
 // Composant de page principal
 export default async function RequestPageWrapper({ params }: { params: { id: string } }) {
     const { id } = params;
@@ -35,9 +41,7 @@ export default async function RequestPageWrapper({ params }: { params: { id: str
 
     if (!data) {
         // Gérer le cas où les données ne sont pas trouvées
-        return {
-            notFound: true,
-        };
+        return <div>Demande non trouvée</div>;
     }
 
     const interventionDate = data.interventionDate && typeof data.interventionDate.toDate === 'function' ? data.interventionDate.toDate() : null;

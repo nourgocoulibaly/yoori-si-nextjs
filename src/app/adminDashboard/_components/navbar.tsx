@@ -26,11 +26,12 @@ export default function AdminNavbar({
 	children: React.ReactNode;
 }) {
 	const router = useRouter();
-	const [darkMode, setDarkMode] = useState(false);
+	const [darkMode, setDarkMode] = useState(true); // Par défaut en mode "dark"
 
 	useEffect(() => {
 		if (typeof document !== 'undefined') {
-			setDarkMode(document.body.classList.contains("dark"));
+			document.body.classList.add("dark"); // Ajouter la classe "dark" par défaut
+			setDarkMode(true); // S'assurer que le state est synchronisé
 		}
 	}, []);
 

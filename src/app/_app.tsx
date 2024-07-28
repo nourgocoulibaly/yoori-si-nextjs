@@ -4,7 +4,9 @@ import { useEffect } from 'react';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	useEffect(() => {
-		document.documentElement.classList.add('dark');
+		if (typeof document !== 'undefined') {
+			document.body.classList.add("dark"); // Ajouter la classe "dark" par défaut
+		}
 	}, []);
 
 	return (

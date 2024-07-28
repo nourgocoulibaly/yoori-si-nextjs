@@ -43,6 +43,12 @@ import { useRouter } from 'next/navigation';
 
 export default function UserDashboardContent() {
 
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.classList.add("dark"); // Ajouter la classe "dark" par défaut
+    }
+  }, []);
+
   const [usersList, setUsersList] = useState<any[]>([]);
 	const [requests, setRequests] = useState<any[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]);

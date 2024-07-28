@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
 	"hosting": {
 		"public": "out",
 		"rewrites": [
@@ -62,20 +61,4 @@
 			}
 		]
 	}
-=======
-  "hosting": {
-    "public": "out",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
-  }
->>>>>>> 727cc43c69e40954e9c0c4b6e0eb9f18bfa79486
 }

@@ -15,14 +15,6 @@ async function fetchData(id: string) {
     }
 }
 
-// Fonction pour générer les paramètres statiques
-export async function generateStaticParams() {
-    const ids = await getAllRequestIds();
-    return ids.map((id) => ({
-        id,
-    }));
-}
-
 // Fonction pour récupérer tous les IDs
 async function getAllRequestIds() {
     try {
@@ -34,10 +26,15 @@ async function getAllRequestIds() {
     }
 }
 
+// Fonction pour générer les chemins statiques
+export async function generateStaticParams() {
+    const ids = await getAllRequestIds();
+    return ids.map(id => ({ id }));
+}
+
 // Composant de page principal
 export default async function RequestPageWrapper({ params }: { params: { id: string } }) {
-    const { id } = params;
-    const data = await fetchData(id);
+    const data = await fetchData(params.id);
 
     if (!data) {
         // Gérer le cas où les données ne sont pas trouvées
@@ -50,5 +47,5 @@ export default async function RequestPageWrapper({ params }: { params: { id: str
         interventionDate,
     };
 
-    return <RequestPage data={requestData} params={{ id }} />;
+    return <RequestPage data={requestData} params={{ id: params.id }} />;
 }

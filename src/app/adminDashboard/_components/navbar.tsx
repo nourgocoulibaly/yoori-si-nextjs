@@ -107,36 +107,36 @@ export default function AdminNavbar({
 					</SheetTrigger>
 					<SheetContent side='left'>
 						<nav className='grid gap-6 text-lg font-medium'>
-					<Link	
-						href="/home"
-						className='flex items-center gap-2 text-lg font-semibold md:text-base'
-					>
-						<Package2 className='h-6 w-6' />
-						<span className='sr-only'>Yoori SI</span>
-					</Link>
-					<Link	
-						href="/adminDashboard"
-						className='text-foreground transition-colors hover:text-foreground'
-					>
-						Dashboard
-					</Link>
-					<Link
-						href="/adminRequests"
-						className='text-muted-foreground transition-colors hover:text-foreground w-full'
-					>
-						Intervention
-					</Link>
-					<Link
-						href="/adminInventory"
-						className='text-muted-foreground transition-colors hover:text-foreground'
-					>
-						Inventaires
-					</Link>
-					<Link
-						href="/adminChatbot"
-						className='text-muted-foreground transition-colors hover:text-foreground'
-					>
-						ChatBot
+							<Link	
+								href="/home"
+								className='flex items-center gap-2 text-lg font-semibold md:text-base'
+							>
+								<Package2 className='h-6 w-6' />
+								<span className='sr-only'>Yoori SI</span>
+							</Link>
+							<Link	
+								href="/adminDashboard"
+								className='text-foreground transition-colors hover:text-foreground'
+							>
+								Dashboard
+							</Link>
+							<Link
+								href="/adminRequests"
+								className='text-muted-foreground transition-colors hover:text-foreground w-full'
+							>
+								Intervention
+							</Link>
+							<Link
+								href="/adminInventory"
+								className='text-muted-foreground transition-colors hover:text-foreground'
+							>
+								Inventaires
+							</Link>
+							<Link
+								href="/adminChatbot"
+								className='text-muted-foreground transition-colors hover:text-foreground'
+							>
+								ChatBot
 							</Link>
 						</nav>
 					</SheetContent>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
 import Link from "next/link";
@@ -15,9 +15,9 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
@@ -25,30 +25,30 @@ import { ChevronLeft } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 import {
-	MultiSelector,
-	MultiSelectorContent,
-	MultiSelectorInput,
-	MultiSelectorItem,
-	MultiSelectorList,
-	MultiSelectorTrigger,
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
 } from "@/components/extension/multi-select";
 
 const options = [
@@ -506,7 +506,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																loop={false} 
 																className="w-[240px] justify-start text-left font-normal"
 															>
-																<MultiSelectorTrigger ref={requestAdminSolvedRef as LegacyRef<HTMLDivElement>}>
+																																<MultiSelectorTrigger ref={requestAdminSolvedRef as LegacyRef<HTMLDivElement>}>
 																	<MultiSelectorInput placeholder="Sélectionner les intervenants" />
 																</MultiSelectorTrigger>
 																<MultiSelectorContent>
@@ -558,16 +558,5 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		</>
 	);
 };
-
-export async function generateStaticParams() {
-	const requestsCollection = collection(db, 'userRequests');
-	const requestsSnapshot = await getDocs(requestsCollection);
-	const paths = requestsSnapshot.docs.map(doc => ({
-		id: doc.id,
-	}));
-
-	return paths;
-}
-
 
 export default RequestPage;

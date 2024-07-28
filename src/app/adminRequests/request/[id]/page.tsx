@@ -1,6 +1,9 @@
 // src/app/adminRequests/request/[id]/page.tsx
+"use client";
+
 import { db } from '@/lib/firebaseConfig';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { DocumentData, doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import RequestPage from './index';
 
 // Fonction pour obtenir les données en fonction de l'ID
@@ -15,26 +18,23 @@ async function fetchData(id: string) {
     }
 }
 
-// Fonction pour récupérer tous les IDs
-async function getAllRequestIds() {
-    try {
-        const querySnapshot = await getDocs(collection(db, 'userRequests'));
-        return querySnapshot.docs.map(doc => doc.id);
-    } catch (error) {
-        console.error("Erreur lors de la récupération des IDs :", error);
-        return [];
-    }
-}
-
-// Fonction pour générer les chemins statiques
-export async function generateStaticParams() {
-    const ids = await getAllRequestIds();
-    return ids.map(id => ({ id }));
-}
-
 // Composant de page principal
-export default async function RequestPageWrapper({ params }: { params: { id: string } }) {
-    const data = await fetchData(params.id);
+export default function RequestPageWrapper({ params }: { params: { id: string } }) {
+    const [data, setData] = useState<null | DocumentData>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadData() {
+            const fetchedData = await fetchData(params.id);
+            setData(fetchedData as DocumentData | null);
+            setLoading(false);
+        }
+        loadData();
+    }, [params.id]);
+
+    if (loading) {
+        return <div>Chargement...</div>;
+    }
 
     if (!data) {
         // Gérer le cas où les données ne sont pas trouvées

@@ -1,16 +1,19 @@
 "use client";
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
+
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import * as React from "react";
 
 import { db } from '@/lib/firebaseConfig';
-import { collection, doc, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { LegacyRef, useEffect, useRef, useState } from 'react';
 
 import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -62,12 +65,66 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
+import { Document, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 const options = [
   { label: "React", value: "react" },
   { label: "Vue", value: "vue" },
   { label: "Svelte", value: "svelte" },
 ];
+
+const styles = StyleSheet.create({
+  page: { padding: 30 },
+  section: { margin: 10, padding: 10, flexGrow: 1 },
+  title: { fontSize: 24, textAlign: 'center', marginBottom: 20 },
+  text: { fontSize: 12, marginBottom: 10 },
+  label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
+  input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc' },
+  textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50 },
+  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'inline-block' }
+});
+
+const MyDocument = ({ formData }: { formData: any }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text style={styles.title}>Demande d&apos;Intervention</Text>
+        <View>
+          <Text style={styles.label}>Nom & Prénoms:</Text>
+          <Text style={styles.input}>{formData.userName}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Direction/Service:</Text>
+          <Text style={styles.input}>{formData.userDirection}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Nature de l&apos;Intervention:</Text>
+          <Text style={styles.textarea}>{formData.requestContent}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Domaine d&apos;Intervention:</Text>
+          <Text style={styles.badge}>{formData.requestDomain}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Statut de l&apos;Intervention:</Text>
+          <Text style={styles.badge}>{formData.requestStatus}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Date d&apos;Intervention:</Text>
+          <Text style={styles.input}>{new Date(formData.interventionDate).toLocaleString()}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Description de l&apos;Intervention:</Text>
+          <Text style={styles.textarea}>{formData.requestDescription}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Intervenants:</Text>
+          <Text style={styles.input}>{formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
+        </View>
+      </View>
+    </Page>
+  </Document>
+);
 
 const RequestPage = ({ params, data }: { params: { id: string }; data: any }) => {
 	const router = useRouter();
@@ -81,7 +138,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		requestDomain: '',
 		requestStatus: '',
 		createdAt: '',
-		interventionDate: 0,
+		interventionDate: '',
 		requestDescription: '',
 		requestAdminSolved: [] as string[]
 	});
@@ -109,7 +166,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		if (request) {
 			setFormData({
 				...request,
-				interventionDate: request.interventionDate ? new Date(request.interventionDate).getTime() : 0,
+				interventionDate: request.interventionDate ? request.interventionDate : '',
 			});
 		}
 	}, [request]);
@@ -197,14 +254,15 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 
 	const updateDateInFirestore = async (selectedDate: Date) => {
 		try {
+			const formattedDate = format(selectedDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", { locale: fr });
 			const docRef = doc(db, 'userRequests', id as string);
-			await updateDoc(docRef, { interventionDate: serverTimestamp() });
+			await updateDoc(docRef, { interventionDate: formattedDate });
 			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
-
+	
 			// Mettre à jour l'état avec la nouvelle date
 			setFormData(prevFormData => ({
 				...prevFormData,
-				interventionDate: selectedDate.getTime()
+				interventionDate: formattedDate
 			}));
 		} catch (error) {
 			console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
@@ -458,23 +516,22 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 															<CardTitle>
 																Date d&apos;Intervention {" "}
 																<Badge variant='outline' className='ml-auto sm:ml-0'>
-																	{formData.interventionDate &&
-																		new Date(formData.interventionDate).toLocaleString()}											
-																</Badge>
+  {formData.interventionDate ? format(parse(formData.interventionDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", new Date()), 'dd/MM/yyyy') : 'Date non définie'}
+</Badge>
 															</CardTitle>
 															<Popover>
-																<PopoverTrigger asChild>
+															<PopoverTrigger asChild>
 																	<Button
-																		variant={"outline"}
-																		className={cn(
-																			"w-[240px] justify-start text-left font-normal",
-																			!date && "text-muted-foreground"
-																		)}
+																			variant={"outline"}
+																			className={cn(
+																					"w-[240px] justify-start text-left font-normal",
+																					!date && "text-muted-foreground"
+																			)}
 																	>
-																		<CalendarIcon className="mr-2 h-4 w-4" />
-																		{date ? format(date, "dd/MM/yyyy") : <span>Date de l&apos;Intervention</span>}
+																			<CalendarIcon className="mr-2 h-4 w-4" />
+																			{date ? format(date, "dd/MM/yyyy") : <span>Sélectionner une date</span>}
 																	</Button>
-																</PopoverTrigger>
+															</PopoverTrigger>
 																<PopoverContent className="w-auto p-0" align="start">
 																	<Calendar
 																		mode="single"
@@ -579,6 +636,11 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 								"Telecharger"
 							)}
 						</Button>
+						 <PDFDownloadLink document={<MyDocument formData={formData} />} fileName={`request_${id}.pdf`}>
+          {({ blob, url, loading, error }) =>
+            loading ? 'Chargement du document...' : 'Télécharger le PDF'
+          }
+        </PDFDownloadLink>
 					</CardContent>
 			</AdminNavBar>
 		</>

@@ -203,7 +203,7 @@ export default function AdminNavbar({
 						<DropdownMenuTrigger asChild>
 							<Button variant='secondary' size='icon' className='rounded-full'>	
                   <Image
-                    src={`https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${userData?.firstName}`}
+                    src={`https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${userData?.firstName}`}
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}

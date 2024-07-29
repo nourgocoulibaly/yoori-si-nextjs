@@ -1,7 +1,7 @@
 "use client";
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
-import { format } from 'date-fns';
+import { format, isValid, parse } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50 },
-  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'inline-block' }
+  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex' }
 });
 
 const MyDocument = ({ formData }: { formData: any }) => (
@@ -164,6 +164,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 
 	useEffect(() => {
 		if (request) {
+			console.log("Données de la requête:", request);
 			setFormData({
 				...request,
 				interventionDate: request.interventionDate ? request.interventionDate : '',
@@ -255,8 +256,9 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	const updateDateInFirestore = async (selectedDate: Date) => {
 		try {
 			const formattedDate = format(selectedDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", { locale: fr });
+			const timestamp = selectedDate.getTime(); // Convertir en timestamp
 			const docRef = doc(db, 'userRequests', id as string);
-			await updateDoc(docRef, { interventionDate: formattedDate });
+			await updateDoc(docRef, { interventionDate: timestamp });
 			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
 	
 			// Mettre à jour l'état avec la nouvelle date
@@ -269,24 +271,25 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		}
 	};
 
-	const handleGeneratePdf = async () => {
-		try {
-			const response = await fetch(`/adminRequests/request/${id}/api/generatePdf`);
-			const blob = await response.blob();
-			const url = window.URL.createObjectURL(blob);
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `request_${id}.pdf`;
-			document.body.appendChild(a);
-			a.click();
-			a.remove();
 
-			console.log('Redirection vers', response.url);
-			console.log('Redirection vers', url);
-		} catch (error) {
-			console.error("Erreur lors du téléchargement du PDF :", error);
-		}
-	};
+	// const handleGeneratePdf = async () => {
+	// 	try {
+	// 		const response = await fetch(`/adminRequests/request/${id}/api/generatePdf`);
+	// 		const blob = await response.blob();
+	// 		const url = window.URL.createObjectURL(blob);
+	// 		const a = document.createElement('a');
+	// 		a.href = url;
+	// 		a.download = `request_${id}.pdf`;
+	// 		document.body.appendChild(a);
+	// 		a.click();
+	// 		a.remove();
+
+	// 		console.log('Redirection vers', response.url);
+	// 		console.log('Redirection vers', url);
+	// 	} catch (error) {
+	// 		console.error("Erreur lors du téléchargement du PDF :", error);
+	// 	}
+	// };
 
 	if (!request) {
 		return <div>Chargement...</div>;
@@ -516,8 +519,20 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 															<CardTitle>
 																Date d&apos;Intervention {" "}
 																<Badge variant='outline' className='ml-auto sm:ml-0'>
-  {formData.interventionDate ? format(parse(formData.interventionDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", new Date()), 'dd/MM/yyyy') : 'Date non définie'}
-</Badge>
+																	{(() => {
+																		try {
+																			const parsedDate = parse(formData.interventionDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", { locale: fr });
+																			if (isValid(parsedDate)) {
+																				return format(parsedDate, 'dd/MM/yyyy');
+																			} else {
+																				return 'Date non définie';
+																			}
+																		} catch (error) {
+																			console.error('Erreur de parsing de la date:', error);
+																			return 'Date non définie';
+																		}
+																	})()}
+																</Badge>
 															</CardTitle>
 															<Popover>
 															<PopoverTrigger asChild>
@@ -626,7 +641,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 					</form>
 					<CardContent>
 						<div></div>
-						<Button size='lg' onClick={handleGeneratePdf}>
+						{/* <Button size='lg' onClick={handleGeneratePdf}>
 							{loading ? (
 								<Button disabled>
 									<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
@@ -635,7 +650,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 							) : (
 								"Telecharger"
 							)}
-						</Button>
+						</Button> */}
 						 <PDFDownloadLink document={<MyDocument formData={formData} />} fileName={`request_${id}.pdf`}>
           {({ blob, url, loading, error }) =>
             loading ? 'Chargement du document...' : 'Télécharger le PDF'

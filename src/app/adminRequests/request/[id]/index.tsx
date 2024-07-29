@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, File } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -315,6 +315,19 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
                             <span className='sr-only'>Retour</span>
                           </Button>
                         </Link>
+												<Button
+													size='sm'
+													variant='outline'
+													className='h-7 gap-1 text-sm'
+												>
+													<File className='h-3.5 w-3.5' />
+													<PDFDownloadLink document={<MyDocument formData={formData} />} fileName={`request_${id}.pdf`}>
+														{({ blob, url, loading, error }) =>
+															loading ? 'Chargement du document...' : 'Télécharger le PDF'
+														}
+													</PDFDownloadLink>
+												</Button>
+							
                     </div>
 
 									<div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
@@ -655,11 +668,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 								"Telecharger"
 							)}
 						</Button> */}
-						 <PDFDownloadLink document={<MyDocument formData={formData} />} fileName={`request_${id}.pdf`}>
-          {({ blob, url, loading, error }) =>
-            loading ? 'Chargement du document...' : 'Télécharger le PDF'
-          }
-        </PDFDownloadLink>
+				
 					</CardContent>
 			</AdminNavBar>
 		</>

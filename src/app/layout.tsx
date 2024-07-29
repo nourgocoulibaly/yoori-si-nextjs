@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import { Theme } from "@radix-ui/themes";
 import type { Metadata } from "next";
 import Inter from "next/font/local";
@@ -31,6 +32,7 @@ export default function RootLayout({
           scaling='95%'
         >
           {children}
+          <Toaster />
         </Theme>
       </body>
     </html>

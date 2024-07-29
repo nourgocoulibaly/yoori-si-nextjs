@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import AdminDashboardContent from "./_components/content";
 import AdminNavBar from "./_components/navbar";
+// import SidebarDemo from "./_components/sidebar";
 
 export default function AdminDashboard() {
     useEffect(() => {
@@ -15,7 +16,9 @@ export default function AdminDashboard() {
     return (
         <div className='flex min-h-screen w-full flex-col'>
             <AdminNavBar>
+            {/* <SidebarDemo> */}
                 <AdminDashboardContent />
+            {/* </SidebarDemo> */}
             </AdminNavBar>
         </div>
     );

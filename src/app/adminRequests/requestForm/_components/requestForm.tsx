@@ -32,17 +32,19 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import { useToast } from "@/components/ui/use-toast";
+
 import {
 	AlertDialog,
 	AlertDialogAction,
-	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
+	AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+
+
 interface User {
   uid: string;
   firstName: string;
@@ -52,6 +54,7 @@ interface User {
 
 const RequestForm = () => {
     const router = useRouter();
+		const { toast } = useToast()
 
 		const requestUserFullNameRef = useRef<HTMLInputElement>(null);
 		const requestUserDirectionRef =useRef<HTMLInputElement>(null);
@@ -335,7 +338,18 @@ const RequestForm = () => {
 										</CardHeader>
 										<CardContent>
 											<div></div>
-											<AlertDialog>
+											<Button size='lg' type="submit"
+														variant="outline"
+														onClick={() => {
+															toast({
+																title: "✅ Demande envoyée avec succès !",
+																description: "Cette action ne peut pas être annulée. Cela modifiera directement vos données du serveur.",
+															})
+														}}
+													>
+														Enregistrer
+											</Button>
+											{/* <AlertDialog>
 												<AlertDialogTrigger asChild>
 												<Button size='lg' type="submit">
 													Enregistrer
@@ -353,7 +367,7 @@ const RequestForm = () => {
 														<AlertDialogAction>Ok</AlertDialogAction>
 													</AlertDialogFooter>
 												</AlertDialogContent>
-											</AlertDialog>
+											</AlertDialog> */}
 										</CardContent>
 									</Card>
 								</div>

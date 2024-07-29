@@ -9,15 +9,21 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { CircleUser, Menu, Package2, Search } from "lucide-react";
+import Image from "next/image";
 
-import { Input } from "@/components/ui/input";
-import { auth } from "@/lib/firebaseConfig";
-import { signOut } from "firebase/auth";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, Package2 } from "lucide-react";
+
+import { User, getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+import { db } from "@/lib/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 
 export default function AdminNavbar({
@@ -27,6 +33,16 @@ export default function AdminNavbar({
 }) {
 	const router = useRouter();
 	const [darkMode, setDarkMode] = useState(true); // Par défaut en mode "dark"
+	const [user, setUser] = useState<User | null>(null);
+  const [userData, setUserData] = useState<{
+		uid: string;
+		email: string;
+		lastName: string;
+		firstName: string;
+	} | null>(null);
+  const auth = getAuth();
+  const [loading, setLoading] = useState(true);
+
 
 	useEffect(() => {
 		if (typeof document !== 'undefined') {
@@ -34,6 +50,42 @@ export default function AdminNavbar({
 			setDarkMode(true); // S'assurer que le state est synchronisé
 		}
 	}, []);
+
+	useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        console.log("Utilisateur connecté:", user);
+        setUser(user);
+        const userDocRef = doc(db, "admins", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const data = userDoc.data() as {
+            email: string;
+            lastName: string;
+            firstName: string;
+          };
+          setUserData({
+            uid: user.uid, // Ajout de l'UID ici
+            email: data.email,
+            lastName: data.lastName,
+            firstName: data.firstName,
+          });
+        } else {
+          console.log(
+            "Aucune donnée utilisateur trouvée pour l'UID:",
+            user.uid
+          );
+        }
+      } else {
+        console.log("Utilisateur non connecté");
+        router.push("/auth"); // Redirection vers la page d'authentification
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [auth, router]); // Ajout de router dans les dépendances
+
 
 	const handleThemeToggle = () => {
 		if (typeof document !== 'undefined') {
@@ -144,18 +196,19 @@ export default function AdminNavbar({
 				<div className='flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4'>
 					<form className='ml-auto flex-1 sm:flex-initial'>
 						<div className='relative'>
-							<Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-							<Input
-								type='search'
-								placeholder='Rechercher...'
-								className='pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]'
-							/>
+							Salut🖐️, {userData?.lastName} {userData?.firstName}
 						</div>
 					</form>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant='secondary' size='icon' className='rounded-full'>
-								<CircleUser className='h-5 w-5' />
+							<Button variant='secondary' size='icon' className='rounded-full'>	
+                  <Image
+                    src={`https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${userData?.firstName}`}
+                    className="h-7 w-7 flex-shrink-0 rounded-full"
+                    width={50}
+                    height={50}
+                    alt="Avatar"
+                  />             
 								<span className='sr-only'>Toggle user menu</span>
 							</Button>
 						</DropdownMenuTrigger>
@@ -172,9 +225,14 @@ export default function AdminNavbar({
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
-					<Button onClick={handleThemeToggle}>
+					{/* <Button onClick={handleThemeToggle}>
 						{darkMode ? "Mode Clair" : "Mode Sombre"}
-					</Button>
+					</Button> */}
+
+					<div className="flex items-center space-x-2">
+						<Switch id="dark-mode" onClick={handleThemeToggle} />
+						<Label htmlFor="dark-mode">{darkMode ? "Mode Clair" : "Mode Sombre"}</Label>
+					</div>
 				</div>
 			</header>
 			{children}

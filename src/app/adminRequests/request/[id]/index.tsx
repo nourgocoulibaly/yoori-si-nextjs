@@ -166,7 +166,6 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			try {
 				const docRef = doc(db, 'userRequests', id as string);
 				await updateDoc(docRef, filteredFormData);
-				alert('✅ Demande envoyée avec succès !');
 
 				// Mettre à jour l'état avec les nouvelles valeurs
 				setFormData(filteredFormData as typeof formData);

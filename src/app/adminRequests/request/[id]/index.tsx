@@ -231,20 +231,20 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	return (
 		<>
 			<AdminNavBar>
-				<div className='bg-muted/40'>
-					<div className='flex items-start gap-4 w-full flex-col bg-muted/40 max-w-[59rem] mx-24 my-4 '>
-						<Link href="/adminRequests/">
-							<Button variant='outline' size='icon' className='h-7 w-7'>
-								<ChevronLeft className='h-4 w-4' />
-								<span className='sr-only'>Retour</span>
-							</Button>
-						</Link>
-					</div>
-
 					<form onSubmit={handleUpdate}>
 						<div className='flex min-h-screen w-full flex-col bg-muted/40'>
 							<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
 								<main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
+                <div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
+                    <div className='flex items-center gap-4'>
+                        <Link href="/adminRequests/">
+                          <Button variant='outline' size='icon' className='h-7 w-7'>
+                            <ChevronLeft className='h-4 w-4' />
+                            <span className='sr-only'>Retour</span>
+                          </Button>
+                        </Link>
+                    </div>
+
 									<div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
 										<div className='flex items-center gap-4'>
 											<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
@@ -536,6 +536,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 											</div>
 										</div>
 									</div>
+                  </div>
 								</main>
 							</div>
 						</div>
@@ -553,7 +554,6 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 							)}
 						</Button>
 					</CardContent>
-				</div>
 			</AdminNavBar>
 		</>
 	);

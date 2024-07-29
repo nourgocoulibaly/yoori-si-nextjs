@@ -1,6 +1,7 @@
 "use client"
 
 import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { LegacyRef } from 'react';
@@ -31,6 +32,17 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 interface User {
   uid: string;
   firstName: string;
@@ -84,7 +96,7 @@ const RequestForm = () => {
           requestStatus,
 					createdAt: serverTimestamp(),
         })
-        alert ("✅ Demande envoyée avec succès !");
+        // alert ("✅ Demande envoyée avec succès !");
 
 				requestUserFullNameRef.current!.value = "";
 				requestUserDirectionRef.current!.value = "";
@@ -96,24 +108,42 @@ const RequestForm = () => {
 
       } catch (error) {
         console.log("⛔Impossible d'ajouter au document", error);
-        alert("⛔Erreur d'Enregistrement, Reessayer plus tard!");
+        // alert("⛔Erreur d'Enregistrement, Reessayer plus tard!");
+					return (
+						<AlertDialog>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>⛔Erreur d&apos;Enregistrement, Reessayer plus tard!</AlertDialogTitle>
+									<AlertDialogDescription>
+									Cette action n&apos;a pas été effectuée. Veuillez reessayer plus tard!
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogAction>OK</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
+					)
       }
     };
 
   return (
 
 <div className='bg-muted/40'>
-    <div className='flex items-start gap-4 w-full flex-col bg-muted/40 max-w-[59rem] mx-24 my-4 '>
-      <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => router.push("/adminRequests/")}>
-        <ChevronLeft className='h-4 w-4' />
-        <span className='sr-only'>Retour</span>
-      </Button>
-    </div>
 
     <form onSubmit={handleSubmit}>
 			<div className='flex min-h-screen w-full flex-col bg-muted/40'>
 				<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
 					<main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
+						<div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
+                    <div className='flex items-center gap-4'>
+                        <Link href="/adminRequests/">
+                          <Button variant='outline' size='icon' className='h-7 w-7'>
+                            <ChevronLeft className='h-4 w-4' />
+                            <span className='sr-only'>Retour</span>
+                          </Button>
+                        </Link>
+                    </div>
 						<div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
 							<div className='flex items-center gap-4'>
 								<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
@@ -305,13 +335,30 @@ const RequestForm = () => {
 										</CardHeader>
 										<CardContent>
 											<div></div>
-											<Button size='lg' type="submit">
-												Enregistrer
-											</Button>
+											<AlertDialog>
+												<AlertDialogTrigger asChild>
+												<Button size='lg' type="submit">
+													Enregistrer
+												</Button>
+												</AlertDialogTrigger>
+												<AlertDialogContent>
+													<AlertDialogHeader>
+														<AlertDialogTitle>✅ Demande envoyée avec succès !</AlertDialogTitle>
+														<AlertDialogDescription>
+														Cette action ne peut pas être annulée. Cela modifiera directement vos données du serveur.
+														</AlertDialogDescription>
+													</AlertDialogHeader>
+													<AlertDialogFooter>
+														<AlertDialogCancel>Cancel</AlertDialogCancel>
+														<AlertDialogAction>Ok</AlertDialogAction>
+													</AlertDialogFooter>
+												</AlertDialogContent>
+											</AlertDialog>
 										</CardContent>
 									</Card>
 								</div>
 							</div>
+						</div>
 						</div>
 					</main>
 				</div>

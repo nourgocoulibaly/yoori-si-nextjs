@@ -32,6 +32,19 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+
+
+
 interface User {
   uid: string;
   firstName: string;
@@ -86,7 +99,7 @@ const UserFormBeta = () => {
           requestStatus: status, // Utilisez l'état du statut
           createdAt: serverTimestamp() // Ajouter la date et l'heure de création
         })
-        alert ("✅ Demande envoyée avec succès !");
+        // alert ("✅ Demande envoyée avec succès !");
 
 
         requestContentRef.current!.value = "";
@@ -97,7 +110,7 @@ const UserFormBeta = () => {
 				// setError(null);
 
         // Rediriger vers une autre page après le succès
-        router.push('/success'); // Remplacez '/success' par la route souhaitée
+        router.push('/formRequest'); // Remplacez '/success' par la route souhaitée
 
       } catch (error) {
         console.log("⛔Impossible d'ajouter au document", error);
@@ -299,15 +312,30 @@ const UserFormBeta = () => {
 									>
 										<CardHeader>
 											<CardTitle>Details de l&apos;Intervention</CardTitle>
-											<CardDescription>
+											{/* <CardDescription>
 												Lipsum dolor sit amet, consectetur adipiscing elit
-											</CardDescription>
+											</CardDescription> */}
 										</CardHeader>
 										<CardContent>
 											<div></div>
-											<Button size='lg' type="submit">
-												Enregistrer
-											</Button>
+											<AlertDialog>
+												<AlertDialogTrigger asChild>
+												<Button size='lg' type="submit">
+													Enregistrer
+												</Button>
+												</AlertDialogTrigger>
+												<AlertDialogContent>
+													<AlertDialogHeader>
+														<AlertDialogTitle>✅ Demande envoyée avec succès !</AlertDialogTitle>
+														<AlertDialogDescription>
+														Cette action ne peut pas être annulée. Cela ajoutera directement vos données au serveur.
+														</AlertDialogDescription>
+													</AlertDialogHeader>
+													<AlertDialogFooter>
+														<AlertDialogAction>Ok</AlertDialogAction>
+													</AlertDialogFooter>
+												</AlertDialogContent>
+											</AlertDialog>
 										</CardContent>
 									</Card>
 								</div>

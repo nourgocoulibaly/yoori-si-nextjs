@@ -15,9 +15,9 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
@@ -25,31 +25,43 @@ import { ChevronLeft } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 import {
-  MultiSelector,
-  MultiSelectorContent,
-  MultiSelectorInput,
-  MultiSelectorItem,
-  MultiSelectorList,
-  MultiSelectorTrigger,
+	MultiSelector,
+	MultiSelectorContent,
+	MultiSelectorInput,
+	MultiSelectorItem,
+	MultiSelectorList,
+	MultiSelectorTrigger,
 } from "@/components/extension/multi-select";
+
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+
 
 const options = [
   { label: "React", value: "react" },
@@ -235,7 +247,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 						<div className='flex min-h-screen w-full flex-col bg-muted/40'>
 							<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
 								<main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
-                <div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
+                	<div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
                     <div className='flex items-center gap-4'>
                         <Link href="/adminRequests/">
                           <Button variant='outline' size='icon' className='h-7 w-7'>
@@ -520,16 +532,31 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																</MultiSelectorContent>
 															</MultiSelector>
 
-															<Button size='lg' type="submit">
-																{loading ? (
-																	<Button disabled>
-																		<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-																		Patienter...
-																	</Button>
-																) : (
-																	"Enregistrer"
-																)}
-															</Button>
+															<AlertDialog>
+																<AlertDialogTrigger asChild>
+																<Button size='lg' type="submit">
+																				{loading ? (
+																					<Button disabled>
+																						<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
+																						Patienter...
+																					</Button>
+																				) : (
+																					"Enregistrer"
+																				)}
+																			</Button>
+																</AlertDialogTrigger>
+																<AlertDialogContent>
+																	<AlertDialogHeader>
+																		<AlertDialogTitle>✅ Demande envoyée avec succès !</AlertDialogTitle>
+																		<AlertDialogDescription>
+																		Cette action ne peut pas être annulée. Cela modifiera directement vos données du serveur.
+																		</AlertDialogDescription>
+																	</AlertDialogHeader>
+																	<AlertDialogFooter>
+																		<AlertDialogAction>Ok</AlertDialogAction>
+																	</AlertDialogFooter>
+																</AlertDialogContent>
+															</AlertDialog>															
 														</div>
 													</CardContent>
 												</Card>

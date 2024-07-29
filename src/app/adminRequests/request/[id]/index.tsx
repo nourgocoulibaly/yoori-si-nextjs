@@ -1,7 +1,7 @@
 "use client";
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 
@@ -520,17 +520,21 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																Date d&apos;Intervention {" "}
 																<Badge variant='outline' className='ml-auto sm:ml-0'>
 																	{(() => {
-																		try {
-																			const parsedDate = parse(formData.interventionDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", { locale: fr });
-																			if (isValid(parsedDate)) {
-																				return format(parsedDate, 'dd/MM/yyyy');
-																			} else {
+																			try {
+																				const parsedDate = new Date(formData.interventionDate);
+																				if (isValid(parsedDate)) {
+																					return parsedDate.toLocaleDateString('fr-FR', {
+																						day: '2-digit',
+																						month: '2-digit',
+																						year: 'numeric'
+																					});
+																				} else {
+																					return 'Date non définie';
+																				}
+																			} catch (error) {
+																				console.error('Erreur de parsing de la date:', error);
 																				return 'Date non définie';
 																			}
-																		} catch (error) {
-																			console.error('Erreur de parsing de la date:', error);
-																			return 'Date non définie';
-																		}
 																	})()}
 																</Badge>
 															</CardTitle>

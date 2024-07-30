@@ -323,7 +323,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													<File className='h-3.5 w-3.5' />
 													<PDFDownloadLink document={<MyDocument formData={formData} />} fileName={`request_${id}.pdf`}>
 														{({ blob, url, loading, error }) =>
-															loading ? 'Chargement du document...' : 'Télécharger le PDF'
+															loading ? 'Chargement du document...' : 'Exporter'
 														}
 													</PDFDownloadLink>
 												</Button>

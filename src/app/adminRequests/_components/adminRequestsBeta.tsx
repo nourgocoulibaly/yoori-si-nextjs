@@ -190,7 +190,7 @@ const AdminRequestsBeta = () => {
 							</CardHeader>
 							<CardFooter>
 							<a href='/adminRequests/requestForm'>
-    <Button>Créer une nouvelle commande</Button>
+    <Button>Créer une nouvelle demande d'Intervention</Button>
 </a>
 							</CardFooter>
 						</Card>

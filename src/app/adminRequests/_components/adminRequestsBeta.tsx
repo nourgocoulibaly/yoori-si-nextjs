@@ -48,7 +48,32 @@ import {
 
 import { useRouter } from 'next/navigation';
 
+import { Document, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
+const styles = StyleSheet.create({
+  page: { padding: 30 },
+  section: { marginBottom: 10 },
+  header: { fontSize: 18, marginBottom: 10 },
+  text: { fontSize: 12 },
+});
+
+const MyDocument = ({ requests }) => (
+  <Document>
+    <Page style={styles.page}>
+      <View style={styles.section}>
+        <Text style={styles.header}>Liste des demandes des Interventions</Text>
+        {requests.map((request, index) => (
+          <View key={index} style={styles.section}>
+            <Text style={styles.text}>Utilisateur: {request.userName}</Text>
+            <Text style={styles.text}>Nature de l'Intervention: {request.requestContent}</Text>
+            <Text style={styles.text}>Statut: {request.requestStatus}</Text>
+            <Text style={styles.text}>Date: {request.createdAt?.toDate()?.toLocaleString() || ''}</Text>
+          </View>
+        ))}
+      </View>
+    </Page>
+  </Document>
+);
 
 const AdminRequestsBeta = () => {
   const [requests, setRequests] = useState<any[]>([]);
@@ -190,7 +215,7 @@ const AdminRequestsBeta = () => {
 							</CardHeader>
 							<CardFooter>
 							<a href='/adminRequests/requestForm'>
-    <Button>Créer une nouvelle commande</Button>
+    <Button>Créer une nouvelle demande d&apos;Intervention</Button>
 </a>
 							</CardFooter>
 						</Card>
@@ -289,14 +314,23 @@ const AdminRequestsBeta = () => {
     </DropdownMenuTrigger>
 		</DropdownMenuContent>
   </DropdownMenu> */} 
-								{/* <Button
-									size='sm'
-									variant='outline'
-									className='h-7 gap-1 text-sm'
-								>
-									<File className='h-3.5 w-3.5' />
-									<span className='sr-only sm:not-sr-only'>Exporter</span>
-								</Button> */}
+								<PDFDownloadLink
+              document={<MyDocument requests={filteredRequests} />}
+              fileName="interventions.pdf"
+            >
+              {({ loading }) => (
+                <Button
+                  size='sm'
+                  variant='outline'
+                  className='h-7 gap-1 text-sm'
+                >
+                  <File className='h-3.5 w-3.5' />
+                  <span className='sr-only sm:not-sr-only'>
+                    {loading ? 'Chargement...' : 'Exporter'}
+                  </span>
+                </Button>
+              )}
+            </PDFDownloadLink>
 							</div>
 						</div>
 

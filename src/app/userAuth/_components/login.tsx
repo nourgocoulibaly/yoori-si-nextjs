@@ -51,7 +51,7 @@ export default function Login() {
 			const userSnap = await getDoc(userRef);
 
 			if (userSnap.exists()) {
-				router.push("/userDashboard"); // Page sécurisée pour les utilisateurs
+				router.push("/home/user"); // Page sécurisée pour les utilisateurs
 				return;
 			}
 

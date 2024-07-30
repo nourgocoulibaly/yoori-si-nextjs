@@ -36,7 +36,7 @@ const features = [
     Icon: LayoutDashboard,
     name: "Dashboard",
     description: "Acceder au tableau de bord Administrateur.",
-    href: "/adminDashboard",
+    href: "/userDashboard",
     cta: "Acceder",
     className: "col-span-3 lg:col-span-1",
     background: (
@@ -68,40 +68,14 @@ const features = [
     ),
   },
   {
-    Icon: BellIcon,
-    name: "Liste des Interventions",
-    description: "Gerer les demandes d'interventions.",
-    href: "/adminRequests",
-    cta: "Acceder",
-    className: "col-span-3 lg:col-span-2",
-    background: (
-      <AnimatedListDemo className="absolute right-2 top-4 h-[300px] w-[600px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-    ),
-  },
-  {
     Icon: Share2Icon,
     name: "Nouvelle Demande d'Intervention",
-    description: "Creer une nouvelle demande d'intervention.",
-    href: "/adminRequests/requestForm",
+    description: "Envoyer une nouvelle demande d'intervention.",
+    href: "/formRequest",
     cta: "Acceder",
     className: "col-span-3 lg:col-span-2",
     background: (
       <AnimatedBeamMultipleOutputDemo className="absolute right-2 top-4 h-[300px] w-[600px] border-none transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
-    ),
-  },
-  {
-    Icon: CalendarIcon,
-    name: "Historique",
-    description: "Gerer l'historique des demandes d'interventions.",
-    className: "col-span-3 lg:col-span-1",
-    href: "/adminRequests/history",
-    cta: "Acceder",
-    background: (
-      <Calendar
-        mode="single"
-        selected={new Date(2022, 4, 11, 0, 0, 0)}
-        className="absolute right-0 top-10 origin-top rounded-md border transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)] group-hover:scale-105"
-      />
     ),
   },
 ];

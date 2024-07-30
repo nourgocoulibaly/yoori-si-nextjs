@@ -231,14 +231,9 @@ const AdminRequestsBeta = () => {
 								</CardDescription>
 							</CardHeader>
 							<CardFooter>
-							<a href='/adminRequests/requestForm'>
-<<<<<<< HEAD
-								<Button>Créer une nouvelle demande d&apos;Intervention</Button>
-							</a>
-=======
-    <Button>Créer une nouvelle demande d&apos;Intervention</Button>
-</a>
->>>>>>> 385060a6722d6edf0f1e57e3b96ea74f236e2e82
+									<a href='/adminRequests/requestForm'>
+										<Button>Créer une nouvelle demande d&apos;Intervention</Button>
+									</a>
 							</CardFooter>
 						</Card>
 						<Card x-chunk='dashboard-05-chunk-1'>

@@ -63,12 +63,13 @@ interface Request {
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '10' },
   image: { width:150 , height:150 },
-  page: { padding: 30 },
-  section: { marginBottom: 10, marginTop: 15, border: '1px solid #ccc', borderRadius:5 },
+  page: { padding: 20 },
+  section: { marginBottom: 10, marginTop: 10, },
+  labelSection: { marginBottom: 10, marginTop: 15, border: '1px solid #ccc', borderRadius:5 },
   title: { fontSize: 24, marginBottom: 10, fontWeight: 900, color: '#1F2D5C', border: '1px solid #ccc' },
-  subtitle: { fontSize: 20, marginBottom: 10, fontWeight: 'bold', color: '#1F2D5C' },
+  subtitle: { fontSize: 17, textAlign: 'center', marginBottom: 10, fontWeight: 'bold', color: '#1F2D5C' },
   label: { fontSize: 14, fontWeight: 700, color: '#1F2D5C', textDecoration: 'underline', marginBottom: 5 },
-  text: { fontSize: 13, color: '#202020' },
+  text: { fontSize: 13, color: '#202020', textDecoration: 'none' },
 });
 
 const MyDocument = ({ requests }: { requests: Request[] }) => (
@@ -85,7 +86,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
           Du {requests.length > 0 ? requests[requests.length - 1].createdAt?.toDate()?.toLocaleDateString() : ''} au {requests.length > 0 ? requests[0].createdAt?.toDate()?.toLocaleDateString() : ''}
         </Text>
         {requests.map((request: Request, index) => (
-          <View key={index} style={styles.section}>
+          <View key={index} style={styles.labelSection}>
             <Text style={styles.label}>Nom & Prenoms du Demandeur: <Text style={styles.text}>{request.userName}</Text></Text>
             <Text style={styles.label}>Direction du Demandeur: <Text style={styles.text}>{request.userDirection}</Text></Text>
             <Text style={styles.label}>Nature de l&apos;Intervention: <Text style={styles.text}>{request.requestContent}</Text></Text>

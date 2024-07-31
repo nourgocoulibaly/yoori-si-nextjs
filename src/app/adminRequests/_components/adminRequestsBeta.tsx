@@ -48,7 +48,7 @@ import {
 
 import { useRouter } from 'next/navigation';
 
-import { Document, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document, PDFDownloadLink, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
 
 interface Request {
   id: string;
@@ -61,27 +61,36 @@ interface Request {
 }
 
 const styles = StyleSheet.create({
+  header: { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '10' },
+  image: { width:150 , height:150 },
   page: { padding: 30 },
-  section: { marginBottom: 10, marginTop: 15 },
-  header: { fontSize: 24, marginBottom: 10, fontWeight: 'bold', color: '#1F2D5C' },
-  title: { fontSize: 14, fontWeight: 'bold', color: '#1F2D5C' },
+  section: { marginBottom: 10, marginTop: 15, border: '1px solid #ccc', borderRadius:5 },
+  title: { fontSize: 24, marginBottom: 10, fontWeight: 900, color: '#1F2D5C', border: '1px solid #ccc' },
+  subtitle: { fontSize: 20, marginBottom: 10, fontWeight: 'bold', color: '#1F2D5C' },
+  label: { fontSize: 14, fontWeight: 700, color: '#1F2D5C', textDecoration: 'underline', marginBottom: 5 },
   text: { fontSize: 13, color: '#202020' },
 });
 
 const MyDocument = ({ requests }: { requests: Request[] }) => (
   <Document>
     <Page style={styles.page}>
+      <View style={styles.header}>  
+          <Image style={styles.image} src="/mclu.png" />
+      </View>
       <View style={styles.section}>
-        <Text style={styles.header}>
-          Liste des demandes des Interventions du {requests.length > 0 ? requests[requests.length - 1].createdAt?.toDate()?.toLocaleDateString() : ''} au {requests.length > 0 ? requests[0].createdAt?.toDate()?.toLocaleDateString() : ''}
+        <Text style={styles.title}>
+          LISTE DES DEMANDES DES INTERVENTIONS
+        </Text>
+        <Text style={styles.subtitle}>
+          Du {requests.length > 0 ? requests[requests.length - 1].createdAt?.toDate()?.toLocaleDateString() : ''} au {requests.length > 0 ? requests[0].createdAt?.toDate()?.toLocaleDateString() : ''}
         </Text>
         {requests.map((request: Request, index) => (
           <View key={index} style={styles.section}>
-            <Text style={styles.title}>Nom & Prenoms du Demandeur: <Text style={styles.text}>{request.userName}</Text></Text>
-            <Text style={styles.title}>Direction du Demandeur: <Text style={styles.text}>{request.userDirection}</Text></Text>
-            <Text style={styles.title}>Nature de l&apos;Intervention: <Text style={styles.text}>{request.requestContent}</Text></Text>
-            <Text style={styles.title}>Date: <Text style={styles.text}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text></Text>
-            <Text style={styles.title}>Statut: <Text style={styles.text}>{request.requestStatus}</Text></Text>
+            <Text style={styles.label}>Nom & Prenoms du Demandeur: <Text style={styles.text}>{request.userName}</Text></Text>
+            <Text style={styles.label}>Direction du Demandeur: <Text style={styles.text}>{request.userDirection}</Text></Text>
+            <Text style={styles.label}>Nature de l&apos;Intervention: <Text style={styles.text}>{request.requestContent}</Text></Text>
+            <Text style={styles.label}>Date: <Text style={styles.text}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text></Text>
+            <Text style={styles.label}>Statut: <Text style={styles.text}>{request.requestStatus}</Text></Text>
           </View>
         ))}
       </View>

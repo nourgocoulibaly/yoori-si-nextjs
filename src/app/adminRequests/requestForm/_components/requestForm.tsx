@@ -55,31 +55,27 @@ interface User {
 const RequestForm = () => {
     const router = useRouter();
 		const { toast } = useToast()
-
 		const requestUserFullNameRef = useRef<HTMLInputElement>(null);
 		const requestUserDirectionRef =useRef<HTMLInputElement>(null);
-    const requestContentRef = useRef<HTMLTextAreaElement>(null);
-    const requestDomainRef = useRef<HTMLButtonElement>(null);
-    const requestStatusRef = useRef<HTMLButtonElement>(null);
+		const requestContentRef = useRef<HTMLTextAreaElement>(null);
+		const requestDomainRef = useRef<HTMLButtonElement>(null);
+		const requestStatusRef = useRef<HTMLButtonElement>(null);
+  		const { currentUser } = useAuth() as { currentUser: User | null };
 
-  const { currentUser } = useAuth() as { currentUser: User | null };
+		const fullName = currentUser
+			? `${currentUser.firstName} ${currentUser.lastName}`
+			: "";
 
-	const fullName = currentUser
-		? `${currentUser.firstName} ${currentUser.lastName}`
-		: "";
+		const direction = currentUser ? currentUser.direction : "";
 
-	const direction = currentUser ? currentUser.direction : "";
-
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    	const handleSubmit = async (e: React.FormEvent) => {
 
       e.preventDefault();
-
 			const userName = requestUserFullNameRef.current?.value;
 			const userDirection = requestUserDirectionRef.current?.value;
-      const requestContent = requestContentRef.current?.value;
-      const requestDomain = requestDomainRef.current?.textContent;
-      const requestStatus = requestStatusRef.current?.textContent || "En attente";
+			const requestContent = requestContentRef.current?.value;
+			const requestDomain = requestDomainRef.current?.textContent;
+			const requestStatus = requestStatusRef.current?.textContent || "En attente";
 
       console.log("🟢", userName, ",", userDirection, ",", requestContent, ",", requestDomain, ",", requestStatus);
 

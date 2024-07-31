@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc',borderRadius: 5, backgroundColor:'#21201C', color:'#D5EFFF' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', borderRadius: 5,minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
   badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' },
-  image: { width:50 , height:50 },
+  image: { width:150 , height:150 },
   row: { flexDirection: 'row', justifyContent:'space-between' },
   column: { flex:1 , marginRight:5 },
 });

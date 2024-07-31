@@ -55,13 +55,13 @@ function Navbar({ className }: { className?: string }) {
             <ProductItem
               title="Utilisateur"
               href="/userAuth"
-              src="https://assets.aceternity.com/demos/algochurn.webp"
+              src={`/user.webp`}
               description="Connectez-vous en tant qu'utilisateur."
             />
             <ProductItem
               title="Administrateur"
               href="/adminAuth"
-              src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
+              src={`/admin.webp`}
               description="Connectez-vous en tant qu'administrateur."
             />
           </div>

@@ -65,7 +65,8 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
-import { Document, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document, PDFDownloadLink, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
+import { Row } from "react-day-picker";
 
 const options = [
   { label: "React", value: "react" },
@@ -75,32 +76,42 @@ const options = [
 
 const styles = StyleSheet.create({
   page: { padding: 30 },
+  header: { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '10' },
   section: { margin: 10, padding: 10, flexGrow: 1 },
-  title: { fontSize: 24, textAlign: 'center', marginBottom: 20, color:'#1F2D5C' },
-  text: { fontSize: 11, marginBottom: 10, color:'#21201C' },
+  title: { fontSize: 24, textAlign: 'center', border: '1px solid #ccc', padding: 10, marginBottom: 30, color:'#1F2D5C' },
+  text: { fontSize: 11, textAlign: 'center', marginBottom: 20, color:'#21201C' },
   label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5, color:'' },
-  input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', backgroundColor:'#21201C', color:'#D5EFFF' },
-  textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
-  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' }
+  input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc',borderRadius: 5, backgroundColor:'#21201C', color:'#D5EFFF' },
+  textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', borderRadius: 5,minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
+  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' },
+  image: { width:50 , height:50 },
+  row: { flexDirection: 'row', justifyContent:'space-between' },
+  column: { flex:1 , marginRight:5 },
 });
 
 const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
   <Document>
     <Page size="A4" style={styles.page}>
+	 <View style={styles.header}>  
+        <Image style={styles.image} src="/mclu.png" />
+     </View>
       <View style={styles.section}>
-        <Text style={styles.title}>Fiche d&apos;Intervention</Text>
-        <Text style={styles.text}>Id de la demande : {params.id}</Text> 
+        <Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
+        <Text style={styles.text}>Id de la fiche : {params.id}</Text> 
         <View>
-          <Text style={styles.label}>Nom & Prénoms:</Text>
+          <Text style={styles.label}>Nom & Prénoms du Demandeur:</Text>
           <Text style={styles.input}>{formData.userName}</Text>
         </View>
-        <View>
-          <Text style={styles.label}>Direction/Service:</Text>
-          <Text style={styles.input}>{formData.userDirection}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Nature de l&apos;Intervention:</Text>
-          <Text style={styles.textarea}>{formData.requestContent}</Text>
+
+        <View style={[styles.section, styles.row]}>     
+			<View style={styles.column}>     
+				<Text style={styles.label}>Direction/Service du Demandeur:</Text>
+				<Text style={styles.input}>{formData.userDirection}</Text>
+			</View>
+			<View style={styles.column}>
+				<Text style={styles.label}>Nature de l&apos;Intervention:</Text>
+				<Text style={styles.textarea}>{formData.requestContent}</Text>
+			</View>
         </View>
         <View>
           <Text style={styles.label}>Domaine d&apos;Intervention:</Text>

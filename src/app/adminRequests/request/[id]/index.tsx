@@ -102,16 +102,14 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
           <Text style={styles.label}>Nom & Prénoms du Demandeur:</Text>
           <Text style={styles.input}>{formData.userName}</Text>
         </View>
-
-        <View style={[styles.section, styles.row]}>     
-			<View style={styles.column}>     
-				<Text style={styles.label}>Direction/Service du Demandeur:</Text>
-				<Text style={styles.input}>{formData.userDirection}</Text>
-			</View>
-			<View style={styles.column}>
-				<Text style={styles.label}>Nature de l&apos;Intervention:</Text>
-				<Text style={styles.textarea}>{formData.requestContent}</Text>
-			</View>
+		
+        <View>     
+          <Text style={styles.label}>Direction/Service du Demandeur:</Text>
+          <Text style={styles.input}>{formData.userDirection}</Text>
+        </View>
+        <View>
+          <Text style={styles.label}>Nature de l&apos;Intervention:</Text>
+          <Text style={styles.textarea}>{formData.requestContent}</Text>
         </View>
         <View>
           <Text style={styles.label}>Domaine d&apos;Intervention:</Text>
@@ -130,7 +128,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
           <Text style={styles.label}>Intervenants:</Text>
           <Text style={styles.input}>{formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
         </View>
-				<View>
+		<View>
           <Text style={styles.label}>Statut de l&apos;Intervention:</Text>
           <Text style={styles.badge}>{formData.requestStatus}</Text>
         </View>

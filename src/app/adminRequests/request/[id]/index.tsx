@@ -76,19 +76,20 @@ const options = [
 const styles = StyleSheet.create({
   page: { padding: 30 },
   section: { margin: 10, padding: 10, flexGrow: 1 },
-  title: { fontSize: 24, textAlign: 'center', marginBottom: 20 },
-  text: { fontSize: 12, marginBottom: 10 },
-  label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
-  input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc' },
-  textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50 },
-  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex' }
+  title: { fontSize: 24, textAlign: 'center', marginBottom: 20, color:'#1F2D5C' },
+  text: { fontSize: 11, marginBottom: 10, color:'#21201C' },
+  label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5, color:'' },
+  input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', backgroundColor:'#21201C', color:'#D5EFFF' },
+  textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
+  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' }
 });
 
-const MyDocument = ({ formData }: { formData: any }) => (
+const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Text style={styles.title}>Demande d&apos;Intervention</Text>
+        <Text style={styles.title}>Fiche d&apos;Intervention</Text>
+        <Text style={styles.text}>Id de la demande : {params.id}</Text> 
         <View>
           <Text style={styles.label}>Nom & Prénoms:</Text>
           <Text style={styles.input}>{formData.userName}</Text>
@@ -105,10 +106,7 @@ const MyDocument = ({ formData }: { formData: any }) => (
           <Text style={styles.label}>Domaine d&apos;Intervention:</Text>
           <Text style={styles.badge}>{formData.requestDomain}</Text>
         </View>
-        <View>
-          <Text style={styles.label}>Statut de l&apos;Intervention:</Text>
-          <Text style={styles.badge}>{formData.requestStatus}</Text>
-        </View>
+        
         <View>
           <Text style={styles.label}>Date d&apos;Intervention:</Text>
           <Text style={styles.input}>{new Date(formData.interventionDate).toLocaleString()}</Text>
@@ -120,6 +118,10 @@ const MyDocument = ({ formData }: { formData: any }) => (
         <View>
           <Text style={styles.label}>Intervenants:</Text>
           <Text style={styles.input}>{formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
+        </View>
+				<View>
+          <Text style={styles.label}>Statut de l&apos;Intervention:</Text>
+          <Text style={styles.badge}>{formData.requestStatus}</Text>
         </View>
       </View>
     </Page>
@@ -321,7 +323,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													className='h-7 gap-1 text-sm'
 												>
 													<File className='h-3.5 w-3.5' />
-													<PDFDownloadLink document={<MyDocument formData={formData} />} fileName={`request_${id}.pdf`}>
+													<PDFDownloadLink document={<MyDocument formData={formData} params={params} />} fileName={`request_${id}.pdf`}>
 														{({ blob, url, loading, error }) =>
 															loading ? 'Chargement du document...' : 'Exporter'
 														}

@@ -71,11 +71,13 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
-  headerText: {
-    fontSize: 10,
+  headerTextContainer: {
+    display: 'flex',
+    justifyContent: 'center',
     textAlign: 'center',
   },
-  headerTextContent: {
+  headerText: {
+    fontSize: 10,
     textAlign: 'center',
   },
   page: { padding: 20 },
@@ -102,6 +104,7 @@ const styles = StyleSheet.create({
   },
   tableRow: {
     flexDirection: 'row',
+    marginBottom: '15',
   },
   tableColHeader: {
     flexWrap: 'nowrap',
@@ -144,14 +147,14 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
     <Page style={styles.page}>
       <View style={styles.header}>  
           <Image style={styles.headerImage} src="/mclu.png" />
-          <View style={styles.headerText}> 
-            <Text style={styles.headerTextContent}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
-            <Text style={styles.headerTextContent}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
-            <Text style={styles.headerTextContent}> (DMISSA)</Text>       
-            <Text style={styles.headerTextContent}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
-            <Text style={styles.headerTextContent}>********************************</Text>
-            <Text style={styles.headerTextContent}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
-          </View>
+              <View style={styles.headerTextContainer}> 
+                <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+                <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+                <Text style={styles.headerText}> (DMISSA)</Text>       
+                <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+                <Text style={styles.headerText}>********************************</Text>
+                <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
+              </View>
       </View>
       <View style={styles.section}>
         <Text style={styles.title}>

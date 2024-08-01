@@ -235,7 +235,6 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
             </View>
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}> {formData.requestStatus} </Text>
-            </View>
 
         </View>
         <View style={styles.signatureContainer}>
@@ -417,28 +416,17 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
                             <span className='sr-only'>Retour</span>
                           </Button>
                         </Link>
-												<Button
-													size='sm'
-													variant='outline'
-													className='h-7 gap-1 text-sm'
-												>
-													<File className='h-3.5 w-3.5' />
-												
-													<PDFDownloadLink
-														document={<MyDocument formData={formData} params={params} />}
-														fileName={`request_${id}.pdf`}
-													>
-														{({ loading }) =>
-															loading ? 'Chargement du document...' : (
-																<Button size='sm' variant='outline' className='h-7 gap-1 text-sm'>
-																	<File className='h-3.5 w-3.5' />
-																	Exporter
-																</Button>
-															)
-														}
-													</PDFDownloadLink>
-
-												</Button>
+												<PDFDownloadLink
+                          document={<MyDocument formData={formData} params={params} />}
+                          fileName={`request_${id}.pdf`}
+                        >
+                          {({ loading }) => (
+                            <Button size='sm' variant='outline' className='h-7 gap-1 text-sm'>
+                              <File className='h-3.5 w-3.5' />
+                              {loading ? 'Chargement du document...' : 'Exporter'}
+                            </Button>
+                          )}
+                        </PDFDownloadLink>
 							
                     </div>
 

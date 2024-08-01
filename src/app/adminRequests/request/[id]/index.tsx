@@ -65,7 +65,12 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
+<<<<<<< HEAD
 import { Document, Font, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+=======
+import { Document, PDFDownloadLink, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
+import { Row } from "react-day-picker";
+>>>>>>> 7266af6a8fb221cdb4198d46f61ce0eed624843e
 
 const options = [
   { label: "React", value: "react" },
@@ -131,6 +136,7 @@ const styles = StyleSheet.create({
   tableCell: {
     fontSize: 10,
   },
+<<<<<<< HEAD
   signatureContainer: {
     position: 'absolute',
     bottom: 30,
@@ -150,13 +156,19 @@ const styles = StyleSheet.create({
     width: '50%',
     alignSelf: 'flex-end',
   },
+=======
+>>>>>>> 7266af6a8fb221cdb4198d46f61ce0eed624843e
 });
 
 const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
   <Document>
     <Page size="A4" style={styles.page}>
 	 <View style={styles.header}>  
+<<<<<<< HEAD
 	 						<Image style={styles.headerImage} src="/mclu.png" />
+=======
+        <Image style={styles.headerImage} src="/mclu.png" />
+>>>>>>> 7266af6a8fb221cdb4198d46f61ce0eed624843e
               <View style={styles.headerTextContainer}> 
                 <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
                 <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
@@ -232,10 +244,13 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}> {formData.requestStatus} </Text>
             </View>
+<<<<<<< HEAD
         </View>
         <View style={styles.signatureContainer}>
           <Text style={styles.signature}>{formData.userName}</Text>
           <View style={styles.signatureLine}></View>
+=======
+>>>>>>> 7266af6a8fb221cdb4198d46f61ce0eed624843e
         </View>
       </View>
     </Page>

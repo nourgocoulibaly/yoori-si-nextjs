@@ -423,11 +423,21 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													className='h-7 gap-1 text-sm'
 												>
 													<File className='h-3.5 w-3.5' />
-													<PDFDownloadLink document={<MyDocument formData={formData} params={params} />} fileName={`request_${id}.pdf`}>
-														{({ blob, url, loading, error }) =>
-															loading ? 'Chargement du document...' : 'Exporter'
+												
+													<PDFDownloadLink
+														document={<MyDocument formData={formData} params={params} />}
+														fileName={`request_${id}.pdf`}
+													>
+														{({ loading }) =>
+															loading ? 'Chargement du document...' : (
+																<Button size='sm' variant='outline' className='h-7 gap-1 text-sm'>
+																	<File className='h-3.5 w-3.5' />
+																	Exporter
+																</Button>
+															)
 														}
 													</PDFDownloadLink>
+
 												</Button>
 							
                     </div>

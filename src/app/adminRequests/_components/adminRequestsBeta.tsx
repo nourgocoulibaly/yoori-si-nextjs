@@ -48,11 +48,8 @@ import {
 
 import { useRouter } from 'next/navigation';
 
-<<<<<<< HEAD
 import { Document, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
-=======
-import { Document, PDFDownloadLink, Page, StyleSheet, Text, View, Image } from '@react-pdf/renderer';
->>>>>>> 7266af6a8fb221cdb4198d46f61ce0eed624843e
+
 
 interface Request {
   id: string;
@@ -150,19 +147,16 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
   <Document>
     <Page style={styles.page}>
       <View style={styles.header}>  
-<<<<<<< HEAD
-      <Image style={styles.headerImage} src="/mclu.png" />              <View style={styles.headerTextContainer}> 
-=======
-          <Image style={styles.headerImage} src="/mclu.png" />
-              <View style={styles.headerTextContainer}> 
->>>>>>> 7266af6a8fb221cdb4198d46f61ce0eed624843e
-                <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
-                <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
-                <Text style={styles.headerText}> (DMISSA)</Text>       
-                <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
-                <Text style={styles.headerText}>********************************</Text>
-                <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
-              </View>
+        <Image style={styles.headerImage} src="/mclu.png" />              <View style={styles.headerTextContainer}> 
+          <View>
+            <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+            <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+            <Text style={styles.headerText}> (DMISSA)</Text>       
+            <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+            <Text style={styles.headerText}>********************************</Text>
+            <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
+          </View>
+        </View>
       </View>
       <View style={styles.section}>
         <Text style={styles.title}>
@@ -214,8 +208,8 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
             <Text style={styles.tableCell}> {request.requestStatus} </Text>
           </View>
         </View>
-      </View>
-        ))}
+    </View>
+      ))}
       </View>
     </Page>
   </Document>

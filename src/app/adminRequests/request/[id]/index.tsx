@@ -81,20 +81,51 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  headerTextContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
   headerText: {
     fontSize: 10,
     textAlign: 'center',
-    flexWrap: 'wrap',
   },
-  section: { margin: 10, padding: 10, flexGrow: 1 },
-  title: { fontSize: 24, textAlign: 'center', border: '1px solid #ccc', padding: 10, marginBottom: 30, color:'#1F2D5C' },
-  text: { fontSize: 11, textAlign: 'center', marginBottom: 20, color:'#21201C' },
-  label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5, color:'' },
+  section: { marginBottom: 10, marginTop: 5, flexGrow: 1 },
+  title: { fontSize: 24, textAlign: 'center', border: '1px solid #ccc', padding: 10, marginBottom: 10, color:'#1F2D5C' },
+  text: { fontSize: 11, textAlign: 'center', marginBottom: 25, color:'#21201C' },
+  label: { fontSize: 12, fontWeight: 'bold', marginBottom: 5, color:'' },
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc',borderRadius: 5, backgroundColor:'#21201C', color:'#D5EFFF' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', borderRadius: 5,minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
   badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' },
   row: { flexDirection: 'row', justifyContent:'space-between' },
   column: { flex:1 , marginRight:5 },
+
+  tableRow: {
+    flexDirection: 'row',
+    marginBottom: '15',
+  },
+  tableColHeader: {
+    flexWrap: 'nowrap',
+    width: '40%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    backgroundColor: '#f3f3f3',
+  },   
+  tableCol: {
+    width: '80%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableCellHeader: {
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  tableCell: {
+    fontSize: 10,
+  },
 });
 
 const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
@@ -102,47 +133,81 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
     <Page size="A4" style={styles.page}>
 	 <View style={styles.header}>  
         <Image style={styles.headerImage} src="/mclu.png" />
-		  <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,<br/> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES <br/> (DMISSA) <br/></Text>
-          <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE<br/></Text>
-          <Text style={styles.headerText}>********************************<br/></Text>
-          <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE<br/></Text>
+              <View style={styles.headerTextContainer}> 
+                <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+                <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+                <Text style={styles.headerText}> (DMISSA)</Text>       
+                <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+                <Text style={styles.headerText}>********************************</Text>
+                <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
+              </View>
      </View>
       <View style={styles.section}>
         <Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
         <Text style={styles.text}>Id de la fiche : {params.id}</Text> 
-        <View>
-          <Text style={styles.label}>Nom & Prénoms du Demandeur:</Text>
-          <Text style={styles.input}>{formData.userName}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.userName} </Text>
+            </View>
         </View>
-		
-        <View>     
-          <Text style={styles.label}>Direction/Service du Demandeur:</Text>
-          <Text style={styles.input}>{formData.userDirection}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Direction/Service du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.userDirection} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Nature de l&apos;Intervention:</Text>
-          <Text style={styles.textarea}>{formData.requestContent}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestContent} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Domaine d&apos;Intervention:</Text>
-          <Text style={styles.badge}>{formData.requestDomain}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Domaine d&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestDomain} </Text>
+            </View>
         </View>
-        
-        <View>
-          <Text style={styles.label}>Date d&apos;Intervention:</Text>
-          <Text style={styles.input}>{new Date(formData.interventionDate).toLocaleString()}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Date d&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {new Date(formData.interventionDate).toLocaleString()} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Description de l&apos;Intervention:</Text>
-          <Text style={styles.textarea}>{formData.requestDescription}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Description de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestDescription} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Intervenants:</Text>
-          <Text style={styles.input}>{formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Intervenants:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''} </Text>
+            </View>
         </View>
-		<View>
-          <Text style={styles.label}>Statut de l&apos;Intervention:</Text>
-          <Text style={styles.badge}>{formData.requestStatus}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Statut de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestStatus} </Text>
+            </View>
         </View>
       </View>
     </Page>

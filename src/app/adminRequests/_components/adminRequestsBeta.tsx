@@ -76,14 +76,14 @@ const styles = StyleSheet.create({
   labelSection: { marginBottom: 10, marginTop: 15, border: '1px solid #ccc', borderRadius:5 },
   title: {
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: 'center',        
     fontWeight: 900,
-    marginBottom: 20,
+    marginBottom: 10,
     color: '#1F2D5C', 
     border: '1px solid #ccc',
     padding: 10
   },
-  subtitle: { fontSize: 17, textAlign: 'center', marginBottom: 10, fontWeight: 'bold', color: '#1F2D5C' },
+  subtitle: { fontSize: 15, textAlign: 'center', marginBottom: 15, fontWeight: 'bold', color: '#1F2D5C' },
   label: { fontSize: 14, fontWeight: 700, color: '#1F2D5C', textDecoration: 'underline', marginBottom: 5 },
   text: { fontSize: 13, color: '#202020', textDecoration: 'none' },
   table: {
@@ -98,13 +98,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tableColHeader: {
+    whiteSpace: 'nowrap',
     width: '20%',
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#000',
     padding: 5,
     backgroundColor: '#f3f3f3',
-  },
+  },   
   tableCol: {
     width: '80%',
     borderStyle: 'solid',

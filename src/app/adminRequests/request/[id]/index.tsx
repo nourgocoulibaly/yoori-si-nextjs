@@ -65,7 +65,7 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
-import { Document, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document, Font, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 const options = [
   { label: "React", value: "react" },
@@ -73,55 +73,169 @@ const options = [
   { label: "Svelte", value: "svelte" },
 ];
 
+// Enregistrez la police de signature
+Font.register({
+  family: 'Great Vibes',
+  src: '../../public/fonts/GreatVibes-Regular.ttf', // Mettez à jour le chemin vers votre fichier de police
+});
+
 const styles = StyleSheet.create({
   page: { padding: 30 },
-  section: { margin: 10, padding: 10, flexGrow: 1 },
-  title: { fontSize: 24, textAlign: 'center', marginBottom: 20, color:'#1F2D5C' },
-  text: { fontSize: 11, marginBottom: 10, color:'#21201C' },
-  label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5, color:'' },
-  input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', backgroundColor:'#21201C', color:'#D5EFFF' },
-  textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
-  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' }
+  header: { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '10' },
+  headerImage: {
+    width: 100,
+    height: 100,
+  },
+  headerTextContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  headerText: {
+    fontSize: 10,
+    textAlign: 'center',
+  },
+  section: { marginBottom: 10, marginTop: 5, flexGrow: 1 },
+  title: { fontSize: 24, textAlign: 'center', border: '1px solid #ccc', padding: 10, marginBottom: 10, color:'#1F2D5C' },
+  text: { fontSize: 11, textAlign: 'center', marginBottom: 25, color:'#21201C' },
+  label: { fontSize: 12, fontWeight: 'bold', marginBottom: 5, color:'' },
+  input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc',borderRadius: 5, backgroundColor:'#21201C', color:'#D5EFFF' },
+  textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', borderRadius: 5,minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
+  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' },
+  row: { flexDirection: 'row', justifyContent:'space-between' },
+  column: { flex:1 , marginRight:5 },
+
+  tableRow: {
+    flexDirection: 'row',
+    marginBottom: '15',
+  },
+  tableColHeader: {
+    flexWrap: 'nowrap',
+    width: '40%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    backgroundColor: '#f3f3f3',
+  },   
+  tableCol: {
+    width: '80%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableCellHeader: {
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  tableCell: {
+    fontSize: 10,
+  },
+  signatureContainer: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    textAlign: 'right',
+  },
+  signature: {
+		marginTop: 20,
+    fontSize: 12,
+    textAlign: 'right',
+    color: '#21201C',
+    fontFamily: 'Great Vibes',
+  },
+  signatureLine: {
+    marginTop: 5,
+    borderTop: '1px solid #000',
+    width: '50%',
+    alignSelf: 'flex-end',
+  },
 });
 
 const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
   <Document>
     <Page size="A4" style={styles.page}>
+	 <View style={styles.header}>  
+	 						<Image style={styles.headerImage} src="/mclu.png" />
+              <View style={styles.headerTextContainer}> 
+                <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+                <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+                <Text style={styles.headerText}> (DMISSA)</Text>       
+                <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+                <Text style={styles.headerText}>********************************</Text>
+                <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
+              </View>
+     </View>
       <View style={styles.section}>
-        <Text style={styles.title}>Fiche d&apos;Intervention</Text>
-        <Text style={styles.text}>Id de la demande : {params.id}</Text> 
-        <View>
-          <Text style={styles.label}>Nom & Prénoms:</Text>
-          <Text style={styles.input}>{formData.userName}</Text>
+        <Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
+        <Text style={styles.text}>Id de la fiche : {params.id}</Text> 
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.userName} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Direction/Service:</Text>
-          <Text style={styles.input}>{formData.userDirection}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Direction/Service du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.userDirection} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Nature de l&apos;Intervention:</Text>
-          <Text style={styles.textarea}>{formData.requestContent}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestContent} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Domaine d&apos;Intervention:</Text>
-          <Text style={styles.badge}>{formData.requestDomain}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Domaine d&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestDomain} </Text>
+            </View>
         </View>
-        
-        <View>
-          <Text style={styles.label}>Date d&apos;Intervention:</Text>
-          <Text style={styles.input}>{new Date(formData.interventionDate).toLocaleString()}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Date d&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {new Date(formData.interventionDate).toLocaleString()} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Description de l&apos;Intervention:</Text>
-          <Text style={styles.textarea}>{formData.requestDescription}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Description de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestDescription} </Text>
+            </View>
         </View>
-        <View>
-          <Text style={styles.label}>Intervenants:</Text>
-          <Text style={styles.input}>{formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Intervenants:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''} </Text>
+            </View>
         </View>
-				<View>
-          <Text style={styles.label}>Statut de l&apos;Intervention:</Text>
-          <Text style={styles.badge}>{formData.requestStatus}</Text>
+		<View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Statut de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {formData.requestStatus} </Text>
+            </View>
+        </View>
+        <View style={styles.signatureContainer}>
+          <Text style={styles.signature}>{formData.userName}</Text>
+          <View style={styles.signatureLine}></View>
         </View>
       </View>
     </Page>
@@ -272,26 +386,6 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
 		}
 	};
-
-
-	// const handleGeneratePdf = async () => {
-	// 	try {
-	// 		const response = await fetch(`/adminRequests/request/${id}/api/generatePdf`);
-	// 		const blob = await response.blob();
-	// 		const url = window.URL.createObjectURL(blob);
-	// 		const a = document.createElement('a');
-	// 		a.href = url;
-	// 		a.download = `request_${id}.pdf`;
-	// 		document.body.appendChild(a);
-	// 		a.click();
-	// 		a.remove();
-
-	// 		console.log('Redirection vers', response.url);
-	// 		console.log('Redirection vers', url);
-	// 	} catch (error) {
-	// 		console.error("Erreur lors du téléchargement du PDF :", error);
-	// 	}
-	// };
 
 	if (!request) {
 		return <div>Chargement...</div>;

@@ -12,43 +12,43 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 
 import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 
 import { Progress } from "@/components/ui/progress";
 
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import {
-	File, History, ListFilter
+  File, History, ListFilter
 } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
 
-import { Document, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 interface Request {
   id: string;
@@ -61,28 +61,151 @@ interface Request {
 }
 
 const styles = StyleSheet.create({
-  page: { padding: 30 },
-  section: { marginBottom: 10, marginTop: 15 },
-  header: { fontSize: 24, marginBottom: 10, fontWeight: 'bold', color: '#1F2D5C' },
-  title: { fontSize: 14, fontWeight: 'bold', color: '#1F2D5C' },
-  text: { fontSize: 13, color: '#202020' },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  headerImage: {
+    width: 100,
+    height: 100,
+  },
+  headerTextContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  headerText: {
+    fontSize: 10,
+    textAlign: 'center',
+  },
+  page: { padding: 20 },
+  section: { marginBottom: 10, marginTop: 5 },
+  title: {
+    fontSize: 20,
+    textAlign: 'center',        
+    fontWeight: 900,
+    marginBottom: 10,
+    color: '#1F2D5C', 
+    border: '1px solid #ccc',
+    padding: 10
+  },
+  subtitle: { fontSize: 15, textAlign: 'center', marginBottom: 15, fontWeight: 'bold', color: '#1F2D5C' },
+  label: { fontSize: 14, fontWeight: 700, color: '#1F2D5C', textDecoration: 'underline', marginBottom: 5 },
+  text: { fontSize: 10, color: '#202020', textDecoration: 'none' },
+  table: {
+    display: 'flex',
+    width: 'auto',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    marginBottom: 10,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    marginBottom: '15',
+  },
+  tableColHeader: {
+    flexWrap: 'nowrap',
+    width: '40%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    backgroundColor: '#f3f3f3',
+  },   
+  tableCol: {
+    width: '80%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableColFull: {
+    width: '100%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableCellHeader: {
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  tableCell: {
+    fontSize: 10,
+  },
+  breakable: {
+    flexGrow: 1,
+    flexShrink : 1,
+    break : 'auto',
+  },
 });
 
 const MyDocument = ({ requests }: { requests: Request[] }) => (
   <Document>
     <Page style={styles.page}>
+      <View style={styles.header}>  
+      <Image style={styles.headerImage} src="/mclu.png" />              <View style={styles.headerTextContainer}> 
+                <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+                <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+                <Text style={styles.headerText}> (DMISSA)</Text>       
+                <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+                <Text style={styles.headerText}>********************************</Text>
+                <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
+              </View>
+      </View>
       <View style={styles.section}>
-        <Text style={styles.header}>
-          Liste des demandes des Interventions du {requests.length > 0 ? requests[requests.length - 1].createdAt?.toDate()?.toLocaleDateString() : ''} au {requests.length > 0 ? requests[0].createdAt?.toDate()?.toLocaleDateString() : ''}
+        <Text style={styles.title}>
+          LISTE DES DEMANDES DES INTERVENTIONS
+        </Text>
+        <Text style={styles.subtitle}>
+          Du {requests.length > 0 ? requests[requests.length - 1].createdAt?.toDate()?.toLocaleDateString() : ''} au {requests.length > 0 ? requests[0].createdAt?.toDate()?.toLocaleDateString() : ''}
         </Text>
         {requests.map((request: Request, index) => (
-          <View key={index} style={styles.section}>
-            <Text style={styles.title}>Nom & Prenoms du Demandeur: <Text style={styles.text}>{request.userName}</Text></Text>
-            <Text style={styles.title}>Direction du Demandeur: <Text style={styles.text}>{request.userDirection}</Text></Text>
-            <Text style={styles.title}>Nature de l&apos;Intervention: <Text style={styles.text}>{request.requestContent}</Text></Text>
-            <Text style={styles.title}>Date: <Text style={styles.text}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text></Text>
-            <Text style={styles.title}>Statut: <Text style={styles.text}>{request.requestStatus}</Text></Text>
+
+        <View key={index} style={[styles.table, styles.breakable]}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {request.userName} </Text>
+            </View>
           </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Direction du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {request.userDirection} </Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {request.requestContent} </Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>Date:</Text>
+          </View>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableCell}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>Statut:</Text>
+          </View>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableCell}> {request.requestStatus} </Text>
+          </View>
+        </View>
+      </View>
         ))}
       </View>
     </Page>

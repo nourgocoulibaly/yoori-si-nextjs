@@ -65,7 +65,7 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
-import { Document, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 const options = [
   { label: "React", value: "react" },
@@ -81,45 +81,147 @@ const styles = StyleSheet.create({
   label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50 },
-  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex' }
+  badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex' },
+
+	header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+
+	headerImage: {
+    width: 100,
+    height: 100,
+  },
+  headerTextContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  headerText: {
+    fontSize: 10,
+    textAlign: 'center',
+  },
+	table: {
+    display: 'flex',
+    width: 'auto',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    marginBottom: 10,
+  },
+  tableRow: {
+    flexDirection: 'row',
+  },
+  tableColHeader: {
+    width: '20%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+    backgroundColor: '#f3f3f3',
+  },
+  tableCol: {
+    width: '80%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableColFull: {
+    width: '100%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableCellHeader: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  tableCell: {
+    fontSize: 12,
+  },
 });
 
 const MyDocument = ({ formData }: { formData: any }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text style={styles.title}>Demande d&apos;Intervention</Text>
-        <View>
-          <Text style={styles.label}>Nom & Prénoms:</Text>
-          <Text style={styles.input}>{formData.userName}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Direction/Service:</Text>
-          <Text style={styles.input}>{formData.userDirection}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Nature de l&apos;Intervention:</Text>
-          <Text style={styles.textarea}>{formData.requestContent}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Domaine d&apos;Intervention:</Text>
-          <Text style={styles.badge}>{formData.requestDomain}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Statut de l&apos;Intervention:</Text>
-          <Text style={styles.badge}>{formData.requestStatus}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Date d&apos;Intervention:</Text>
-          <Text style={styles.input}>{new Date(formData.interventionDate).toLocaleString()}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Description de l&apos;Intervention:</Text>
-          <Text style={styles.textarea}>{formData.requestDescription}</Text>
-        </View>
-        <View>
-          <Text style={styles.label}>Intervenants:</Text>
-          <Text style={styles.input}>{formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
+		<View style={styles.header}>  
+        <Image style={styles.headerImage} src="/mclu.png" />              
+					<View style={styles.headerTextContainer}> 
+						<View>
+							<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+							<Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+							<Text style={styles.headerText}> (DMISSA)</Text>       
+							<Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+							<Text style={styles.headerText}>********************************</Text>
+							<Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
+						</View>
+					</View>
+      </View>
+
+		<View style={styles.section}>
+			<Text style={styles.title}>Details Demandeur</Text>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColFull}>
+              <Text style={styles.tableCell}>Nom & Prénoms: {formData.userName}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Direction/Service:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{formData.userDirection}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{formData.requestContent}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Domaine d&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{formData.requestDomain}</Text>
+            </View>
+          </View>
+					<View style={styles.tableRow}>
+            <View style={styles.tableColFull}>
+              <Text style={styles.tableCell}>Date d&apos;Intervention: {new Date(formData.interventionDate).toLocaleString()}</Text>
+            </View>
+          </View>
+         <View style={styles.tableRow}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Description de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{formData.requestDescription}</Text>
+            </View> 
+          </View>
+         
+          <View style={styles.tableRow}>
+            <View style={styles.tableColFull}>
+              <Text style={styles.tableCell}>Intervenants: {formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
+            </View>
+          </View>
+
+					<View style={styles.tableRow}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Statut de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{formData.requestStatus}</Text>
+            </View> 
+          </View>
         </View>
       </View>
     </Page>

@@ -142,11 +142,13 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
     <Page style={styles.page}>
       <View style={styles.header}>  
           <Image style={styles.headerImage} src="/mclu.png" />
-          <View style={styles.headerText}> 
-            <Text>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,<br/> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES <br/> (DMISSA) <br/></Text>       
-            <Text>SOUS DIRECTION DE L&apos;INFORMATIQUE<br/></Text>
-            <Text>********************************<br/></Text>
-            <Text>SERVICE INFRASTRUCTURE INFORMATIQUE<br/></Text>
+          <View> 
+            <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+            <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+            <Text style={styles.headerText}> (DMISSA) <br/></Text>       
+            <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE<br/></Text>
+            <Text style={styles.headerText}>********************************<br/></Text>
+            <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE<br/></Text>
           </View>
       </View>
       <View style={styles.section}>

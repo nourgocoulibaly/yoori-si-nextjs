@@ -74,7 +74,9 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 10,
     textAlign: 'center',
-    flexWrap: 'wrap',
+  },
+  headerTextContent: {
+    textAlign: 'center',
   },
   page: { padding: 20 },
   section: { marginBottom: 10, marginTop: 5 },
@@ -142,13 +144,13 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
     <Page style={styles.page}>
       <View style={styles.header}>  
           <Image style={styles.headerImage} src="/mclu.png" />
-          <View> 
-            <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
-            <Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
-            <Text style={styles.headerText}> (DMISSA) <br/></Text>       
-            <Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE<br/></Text>
-            <Text style={styles.headerText}>********************************<br/></Text>
-            <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE<br/></Text>
+          <View style={styles.headerText}> 
+            <Text style={styles.headerTextContent}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+            <Text style={styles.headerTextContent}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+            <Text style={styles.headerTextContent}> (DMISSA)</Text>       
+            <Text style={styles.headerTextContent}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+            <Text style={styles.headerTextContent}>********************************</Text>
+            <Text style={styles.headerTextContent}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
           </View>
       </View>
       <View style={styles.section}>

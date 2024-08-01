@@ -125,6 +125,11 @@ const styles = StyleSheet.create({
   tableCell: {
     fontSize: 12,
   },
+  breakable: {
+    flexGrow: 1,
+    flexShrink : 1,
+    break : 'auto',
+  },
 });
 
 const MyDocument = ({ requests }: { requests: Request[] }) => (
@@ -143,7 +148,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
         {requests.map((request: Request, index) => (
 
         <View key={index} style={styles.table}>
-          <View style={styles.tableRow}>
+          <View style={[styles.tableRow, styles.breakable]}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
             </View>
@@ -151,7 +156,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
               <Text style={styles.tableCell}> {request.userName} </Text>
             </View>
           </View>
-          <View style={styles.tableRow}>
+          <View style={[styles.tableRow, styles.breakable]}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Direction du Demandeur:</Text>
             </View>
@@ -159,7 +164,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
               <Text style={styles.tableCell}> {request.userDirection} </Text>
             </View>
           </View>
-          <View style={styles.tableRow}>
+          <View style={[styles.tableRow, styles.breakable]}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
             </View>
@@ -167,7 +172,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
               <Text style={styles.tableCell}> {request.requestContent} </Text>
             </View>
           </View>
-        <View style={styles.tableRow}>
+          <View style={[styles.tableRow, styles.breakable]}>
           <View style={styles.tableColHeader}>
             <Text style={styles.tableCellHeader}>Date:</Text>
           </View>
@@ -175,7 +180,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
             <Text style={styles.tableCell}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text>
           </View>
         </View>
-        <View style={styles.tableRow}>
+        <View style={[styles.tableRow, styles.breakable]}>
           <View style={styles.tableColHeader}>
             <Text style={styles.tableCellHeader}>Statut:</Text>
           </View>

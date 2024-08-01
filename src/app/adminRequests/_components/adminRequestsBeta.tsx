@@ -71,6 +71,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  headerText: {
+    fontSize: 16,
+    textAlign: 'center',
+    flexWrap: 'wrap',
+  },
   page: { padding: 20 },
   section: { marginBottom: 10, marginTop: 5 },
   title: {
@@ -84,7 +89,7 @@ const styles = StyleSheet.create({
   },
   subtitle: { fontSize: 15, textAlign: 'center', marginBottom: 15, fontWeight: 'bold', color: '#1F2D5C' },
   label: { fontSize: 14, fontWeight: 700, color: '#1F2D5C', textDecoration: 'underline', marginBottom: 5 },
-  text: { fontSize: 13, color: '#202020', textDecoration: 'none' },
+  text: { fontSize: 10, color: '#202020', textDecoration: 'none' },
   table: {
     display: 'flex',
     width: 'auto',
@@ -119,11 +124,11 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   tableCellHeader: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
   },
   tableCell: {
-    fontSize: 12,
+    fontSize: 10,
   },
   breakable: {
     flexGrow: 1,
@@ -137,6 +142,10 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
     <Page style={styles.page}>
       <View style={styles.header}>  
           <Image style={styles.headerImage} src="/mclu.png" />
+          <Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L'INFORMATIQUE, DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES (DMISSA)</Text>
+          <Text style={styles.headerText}>SOUS DIRECTION DE L'INFORMATIQUE</Text>
+          <Text style={styles.headerText}>********************************</Text>
+          <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.title}>
@@ -147,8 +156,8 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
         </Text>
         {requests.map((request: Request, index) => (
 
-        <View key={index} style={styles.table}>
-          <View style={[styles.tableRow, styles.breakable]}>
+        <View key={index} style={[styles.table, styles.breakable]}>
+          <View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
             </View>
@@ -156,7 +165,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
               <Text style={styles.tableCell}> {request.userName} </Text>
             </View>
           </View>
-          <View style={[styles.tableRow, styles.breakable]}>
+          <View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Direction du Demandeur:</Text>
             </View>
@@ -164,7 +173,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
               <Text style={styles.tableCell}> {request.userDirection} </Text>
             </View>
           </View>
-          <View style={[styles.tableRow, styles.breakable]}>
+          <View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
             </View>
@@ -172,7 +181,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
               <Text style={styles.tableCell}> {request.requestContent} </Text>
             </View>
           </View>
-          <View style={[styles.tableRow, styles.breakable]}>
+          <View style={styles.tableRow}>
           <View style={styles.tableColHeader}>
             <Text style={styles.tableCellHeader}>Date:</Text>
           </View>
@@ -180,7 +189,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
             <Text style={styles.tableCell}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text>
           </View>
         </View>
-        <View style={[styles.tableRow, styles.breakable]}>
+        <View style={styles.tableRow}>
           <View style={styles.tableColHeader}>
             <Text style={styles.tableCellHeader}>Statut:</Text>
           </View>

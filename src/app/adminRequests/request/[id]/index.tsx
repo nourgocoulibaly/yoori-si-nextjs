@@ -77,6 +77,15 @@ const options = [
 const styles = StyleSheet.create({
   page: { padding: 30 },
   header: { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '10' },
+  headerImage: {
+    width: 100,
+    height: 100,
+  },
+  headerText: {
+    fontSize: 16,
+    textAlign: 'center',
+    flexWrap: 'wrap',
+  },
   section: { margin: 10, padding: 10, flexGrow: 1 },
   title: { fontSize: 24, textAlign: 'center', border: '1px solid #ccc', padding: 10, marginBottom: 30, color:'#1F2D5C' },
   text: { fontSize: 11, textAlign: 'center', marginBottom: 20, color:'#21201C' },
@@ -84,7 +93,6 @@ const styles = StyleSheet.create({
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc',borderRadius: 5, backgroundColor:'#21201C', color:'#D5EFFF' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', borderRadius: 5,minHeight: 50, backgroundColor:'#21201C', color:'#D5EFFF' },
   badge: { fontSize: 12, padding: 5, border: '1px solid #000', borderRadius: 5, display: 'flex', backgroundColor:'#21201C', color:'#D5EFFF' },
-  image: { width:150 , height:150 },
   row: { flexDirection: 'row', justifyContent:'space-between' },
   column: { flex:1 , marginRight:5 },
 });
@@ -93,7 +101,11 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
   <Document>
     <Page size="A4" style={styles.page}>
 	 <View style={styles.header}>  
-        <Image style={styles.image} src="/mclu.png" />
+        <Image style={styles.headerImage} src="/mclu.png" />
+		<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L'INFORMATIQUE, DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES (DMISSA)</Text>
+          <Text style={styles.headerText}>SOUS DIRECTION DE L'INFORMATIQUE</Text>
+          <Text style={styles.headerText}>********************************</Text>
+          <Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
      </View>
       <View style={styles.section}>
         <Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>

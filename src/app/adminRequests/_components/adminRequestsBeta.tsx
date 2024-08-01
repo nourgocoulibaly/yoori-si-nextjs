@@ -65,15 +65,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   headerImage: {
     width: 100,
     height: 100,
   },
   page: { padding: 20 },
-  section: { marginBottom: 10, marginTop: 10, },
-  labelSection: { marginBottom: 10, marginTop: 15, border: '1px solid #ccc', borderRadius:5 },
+  section: { marginBottom: 10, marginTop: 5 },
   title: {
     fontSize: 20,
     textAlign: 'center',        
@@ -103,7 +102,6 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#000',
-    padding: 5,
     backgroundColor: '#f3f3f3',
   },   
   tableCol: {

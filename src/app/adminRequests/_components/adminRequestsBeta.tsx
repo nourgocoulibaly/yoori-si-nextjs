@@ -61,22 +61,78 @@ interface Request {
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '10' },
-  image: { width:150 , height:150 },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  headerImage: {
+    width: 50,
+    height: 50,
+  },
   page: { padding: 20 },
   section: { marginBottom: 10, marginTop: 10, },
   labelSection: { marginBottom: 10, marginTop: 15, border: '1px solid #ccc', borderRadius:5 },
-  title: { fontSize: 24, marginBottom: 10, fontWeight: 900, color: '#1F2D5C', border: '1px solid #ccc' },
+  title: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 900,
+    marginBottom: 20,
+    color: '#1F2D5C', 
+    border: '1px solid #ccc',
+    padding: 10
+  },
   subtitle: { fontSize: 17, textAlign: 'center', marginBottom: 10, fontWeight: 'bold', color: '#1F2D5C' },
   label: { fontSize: 14, fontWeight: 700, color: '#1F2D5C', textDecoration: 'underline', marginBottom: 5 },
   text: { fontSize: 13, color: '#202020', textDecoration: 'none' },
+  table: {
+    display: 'flex',
+    width: 'auto',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    marginBottom: 10,
+  },
+  tableRow: {
+    flexDirection: 'row',
+  },
+  tableColHeader: {
+    width: '20%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+    backgroundColor: '#f3f3f3',
+  },
+  tableCol: {
+    width: '80%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableColFull: {
+    width: '100%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 5,
+  },
+  tableCellHeader: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  tableCell: {
+    fontSize: 12,
+  },
 });
 
 const MyDocument = ({ requests }: { requests: Request[] }) => (
   <Document>
     <Page style={styles.page}>
       <View style={styles.header}>  
-          <Image style={styles.image} src="/mclu.png" />
+          <Image style={styles.headerImage} src="/mclu.png" />
       </View>
       <View style={styles.section}>
         <Text style={styles.title}>
@@ -86,13 +142,49 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
           Du {requests.length > 0 ? requests[requests.length - 1].createdAt?.toDate()?.toLocaleDateString() : ''} au {requests.length > 0 ? requests[0].createdAt?.toDate()?.toLocaleDateString() : ''}
         </Text>
         {requests.map((request: Request, index) => (
-          <View key={index} style={styles.labelSection}>
-            <Text style={styles.label}>Nom & Prenoms du Demandeur: <Text style={styles.text}>{request.userName}</Text></Text>
-            <Text style={styles.label}>Direction du Demandeur: <Text style={styles.text}>{request.userDirection}</Text></Text>
-            <Text style={styles.label}>Nature de l&apos;Intervention: <Text style={styles.text}>{request.requestContent}</Text></Text>
-            <Text style={styles.label}>Date: <Text style={styles.text}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text></Text>
-            <Text style={styles.label}>Statut: <Text style={styles.text}>{request.requestStatus}</Text></Text>
+
+        <View key={index} style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {request.userName} </Text>
+            </View>
           </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Direction du Demandeur:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {request.userDirection} </Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}> {request.requestContent} </Text>
+            </View>
+          </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>Date:</Text>
+          </View>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableCell}>{request.createdAt?.toDate()?.toLocaleString() || ''}</Text>
+          </View>
+        </View>
+        <View style={styles.tableRow}>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>Statut:</Text>
+          </View>
+          <View style={styles.tableCol}>
+            <Text style={styles.tableCell}> {request.requestStatus} </Text>
+          </View>
+        </View>
+      </View>
         ))}
       </View>
     </Page>

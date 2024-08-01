@@ -173,39 +173,39 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
       <View style={styles.section}>
         <Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
         <Text style={styles.text}>Id de la fiche : {params.id}</Text> 
-		<View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}> {formData.userName} </Text>
-            </View>
-        </View>
-		<View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Direction/Service du Demandeur:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}> {formData.userDirection} </Text>
-            </View>
-        </View>
-		<View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}> {formData.requestContent} </Text>
-            </View>
-        </View>
-		<View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Domaine d&apos;Intervention:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}> {formData.requestDomain} </Text>
-            </View>
-        </View>
-		<View style={styles.tableRow}>
+							<View style={styles.tableRow}>
+								<View style={styles.tableColHeader}>
+									<Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
+								</View>
+								<View style={styles.tableCol}>
+									<Text style={styles.tableCell}> {formData.userName} </Text>
+								</View>
+						</View>
+						<View style={styles.tableRow}>
+								<View style={styles.tableColHeader}>
+									<Text style={styles.tableCellHeader}>Direction/Service du Demandeur:</Text>
+								</View>
+								<View style={styles.tableCol}>
+									<Text style={styles.tableCell}> {formData.userDirection} </Text>
+								</View>
+						</View>
+						<View style={styles.tableRow}>
+								<View style={styles.tableColHeader}>
+									<Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
+								</View>
+								<View style={styles.tableCol}>
+									<Text style={styles.tableCell}> {formData.requestContent} </Text>
+								</View>
+						</View>
+						<View style={styles.tableRow}>
+								<View style={styles.tableColHeader}>
+									<Text style={styles.tableCellHeader}>Domaine d&apos;Intervention:</Text>
+								</View>
+								<View style={styles.tableCol}>
+									<Text style={styles.tableCell}> {formData.requestDomain} </Text>
+								</View>
+						</View>
+				<View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Date d&apos;Intervention:</Text>
             </View>
@@ -213,7 +213,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
               <Text style={styles.tableCell}> {new Date(formData.interventionDate).toLocaleString()} </Text>
             </View>
         </View>
-		<View style={styles.tableRow}>
+				<View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Description de l&apos;Intervention:</Text>
             </View>
@@ -221,7 +221,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
               <Text style={styles.tableCell}> {formData.requestDescription} </Text>
             </View>
         </View>
-		<View style={styles.tableRow}>
+				<View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Intervenants:</Text>
             </View>
@@ -229,18 +229,17 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
               <Text style={styles.tableCell}> {formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''} </Text>
             </View>
         </View>
-		<View style={styles.tableRow}>
+				<View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Statut de l&apos;Intervention:</Text>
             </View>
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}> {formData.requestStatus} </Text>
-
+						</View>
         </View>
         <View style={styles.signatureContainer}>
           <Text style={styles.signature}>{formData.userName}</Text>
           <View style={styles.signatureLine}></View>
-
         </View>
       </View>
     </Page>

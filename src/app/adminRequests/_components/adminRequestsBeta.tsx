@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   headerText: {
-    fontSize: 16,
+    fontSize: 10,
     textAlign: 'center',
     flexWrap: 'wrap',
   },

@@ -114,13 +114,13 @@ export default function AdminNavbar({
 					>
 						<Image
 							src={`/YooriLink.png`}
-							className="h-7 w-7 flex-shrink-0 rounded-full"
-							width={50}
-							height={50}
+							className="w-24 h-auto"
 							alt="Logo Yoori Link"
+							loading= "lazy"
 						/> 
 						<span className='sr-only'>Yoori SI</span>
 					</Link>
+					<div className="flex space-x-6">
 					<Link	
 						href="/adminDashboard"
 						className='text-foreground transition-colors hover:text-foreground'
@@ -151,6 +151,7 @@ export default function AdminNavbar({
 					>
 						Analytics
 					</Button> */}
+					</div>
 				</nav>
 				<Sheet>
 					<SheetTrigger asChild>

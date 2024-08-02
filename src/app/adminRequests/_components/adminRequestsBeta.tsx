@@ -101,12 +101,21 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#000',
+    marginTop: 35,
     marginBottom: 10,
   },
   tableRow: {
     flexDirection: 'row',
     marginBottom: '15',
   },
+  firstTableColHeader: {
+    flexWrap: 'nowrap',
+    width: '40%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#000',
+    backgroundColor: '#e6a47b',
+  },   
   tableColHeader: {
     flexWrap: 'nowrap',
     width: '40%',
@@ -171,7 +180,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
 
         <View key={index} style={[styles.table, styles.breakable]}>
           <View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
+            <View style={styles.firstTableColHeader}>
               <Text style={styles.tableCellHeader}>Nom & Prenoms du Demandeur:</Text>
             </View>
             <View style={styles.tableCol}>

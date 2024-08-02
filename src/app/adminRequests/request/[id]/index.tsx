@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
 
 	header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
   },
@@ -160,7 +159,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
   <Document>
     <Page size="A4" style={styles.page}>
 		<View style={styles.header}>  
-        <Image style={styles.headerImage} src="/mclu.png" />              
+        	<Image style={styles.headerImage} src="/mclu.png" />              
 				{/* <View style={styles.headerTextContainer}>  */}
 						<View style={{ alignItems: 'center' }}>  {/* Ajout de l'alignement centré */}
 							<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
@@ -171,7 +170,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 							<Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
 							</View>
 					{/* </View> */}
-    </View>
+    	</View>
 
 		<View style={styles.section}>
 			<Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>

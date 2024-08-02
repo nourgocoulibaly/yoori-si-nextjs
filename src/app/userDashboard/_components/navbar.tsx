@@ -113,7 +113,7 @@ export default function UserNavbar({
   >
     <Image
       src={`/YooriLink.png`}
-      className="w-40 h-auto ml-20 mr-35"
+      className="w-32 h-auto ml-20 mr-35"
       alt="Logo Yoori Link"
       loading="lazy"
     />

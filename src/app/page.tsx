@@ -17,12 +17,6 @@ export default function HeroScrollDemo() {
     <div>
   <Navbar className="top-2" />
   <div className="flex flex-col items-center overflow-hidden">
-    <Image
-      src={`/yoori-si-large.png`}
-      className="w-60 h-auto mt-28"
-      alt="Logo Yoori Link"
-      loading="lazy"
-    />
     <ContainerScroll
       titleComponent={
         <>

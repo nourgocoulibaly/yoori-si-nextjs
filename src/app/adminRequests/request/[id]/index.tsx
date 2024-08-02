@@ -76,8 +76,7 @@ const options = [
 const styles = StyleSheet.create({
   page: { padding: 30 },
   section: { margin: 10, padding: 10, flexGrow: 1 },
-  title: { fontSize: 24, textAlign: 'center', marginBottom: 20 },
-  text: { fontSize: 12, marginBottom: 10 },
+	text: { fontSize: 12, marginBottom: 10, textAlign: 'center' },
   label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50 },
@@ -88,6 +87,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
+  },
+
+	title: {
+    fontSize: 20,
+    textAlign: 'center',        
+    fontWeight: 900,
+    marginBottom: 10,
+    color: '#1F2D5C', 
+    border: '1px solid #ccc',
+    padding: 10
   },
 
 	headerImage: {
@@ -121,6 +130,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     padding: 5,
     backgroundColor: '#f3f3f3',
+		fontWeight: 900,
   },
   tableCol: {
     width: '80%',
@@ -135,6 +145,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000',
     padding: 5,
+		textAlign: 'center',
   },
   tableCellHeader: {
     fontSize: 12,
@@ -150,7 +161,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
     <Page size="A4" style={styles.page}>
 		<View style={styles.header}>  
         <Image style={styles.headerImage} src="/mclu.png" />              
-				<View style={styles.headerTextContainer}> 
+				{/* <View style={styles.headerTextContainer}>  */}
 						<View style={{ alignItems: 'center' }}>  {/* Ajout de l'alignement centré */}
 							<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
 							<Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
@@ -158,8 +169,8 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 							<Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
 							<Text style={styles.headerText}>********************************</Text>
 							<Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
-						</View>
-				</View>
+							</View>
+					{/* </View> */}
     </View>
 
 		<View style={styles.section}>

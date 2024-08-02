@@ -1,5 +1,6 @@
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { BellIcon, LayoutDashboard, Share2Icon } from "lucide-react";
+import Image from "next/image";
 
 import AnimatedBeamMultipleOutputDemo from "@/components/example/animated-beam-multiple-outputs";
 import AnimatedListDemo from "@/components/example/animated-list-demo";
@@ -111,6 +112,12 @@ export default function BentoDemo() {
     // <div className="flex items-center justify-center min-h-screen dark:bg-gray-900 dark">
 
     <div className="flex items-center justify-center min-h-screen dark:bg-gray-900">
+      <Image
+      src={`/yoori-si-large.png`}
+      className="w-75 h-auto ml-20 mr-35"
+      alt="Logo Yoori Link"
+      loading="lazy"
+    />
       <div className="w-full max-w-4xl">
         <BentoGrid>
           {features.map((feature, idx) => (

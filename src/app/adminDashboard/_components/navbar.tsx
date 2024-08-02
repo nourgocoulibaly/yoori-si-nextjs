@@ -113,7 +113,7 @@ export default function AdminNavbar({
   >
     <Image
       src={`/YooriLink.png`}
-      className="w-24 h-auto"
+      className="w-24 h-auto ml-20 mr-35"
       alt="Logo Yoori Link"
       loading="lazy"
     />

@@ -127,7 +127,7 @@ export default function UserNavbar({
       Dashboard
     </Link>
     <Link
-      href="/adminRequests"
+      href="/formRequest"
       className='text-muted-foreground transition-colors hover:text-foreground w-full'
     >
       Demande d&apos;Intervention

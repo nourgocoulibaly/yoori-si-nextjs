@@ -19,7 +19,7 @@ export default function HeroScrollDemo() {
   <div className="flex flex-col items-center overflow-hidden">
     <Image
       src={`/yoori-si-large.png`}
-      className="w-20 h-auto my-12"
+      className="w-60 h-auto my-12"
       alt="Logo Yoori Link"
       loading="lazy"
     />

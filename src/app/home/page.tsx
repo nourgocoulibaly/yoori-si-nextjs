@@ -114,7 +114,7 @@ export default function BentoDemo() {
     <div className="flex flex-col items-center justify-center min-h-screen dark:bg-gray-900">
   <Image
     src={`/yoori-si-large.png`}
-    className="w-32 h-auto my-8"
+    className="w-60 h-auto my-8"
     alt="Logo Yoori Link"
     loading="lazy"
   />

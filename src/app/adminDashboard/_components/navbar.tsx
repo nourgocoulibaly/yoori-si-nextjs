@@ -107,147 +107,135 @@ export default function AdminNavbar({
 	return (
 		<>
 			<header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
-				<nav className='flex items-center justify-between p-4 hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6 '>
-					<Link	
-						href="/home"
-						className='flex items-center gap-2 text-lg font-semibold md:text-base'
-					>
-						<Image
-							src={`/YooriLink.png`}
-							className="w-24 h-auto"
-							alt="Logo Yoori Link"
-							loading= "lazy"
-						/> 
-						<span className='sr-only'>Yoori SI</span>
-					</Link>
-					<div className="flex space-x-6">
-					<Link	
-						href="/adminDashboard"
-						className='text-foreground transition-colors hover:text-foreground'
-					>
-						Dashboard
-					</Link>
-					<Link
-						href="/adminRequests"
-						className='text-muted-foreground transition-colors hover:text-foreground w-full'
-					>
-						Intervention
-					</Link>
-					<Link
-						href="/adminInventory"
-						className='text-muted-foreground transition-colors hover:text-foreground'
-					>
-						Inventaires
-					</Link>
-					<Link
-						href="/adminChatbot"
-						className='text-muted-foreground transition-colors hover:text-foreground'
-					>
-						ChatBot
-					</Link>
-					{/* <Button
-						onClick={() => router.push('#')}
-						className='text-muted-foreground transition-colors hover:text-foreground'
-					>
-						Analytics
-					</Button> */}
-					</div>
-				</nav>
-				<Sheet>
-					<SheetTrigger asChild>
-					<Button
-							variant='outline'
-							size='icon'
-							className='shrink-0 md:hidden'
-						>
-							<Menu className='h-5 w-5' />
-							<span className='sr-only'>Toggle navigation menu</span>
-						</Button>
-					</SheetTrigger>
-					<SheetContent side='left'>
-						<nav className='grid gap-6 text-lg font-medium'>
-							<Link	
-								href="/home"
-								className='flex items-center gap-2 text-lg font-semibold md:text-base'
-							>
-								<Image
-									src={`/YooriLink.png`}
-									className="h-7 w-7 flex-shrink-0 rounded-full"
-									width={50}
-									height={50}
-									alt="Logo Yoori Link"
-								/> 
-								<span className='sr-only'>Yoori SI</span>
-							</Link>
-							<Link	
-								href="/adminDashboard"
-								className='text-foreground transition-colors hover:text-foreground'
-							>
-								Dashboard
-							</Link>
-							<Link
-								href="/adminRequests"
-								className='text-muted-foreground transition-colors hover:text-foreground w-full'
-							>
-								Intervention
-							</Link>
-							<Link
-								href="/adminInventory"
-								className='text-muted-foreground transition-colors hover:text-foreground'
-							>
-								Inventaires
-							</Link>
-							<Link
-								href="/adminChatbot"
-								className='text-muted-foreground transition-colors hover:text-foreground'
-							>
-								ChatBot
-							</Link>
-						</nav>
-					</SheetContent>
-				</Sheet>
-				<div className='flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4'>
-					<form className='ml-auto flex-1 sm:flex-initial'>
-						<div className='relative'>
-							Salut🖐️, {userData?.lastName} {userData?.firstName}
-						</div>
-					</form>
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant='secondary' size='icon' className='rounded-full'>	
-                  <Image
-                    src={`https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${userData?.firstName}`}
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    width={50}
-                    height={50}
-                    alt="Avatar"
-                  />             
-								<span className='sr-only'>Toggle user menu</span>
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align='end'>
-							<DropdownMenuLabel asChild>
-								<Link href="/account">Mon Compte</Link>
-							</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem>Paramètres</DropdownMenuItem>
-							<DropdownMenuItem>Support</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem onClick={handleLogout}>
-								Se déconnecter
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-					{/* <Button onClick={handleThemeToggle}>
-						{darkMode ? "Mode Clair" : "Mode Sombre"}
-					</Button> */}
-
-					<div className="flex items-center space-x-2">
-						<Switch id="dark-mode" onClick={handleThemeToggle} />
-						<Label htmlFor="dark-mode">{darkMode ? "Mode Clair" : "Mode Sombre"}</Label>
-					</div>
-				</div>
-			</header>
+  <Link
+    href="/home"
+    className='flex items-center gap-2 text-lg font-semibold md:text-base'
+  >
+    <Image
+      src={`/YooriLink.png`}
+      className="w-24 h-auto"
+      alt="Logo Yoori Link"
+      loading="lazy"
+    />
+    <span className='sr-only'>Yoori SI</span>
+  </Link>
+  <nav className='hidden md:flex items-center justify-between gap-6 text-lg font-medium md:gap-5 md:text-sm lg:gap-6'>
+    <Link
+      href="/adminDashboard"
+      className='text-foreground transition-colors hover:text-foreground'
+    >
+      Dashboard
+    </Link>
+    <Link
+      href="/adminRequests"
+      className='text-muted-foreground transition-colors hover:text-foreground w-full'
+    >
+      Intervention
+    </Link>
+    <Link
+      href="/adminInventory"
+      className='text-muted-foreground transition-colors hover:text-foreground'
+    >
+      Inventaires
+    </Link>
+    <Link
+      href="/adminChatbot"
+      className='text-muted-foreground transition-colors hover:text-foreground'
+    >
+      ChatBot
+    </Link>
+  </nav>
+  <Sheet>
+    <SheetTrigger asChild>
+      <Button
+        variant='outline'
+        size='icon'
+        className='shrink-0 md:hidden'
+      >
+        <Menu className='h-5 w-5' />
+        <span className='sr-only'>Toggle navigation menu</span>
+      </Button>
+    </SheetTrigger>
+    <SheetContent side='left'>
+      <nav className='grid gap-6 text-lg font-medium'>
+        <Link
+          href="/home"
+          className='flex items-center gap-2 text-lg font-semibold md:text-base'
+        >
+          <Image
+            src={`/YooriLink.png`}
+            className="h-7 w-7 flex-shrink-0 rounded-full"
+            width={50}
+            height={50}
+            alt="Logo Yoori Link"
+          />
+          <span className='sr-only'>Yoori SI</span>
+        </Link>
+        <Link
+          href="/adminDashboard"
+          className='text-foreground transition-colors hover:text-foreground'
+        >
+          Dashboard
+        </Link>
+        <Link
+          href="/adminRequests"
+          className='text-muted-foreground transition-colors hover:text-foreground w-full'
+        >
+          Intervention
+        </Link>
+        <Link
+          href="/adminInventory"
+          className='text-muted-foreground transition-colors hover:text-foreground'
+        >
+          Inventaires
+        </Link>
+        <Link
+          href="/adminChatbot"
+          className='text-muted-foreground transition-colors hover:text-foreground'
+        >
+          ChatBot
+        </Link>
+      </nav>
+    </SheetContent>
+  </Sheet>
+  <div className='flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4'>
+    <form className='ml-auto flex-1 sm:flex-initial'>
+      <div className='relative'>
+        Salut🖐️, {userData?.lastName} {userData?.firstName}
+      </div>
+    </form>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='secondary' size='icon' className='rounded-full'>
+          <Image
+            src={`https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${userData?.firstName}`}
+            className="h-7 w-7 flex-shrink-0 rounded-full"
+            width={50}
+            height={50}
+            alt="Avatar"
+          />
+          <span className='sr-only'>Toggle user menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end'>
+        <DropdownMenuLabel asChild>
+          <Link href="/account">Mon Compte</Link>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Paramètres</DropdownMenuItem>
+        <DropdownMenuItem>Support</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleLogout}>
+          Se déconnecter
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+    <div className="flex items-center space-x-2">
+      <Switch id="dark-mode" onClick={handleThemeToggle} />
+      <Label htmlFor="dark-mode">{darkMode ? "Mode Clair" : "Mode Sombre"}</Label>
+    </div>
+  </div>
+</header>
 			{children}
 		</>
 	);

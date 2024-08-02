@@ -424,7 +424,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													className='h-7 gap-1 text-sm'
 												>
 													<File className='h-3.5 w-3.5' />
-													<PDFDownloadLink document={<MyDocument formData={formData} />} fileName={`request_${id}.pdf`}>
+													<PDFDownloadLink document={<MyDocument formData={formData} params={params} />} fileName={`request_${id}.pdf`}>
 														{({ blob, url, loading, error }) =>
 															loading ? 'Chargement du document...' : 'Exporter'
 														}

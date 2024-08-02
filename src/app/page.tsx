@@ -15,37 +15,37 @@ export default function HeroScrollDemo() {
 
   return (
     <div>
-       <Navbar className="top-2" />
-        <div className="flex flex-col overflow-hidden">
-        <Image
-          src={`/yoori-si-large.png`}
-          className="w-20 h-auto my-12"
-          alt="Logo Yoori Link"
-          loading="lazy"
-        />
-          <ContainerScroll
-            titleComponent={
-              <>
-                <h1 className="text-4xl font-semibold text-black dark:text-white">
-                  Bienvenue !✌️ <br />
-                  <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
-                    Ravie de vous voire.
-                  </span>
-                </h1>
-              </>
-            }
-          >
-            <Image
-              src={`/tabscreen.webp`}
-              alt="hero"
-              height={720}
-              width={1400}
-              className="mx-auto rounded-2xl object-cover h-full object-left-top"
-              draggable={false}
-            />
-          </ContainerScroll>
-        </div>
-    </div>
+  <Navbar className="top-2" />
+  <div className="flex flex-col items-center overflow-hidden">
+    <Image
+      src={`/yoori-si-large.png`}
+      className="w-20 h-auto my-12"
+      alt="Logo Yoori Link"
+      loading="lazy"
+    />
+    <ContainerScroll
+      titleComponent={
+        <>
+          <h1 className="text-4xl font-semibold text-black dark:text-white text-center">
+            Bienvenue !✌️ <br />
+            <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
+              Ravie de vous voir.
+            </span>
+          </h1>
+        </>
+      }
+    >
+      <Image
+        src={`/tabscreen.webp`}
+        alt="hero"
+        height={720}
+        width={1400}
+        className="mx-auto rounded-2xl object-cover h-full object-left-top"
+        draggable={false}
+      />
+    </ContainerScroll>
+  </div>
+</div>
   );
 }
 

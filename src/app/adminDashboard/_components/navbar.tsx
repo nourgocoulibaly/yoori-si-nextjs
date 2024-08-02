@@ -113,13 +113,13 @@ export default function AdminNavbar({
   >
     <Image
       src={`/YooriLink.png`}
-      className="w-24 h-auto ml-20 mr-35"
+      className="w-24 h-auto mr-35"
       alt="Logo Yoori Link"
       loading="lazy"
     />
     <span className='sr-only'>Yoori SI</span>
   </Link>
-  <nav className='hidden md:flex items-center justify-between gap-6 text-lg font-medium md:gap-5 md:text-sm lg:gap-6'>
+  <nav className='hidden md:flex items-center justify-between gap-6 text-lg font-medium md:gap-5 md:text-sm lg:gap-6 ml-10'>
     <Link
       href="/adminDashboard"
       className='text-foreground transition-colors hover:text-foreground'

@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyDocument = ({ formData }: { formData: any }) => (
+const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
   <Document>
     <Page size="A4" style={styles.page}>
 		<View style={styles.header}>  
@@ -163,7 +163,8 @@ const MyDocument = ({ formData }: { formData: any }) => (
       </View>
 
 		<View style={styles.section}>
-			<Text style={styles.title}>Details Demandeur</Text>
+			<Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
+      <Text style={styles.text}>Id de la fiche : {params.id}</Text> 
         <View style={styles.table}>
           <View style={styles.tableRow}>
             <View style={styles.tableColFull}>

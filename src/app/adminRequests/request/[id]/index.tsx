@@ -76,7 +76,7 @@ const options = [
 const styles = StyleSheet.create({
   page: { padding: 30 },
   section: { margin: 10, padding: 10, flexGrow: 1 },
-	text: { fontSize: 12, marginBottom: 10, textAlign: 'center' },
+	text: { fontSize: 10, marginBottom: 20, textAlign: 'center', color: '#4daa5c' },
   label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50 },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',        
     fontWeight: 900,
     marginBottom: 10,
-    color: '#1F2D5C', 
+    color: '#d9703c', 
     border: '1px solid #ccc',
     padding: 10
   },

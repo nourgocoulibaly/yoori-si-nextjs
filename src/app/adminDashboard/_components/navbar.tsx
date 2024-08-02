@@ -112,7 +112,13 @@ export default function AdminNavbar({
 						href="/home"
 						className='flex items-center gap-2 text-lg font-semibold md:text-base'
 					>
-						<Package2 className='h-6 w-6' />
+						<Image
+							src={`/YooriLink.png`}
+							className="h-7 w-7 flex-shrink-0 rounded-full"
+							width={50}
+							height={50}
+							alt="Logo Yoori Link"
+						/> 
 						<span className='sr-only'>Yoori SI</span>
 					</Link>
 					<Link	
@@ -163,7 +169,13 @@ export default function AdminNavbar({
 								href="/home"
 								className='flex items-center gap-2 text-lg font-semibold md:text-base'
 							>
-								<Package2 className='h-6 w-6' />
+								<Image
+									src={`/YooriLink.png`}
+									className="h-7 w-7 flex-shrink-0 rounded-full"
+									width={50}
+									height={50}
+									alt="Logo Yoori Link"
+								/> 
 								<span className='sr-only'>Yoori SI</span>
 							</Link>
 							<Link	

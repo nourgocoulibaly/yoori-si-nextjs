@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 
@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Package2 } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import { User, getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import Link from "next/link";
@@ -112,8 +112,8 @@ export default function UserNavbar({
     className='flex items-center gap-2 text-lg font-semibold md:text-base'
   >
     <Image
-      src={`/YooriLink.png`}
-      className="w-32 h-auto ml-20 mr-35"
+      src={`/YooriLinkNavbar.png`}
+      className="w-56 h-auto mr-35"
       alt="Logo Yoori Link"
       loading="lazy"
     />

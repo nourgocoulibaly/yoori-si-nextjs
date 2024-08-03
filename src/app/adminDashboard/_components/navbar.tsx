@@ -112,8 +112,8 @@ export default function AdminNavbar({
     className='flex items-center gap-2 text-lg font-semibold md:text-base'
   >
     <Image
-      src={`/YooriLinkLarge.png`}
-      className="w-64 h-auto mr-35"
+      src={`/YooriLinkNavbar.png`}
+      className="w-56 h-auto mr-35"
       alt="Logo Yoori Link"
       loading="lazy"
     />

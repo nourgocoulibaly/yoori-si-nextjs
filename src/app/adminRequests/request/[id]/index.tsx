@@ -1,7 +1,7 @@
 "use client";
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
-import { format, isValid } from 'date-fns';
+import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 import Link from "next/link";
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 	headerImage: {
     width: 100,
     height: 100,
-		marginRight: 75,
+		marginRight: 65,
   },
 
   headerTextContainer: {
@@ -172,7 +172,6 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
     <Page size="A4" style={styles.page}>
 		<View style={styles.header}>  
         	<Image style={styles.headerImage} src="/mclu.png" />              
-				{/* <View style={styles.headerTextContainer}>  */}
 						<View style={{ alignItems: 'center' }}>  {/* Ajout de l'alignement centré */}
 							<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
 							<Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
@@ -181,7 +180,6 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 							<Text style={styles.headerText}>********************************</Text>
 							<Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
 						</View>
-					{/* </View> */}
     	</View>
 
 		<View style={styles.section}>
@@ -634,23 +632,10 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 															<CardTitle>
 																Date d&apos;Intervention {" "}
 																<Badge variant='outline' className='ml-auto sm:ml-0'>
-																	{(() => {
-																			try {
-																				const parsedDate = new Date(formData.interventionDate);
-																				if (isValid(parsedDate)) {
-																					return parsedDate.toLocaleDateString('fr-FR', {
-																						day: '2-digit',
-																						month: '2-digit',
-																						year: 'numeric'
-																					});
-																				} else {
-																					return 'Date non définie';
-																				}
-																			} catch (error) {
-																				console.error('Erreur de parsing de la date:', error);
-																				return 'Date non définie';
-																			}
-																	})()}
+																	{formData.interventionDate &&
+																							new Date(parseInt(
+																								formData.interventionDate) * 1000
+																							).toLocaleString()}											
 																</Badge>
 															</CardTitle>
 															<Popover>

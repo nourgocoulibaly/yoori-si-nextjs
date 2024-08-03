@@ -2,7 +2,6 @@
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -374,23 +373,33 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		}
 	};
 
-	const updateDateInFirestore = async (selectedDate: Date) => {
-		try {
-			const formattedDate = format(selectedDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", { locale: fr });
-			const timestamp = selectedDate.getTime(); // Convertir en timestamp
-			const docRef = doc(db, 'userRequests', id as string);
-			await updateDoc(docRef, { interventionDate: timestamp });
-			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
+	// const updateDateInFirestore = async (selectedDate: Date) => {
+	// 	try {
+	// 		const formattedDate = format(selectedDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", { locale: fr });
+	// 		const timestamp = selectedDate.getTime(); // Convertir en timestamp
+	// 		const docRef = doc(db, 'userRequests', id as string);
+	// 		await updateDoc(docRef, { interventionDate: timestamp });
+	// 		console.log('Date d\'intervention mise à jour avec succès dans Firestore');
 	
-			// Mettre à jour l'état avec la nouvelle date
-			setFormData(prevFormData => ({
-				...prevFormData,
-				interventionDate: formattedDate
-			}));
-		} catch (error) {
-			console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
-		}
-	};
+	// 		// Mettre à jour l'état avec la nouvelle date
+	// 		setFormData(prevFormData => ({
+	// 			...prevFormData,
+	// 			interventionDate: formattedDate
+	// 		}));
+	// 	} catch (error) {
+	// 		console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
+	// 	}
+	// };
+
+	const updateDateInFirestore = async (selectedDate: Date) => {
+    try {
+        const docRef = doc(db, 'userRequests', id as string);
+        await updateDoc(docRef, { interventionDate: selectedDate });
+        console.log('Date d\'intervention mise à jour avec succès dans Firestore');
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
+    }
+};
 
 	if (!request) {
 		return <div>Chargement...</div>;
@@ -648,7 +657,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																			)}
 																	>
 																			<CalendarIcon className="mr-2 h-4 w-4" />
-																			{date ? format(date, "dd/MM/yyyy") : <span>Sélectionner une date</span>}
+																			{date ? format(date, "dd/MM/yyyy") : <span>Date de l&apos;Intervention</span>}
 																	</Button>
 															</PopoverTrigger>
 																<PopoverContent className="w-auto p-0" align="start">

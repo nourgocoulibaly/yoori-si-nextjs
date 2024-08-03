@@ -1,14 +1,25 @@
 "use client"
 
+import { Progress } from "@/components/ui/progress";
+import * as React from "react";
+import { useEffect, useState } from "react";
+
 import { useAuth } from '@/contexts/useAuth'; // Assurez-vous d'avoir ce hook
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import AdminNavBar from "../../adminDashboard/_components/navbar"; // Change the import path
 import RequestForm from "./_components/requestForm";
 
 export default function RequestFormPage() {
     const { user, loading } = useAuth();
     const router = useRouter();
+    const [progress, setProgress] = useState(13) // Modifiez cette ligne
+
+
+
+    React.useEffect(() => {
+        const timer = setTimeout(() => setProgress(66), 500)
+        return () => clearTimeout(timer)
+      }, [])
 
     useEffect(() => {
         if (!loading) {
@@ -26,7 +37,7 @@ export default function RequestFormPage() {
     }, []);
 
     if (loading) {
-        return <div>Chargement...</div>;
+        return <div><Progress value={progress} className="w-[100%]" /></div>;
     }
 
     return (

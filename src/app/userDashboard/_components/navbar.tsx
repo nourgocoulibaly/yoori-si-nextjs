@@ -98,7 +98,7 @@ export default function UserNavbar({
 		try {
 			await signOut(auth);
 			console.log("Déconnexion réussie");
-			router.push("/");
+			router.push("/userAuth");
 		} catch (error) {
 			console.error("Erreur lors de la déconnexion:", error);
 		}

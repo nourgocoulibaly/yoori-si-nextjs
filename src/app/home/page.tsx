@@ -1,9 +1,14 @@
 "use client"
+
+import * as React from "react";
+import { useEffect, useState } from "react";
+
+import { Progress } from "@/components/ui/progress";
+
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { BellIcon, LayoutDashboard, Share2Icon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 import AnimatedBeamMultipleOutputDemo from "@/components/example/animated-beam-multiple-outputs";
 import AnimatedListDemo from "@/components/example/animated-list-demo";
@@ -114,6 +119,13 @@ const features = [
 export default function BentoDemo() {
     const { user, loading } = useAuth();
     const router = useRouter();
+    const [progress, setProgress] = useState(13) // Modifiez cette ligne
+
+
+    React.useEffect(() => {
+      const timer = setTimeout(() => setProgress(66), 500)
+      return () => clearTimeout(timer)
+    }, [])
 
     useEffect(() => {
         if (!loading) {
@@ -131,7 +143,7 @@ export default function BentoDemo() {
     }, []);
 
     if (loading) {
-        return <div>Chargement...</div>;
+        return <div><Progress value={progress} className="w-[60%]" /></div>;
     }
 
     return (

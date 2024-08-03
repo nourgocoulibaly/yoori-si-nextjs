@@ -98,7 +98,7 @@ export default function AdminNavbar({
 		try {
 			await signOut(auth);
 			console.log("Déconnexion réussie");
-			router.push("/");
+			router.push("/adminAuth");
 		} catch (error) {
 			console.error("Erreur lors de la déconnexion:", error);
 		}

@@ -629,28 +629,26 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													</CardHeader>
 													<CardContent>
 														<div className='grid gap-3'>
-															<CardTitle>
+														<CardTitle>
 																Date d&apos;Intervention {" "}
 																<Badge variant='outline' className='ml-auto sm:ml-0'>
 																	{formData.interventionDate &&
-																							new Date(parseInt(
-																								formData.interventionDate) * 1000
-																							).toLocaleString()}											
+																		new Date(formData.interventionDate).toLocaleString()}											
 																</Badge>
 															</CardTitle>
 															<Popover>
-															<PopoverTrigger asChild>
+																<PopoverTrigger asChild>
 																	<Button
-																			variant={"outline"}
-																			className={cn(
-																					"w-[240px] justify-start text-left font-normal",
-																					!date && "text-muted-foreground"
-																			)}
+																		variant={"outline"}
+																		className={cn(
+																			"w-[240px] justify-start text-left font-normal",
+																			!date && "text-muted-foreground"
+																		)}
 																	>
-																			<CalendarIcon className="mr-2 h-4 w-4" />
-																			{date ? format(date, "dd/MM/yyyy") : <span>Date de l&apos;Intervention</span>}
+																		<CalendarIcon className="mr-2 h-4 w-4" />
+																		{date ? format(date, "dd/MM/yyyy") : <span>Date de l&apos;Intervention</span>}
 																	</Button>
-															</PopoverTrigger>
+																</PopoverTrigger>
 																<PopoverContent className="w-auto p-0" align="start">
 																	<Calendar
 																		mode="single"
@@ -659,6 +657,10 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																			setDate(selectedDate);
 																			if (selectedDate) {
 																				updateDateInFirestore(selectedDate);
+																				setFormData((prevFormData) => ({
+																					...prevFormData,
+																					interventionDate: selectedDate.getTime().toString() // Convertir en chaîne de caractères
+																				}));
 																			}
 																		}}
 																		initialFocus

@@ -394,7 +394,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	const updateDateInFirestore = async (selectedDate: Date) => {
     try {
         const docRef = doc(db, 'userRequests', id as string);
-        await updateDoc(docRef, { interventionDate: selectedDate });
+        await updateDoc(docRef, { interventionDate: selectedDate.getTime() }); // Convertir en timestamp
         console.log('Date d\'intervention mise à jour avec succès dans Firestore');
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
@@ -638,42 +638,40 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													</CardHeader>
 													<CardContent>
 														<div className='grid gap-3'>
-															<CardTitle>
-																Date d&apos;Intervention {" "}
-																<Badge variant='outline' className='ml-auto sm:ml-0'>
-																	{formData.interventionDate &&
-																							new Date(parseInt(
-																								formData.interventionDate) * 1000
-																							).toLocaleString()}											
-																</Badge>
-															</CardTitle>
-															<Popover>
+														<CardTitle>
+															Date d&apos;Intervention {" "}
+															<Badge variant='outline' className='ml-auto sm:ml-0'>
+																{formData.interventionDate &&
+																	new Date(formData.interventionDate).toLocaleString()}											
+															</Badge>
+														</CardTitle>
+														<Popover>
 															<PopoverTrigger asChild>
-																	<Button
-																			variant={"outline"}
-																			className={cn(
-																					"w-[240px] justify-start text-left font-normal",
-																					!date && "text-muted-foreground"
-																			)}
-																	>
-																			<CalendarIcon className="mr-2 h-4 w-4" />
-																			{date ? format(date, "dd/MM/yyyy") : <span>Date de l&apos;Intervention</span>}
-																	</Button>
+																<Button
+																	variant={"outline"}
+																	className={cn(
+																		"w-[240px] justify-start text-left font-normal",
+																		!date && "text-muted-foreground"
+																	)}
+																>
+																	<CalendarIcon className="mr-2 h-4 w-4" />
+																	{date ? format(date, "dd/MM/yyyy") : <span>Date de l&apos;Intervention</span>}
+																</Button>
 															</PopoverTrigger>
-																<PopoverContent className="w-auto p-0" align="start">
-																	<Calendar
-																		mode="single"
-																		selected={date}
-																		onSelect={(selectedDate) => {
-																			setDate(selectedDate);
-																			if (selectedDate) {
-																				updateDateInFirestore(selectedDate);
-																			}
-																		}}
-																		initialFocus
-																	/>
-																</PopoverContent>
-															</Popover>
+															<PopoverContent className="w-auto p-0" align="start">
+																<Calendar
+																	mode="single"
+																	selected={date}
+																	onSelect={(selectedDate) => {
+																		setDate(selectedDate);
+																		if (selectedDate) {
+																			updateDateInFirestore(selectedDate);
+																		}
+																	}}
+																	initialFocus
+																/>
+															</PopoverContent>
+														</Popover>
 
 															<Label htmlFor='content'>
 																Intervention

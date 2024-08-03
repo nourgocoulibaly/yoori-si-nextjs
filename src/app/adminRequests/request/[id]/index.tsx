@@ -4,7 +4,6 @@ import AdminNavBar from "@/app/adminDashboard/_components/navbar";
 import { format, isValid } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import * as React from "react";
@@ -34,8 +33,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 import {
 	Select,
 	SelectContent,
@@ -43,6 +44,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+
 import { Textarea } from "@/components/ui/textarea";
 
 import {
@@ -76,7 +78,7 @@ const options = [
 const styles = StyleSheet.create({
   page: { padding: 30 },
   section: { margin: 10, padding: 10, flexGrow: 1 },
-	text: { fontSize: 12, marginBottom: 10, textAlign: 'center' },
+	text: { fontSize: 10, marginBottom: 20, textAlign: 'center', color: '#4daa5c' },
   label: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
   input: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc' },
   textarea: { fontSize: 12, marginBottom: 10, padding: 5, border: '1px solid #ccc', minHeight: 50 },
@@ -84,7 +86,6 @@ const styles = StyleSheet.create({
 
 	header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 5,
   },
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',        
     fontWeight: 900,
     marginBottom: 10,
-    color: '#1F2D5C', 
+    color: '#d9703c', 
     border: '1px solid #ccc',
     padding: 10
   },
@@ -102,16 +103,20 @@ const styles = StyleSheet.create({
 	headerImage: {
     width: 100,
     height: 100,
+		marginRight: 75,
   },
+
   headerTextContainer: {
     display: 'flex',
     justifyContent: 'center',
     textAlign: 'center',
   },
+
   headerText: {
     fontSize: 10,
     textAlign: 'center',
   },
+
 	table: {
     display: 'flex',
     width: 'auto',
@@ -120,9 +125,11 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     marginBottom: 10,
   },
+
   tableRow: {
     flexDirection: 'row',
   },
+
   tableColHeader: {
     width: '20%',
     borderStyle: 'solid',
@@ -132,6 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f3f3',
 		fontWeight: 900,
   },
+
   tableCol: {
     width: '80%',
     borderStyle: 'solid',
@@ -139,6 +147,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     padding: 5,
   },
+
   tableColFull: {
     width: '100%',
     borderStyle: 'solid',
@@ -147,10 +156,12 @@ const styles = StyleSheet.create({
     padding: 5,
 		textAlign: 'center',
   },
+
   tableCellHeader: {
     fontSize: 12,
     fontWeight: 'bold',
   },
+
   tableCell: {
     fontSize: 12,
   },
@@ -160,7 +171,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
   <Document>
     <Page size="A4" style={styles.page}>
 		<View style={styles.header}>  
-        <Image style={styles.headerImage} src="/mclu.png" />              
+        	<Image style={styles.headerImage} src="/mclu.png" />              
 				{/* <View style={styles.headerTextContainer}>  */}
 						<View style={{ alignItems: 'center' }}>  {/* Ajout de l'alignement centré */}
 							<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
@@ -169,9 +180,9 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 							<Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
 							<Text style={styles.headerText}>********************************</Text>
 							<Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
-							</View>
+						</View>
 					{/* </View> */}
-    </View>
+    	</View>
 
 		<View style={styles.section}>
 			<Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
@@ -218,14 +229,12 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}>{formData.requestDescription}</Text>
             </View> 
-          </View>
-         
+          </View>      
           <View style={styles.tableRow}>
             <View style={styles.tableColFull}>
               <Text style={styles.tableCell}>Intervenants: {formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
             </View>
           </View>
-
 					<View style={styles.tableRow}>
             <View style={styles.tableCol}>
               <Text style={styles.tableCellHeader}>Statut de l&apos;Intervention:</Text>
@@ -385,26 +394,6 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		}
 	};
 
-
-	// const handleGeneratePdf = async () => {
-	// 	try {
-	// 		const response = await fetch(`/adminRequests/request/${id}/api/generatePdf`);
-	// 		const blob = await response.blob();
-	// 		const url = window.URL.createObjectURL(blob);
-	// 		const a = document.createElement('a');
-	// 		a.href = url;
-	// 		a.download = `request_${id}.pdf`;
-	// 		document.body.appendChild(a);
-	// 		a.click();
-	// 		a.remove();
-
-	// 		console.log('Redirection vers', response.url);
-	// 		console.log('Redirection vers', url);
-	// 	} catch (error) {
-	// 		console.error("Erreur lors du téléchargement du PDF :", error);
-	// 	}
-	// };
-
 	if (!request) {
 		return <div>Chargement...</div>;
 	}
@@ -440,8 +429,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 															loading ? 'Chargement du document...' : 'Exporter'
 														}
 													</PDFDownloadLink>
-												</Button>
-							
+												</Button>						
                     </div>
 
 									<div className='mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4'>
@@ -701,8 +689,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																ref={requestDescriptionRef}
 																defaultValue={formData.requestDescription}
 																className='min-h-32'
-															/>
-														
+															/>													
 
 															<CardTitle>
 																Intervenants {" "}
@@ -720,7 +707,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																loop={false} 
 																className="w-[240px] justify-start text-left font-normal"
 															>
-																																<MultiSelectorTrigger ref={requestAdminSolvedRef as LegacyRef<HTMLDivElement>}>
+																<MultiSelectorTrigger ref={requestAdminSolvedRef as LegacyRef<HTMLDivElement>}>
 																	<MultiSelectorInput placeholder="Sélectionner les intervenants" />
 																</MultiSelectorTrigger>
 																<MultiSelectorContent>
@@ -751,7 +738,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																	<AlertDialogHeader>
 																		<AlertDialogTitle>✅ Demande envoyée avec succès !</AlertDialogTitle>
 																		<AlertDialogDescription>
-																		Cette action ne peut pas être annulée. Cela modifiera directement vos données du serveur.
+																			Cette action ne peut pas être annulée. Cela modifiera directement vos données du serveur.
 																		</AlertDialogDescription>
 																	</AlertDialogHeader>
 																	<AlertDialogFooter>
@@ -770,20 +757,6 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 							</div>
 						</div>
 					</form>
-					<CardContent>
-						<div></div>
-						{/* <Button size='lg' onClick={handleGeneratePdf}>
-							{loading ? (
-								<Button disabled>
-									<ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-									Patienter...
-								</Button>
-							) : (
-								"Telecharger"
-							)}
-						</Button> */}
-				
-					</CardContent>
 			</AdminNavBar>
 		</>
 	);

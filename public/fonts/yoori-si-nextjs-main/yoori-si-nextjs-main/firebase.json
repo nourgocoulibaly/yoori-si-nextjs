@@ -1,0 +1,64 @@
+{
+	"hosting": {
+		"public": "out",
+		"rewrites": [
+			{
+				"source": "/adminInventory/**",
+				"destination": "/adminInventory/index.html"
+			},
+			{
+				"source": "/adminRequests/**",
+				"destination": "/adminRequests/index.html"
+			},
+			{
+				"source": "**",
+				"destination": "/account.html"
+			},
+			{
+				"source": "**",
+				"destination": "/adminAuth.html"
+			},
+			{
+				"source": "**",
+				"destination": "/adminDashboard.html"
+			},
+			{
+				"source": "**",
+				"destination": "/adminInventory.html"
+			},
+			{
+				"source": "**",
+				"destination": "/adminRequests.html"
+			},
+			{
+				"source": "**",
+				"destination": "/formRequest.html"
+			},
+			{
+				"source": "**",
+				"destination": "/userAuth.html"
+			},
+			{
+				"source": "**",
+				"destination": "/userDashboard.html"
+			},
+			{
+				"source": "**",
+				"destination": "/index.html"
+			}
+		],
+		"error_page": "404.html",
+		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+		"headers": [
+			{
+				"source": "**",
+				"headers": [
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					}
+				]
+			}
+		]
+	}
+}

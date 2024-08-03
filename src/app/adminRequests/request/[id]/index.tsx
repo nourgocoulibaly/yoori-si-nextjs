@@ -630,12 +630,12 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													<CardContent>
 														<div className='grid gap-3'>
 														<CardTitle>
-																Date d&apos;Intervention {" "}
-																<Badge variant='outline' className='ml-auto sm:ml-0'>
-																	{formData.interventionDate &&
-																		new Date(formData.interventionDate).toLocaleString()}											
-																</Badge>
-															</CardTitle>
+															Date d&apos;Intervention {" "}
+															<Badge variant='outline' className='ml-auto sm:ml-0'>
+																{formData.interventionDate &&
+																	new Date(parseInt(formData.interventionDate)).toLocaleString()}											
+															</Badge>
+														</CardTitle>
 															<Popover>
 																<PopoverTrigger asChild>
 																	<Button

@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuth } from '@/contexts/useAuth'; // Assurez-vous d'avoir ce hook
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import AdminNavBar from "../../adminDashboard/_components/navbar"; // Change the import path
 import RequestForm from "./_components/requestForm";

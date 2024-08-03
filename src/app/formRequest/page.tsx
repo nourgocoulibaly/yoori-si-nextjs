@@ -1,15 +1,35 @@
+"use client"
+
 import UserNavBar from "@/app/userDashboard/_components/navbar";
 import { AuthProvider } from "@/contexts/AuthContext"; // Assurez-vous que le chemin d'importation est correct
+import { useAuth } from '@/contexts/useAuth'; // Assurez-vous d'avoir ce hook
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import UserFormBeta from "./_components/userFormBeta";
 
-function page() {
-	return (
-		<AuthProvider>
-			<UserNavBar>
-				<UserFormBeta />
-			</UserNavBar>
-		</AuthProvider>
-	);
+function Page() { // Renommez la fonction en commençant par une majuscule
+    const { user, loading } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!loading) {
+            if (!user || user.role !== 'user') {
+                router.replace('/404');
+            }
+        }
+    }, [user, loading, router]);
+
+    if (loading) {
+        return <div>Chargement...</div>;
+    }
+
+    return (
+        <AuthProvider>
+            <UserNavBar>
+                <UserFormBeta />
+            </UserNavBar>
+        </AuthProvider>
+    );
 }
 
-export default page;
+export default Page; // Assurez-vous que l'exportation correspond au nouveau nom

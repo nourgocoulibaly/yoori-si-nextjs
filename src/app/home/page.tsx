@@ -1,12 +1,16 @@
+"use client"
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { BellIcon, LayoutDashboard, Share2Icon } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import AnimatedBeamMultipleOutputDemo from "@/components/example/animated-beam-multiple-outputs";
 import AnimatedListDemo from "@/components/example/animated-list-demo";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import Marquee from "@/components/magicui/marquee";
 import { Calendar } from "@/components/ui/calendar";
+import { useAuth } from '@/contexts/useAuth'; // Assurez-vous d'avoir ce hook
 import { cn } from "@/lib/utils";
 
 const files = [
@@ -108,23 +112,43 @@ const features = [
 ];
 
 export default function BentoDemo() {
-  return (
-    // <div className="flex items-center justify-center min-h-screen dark:bg-gray-900 dark">
+    const { user, loading } = useAuth();
+    const router = useRouter();
 
-    <div className="flex flex-col items-center justify-center min-h-screen dark:bg-gray-900">
-  <Image
-    src={`/YooriLinkLarge.png`}
-    className="w-60 h-auto my-8"
-    alt="Logo Yoori Link"
-    loading="lazy"
-  />
-  <div className="w-full max-w-4xl">
-    <BentoGrid>
-      {features.map((feature, idx) => (
-        <BentoCard key={idx} {...feature} />
-      ))}
-    </BentoGrid>
-  </div>
-</div>
-  );
+    useEffect(() => {
+        if (!loading) {
+            if (!user || user.role !== 'admin') {
+                router.replace('/404');
+            }
+        }
+    }, [user, loading, router]);
+
+    useEffect(() => {
+        // Code qui accède à `document`
+        if (typeof document !== 'undefined') {
+            console.log(document.title);
+        }
+    }, []);
+
+    if (loading) {
+        return <div>Chargement...</div>;
+    }
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen dark:bg-gray-900">
+            <Image
+                src={`/YooriLinkLarge.png`}
+                className="w-60 h-auto my-8"
+                alt="Logo Yoori Link"
+                loading="lazy"
+            />
+            <div className="w-full max-w-4xl">
+                <BentoGrid>
+                    {features.map((feature, idx) => (
+                        <BentoCard key={idx} {...feature} />
+                    ))}
+                </BentoGrid>
+            </div>
+        </div>
+    );
 }

@@ -37,7 +37,7 @@ const Account = () => {
 			if (user) {
 				console.log("Utilisateur connecté:", user);
 				setUser(user);
-				const userDocRef = doc(db, "users", user.uid);
+				const userDocRef = doc(db, "admins", user.uid); // Changement de "users" à "admins"
 				const userDoc = await getDoc(userDocRef);
 				if (userDoc.exists()) {
 					const data = userDoc.data() as {

@@ -4,9 +4,12 @@
 // import UserNavBar from "@/app/userDashboard/_components/navbar";
 import { db } from "@/lib/firebaseConfig";
 import { User, getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import Progress from "@/tools/progress";
+
 
 const Account = () => {
 	const [user, setUser] = useState<User | null>(null);
@@ -20,7 +23,38 @@ const Account = () => {
 	const router = useRouter();
 	const auth = getAuth();
 
-	console.log("Donnee d'Utilisateur", userData);
+	const [newEmail, setNewEmail] = useState("");
+	const [newLastName, setNewLastName] = useState("");
+	const [newFirstName, setNewFirstName] = useState("");
+	const [newPseudo, setNewPseudo] = useState("");
+	const [newDirection, setNewDirection] = useState("");
+	const [newLocation, setNewLocation] = useState("");
+
+	const handleUpdate = async () => {
+		if (user) {
+			const userDocRef = doc(db, "users", user.uid);
+			try {
+				await updateDoc(userDocRef, {
+					email: newEmail || userData?.email,
+					lastName: newLastName || userData?.lastName,
+					firstName: newFirstName || userData?.firstName,
+					pseudo: newPseudo,
+					direction: newDirection,
+					location: newLocation,
+				});
+				console.log("Informations mises à jour avec succès");
+				// Mettre à jour l'état local avec les nouvelles données
+				setUserData({
+					uid: user.uid,
+					email: newEmail || userData?.email,
+					lastName: newLastName || userData?.lastName,
+					firstName: newFirstName || userData?.firstName,
+				});
+			} catch (error) {
+				console.error("Erreur lors de la mise à jour des informations:", error);
+			}
+		}
+	};
 
 	const handleLogout = async () => {
 		try {
@@ -68,7 +102,7 @@ const Account = () => {
 	}, [auth, router]); // Ajout de router dans les dépendances
 
 	if (loading) {
-		return <p>Chargement...</p>;
+		return <div><Progress /></div>;
 	}
 
 	if (!userData) {
@@ -95,6 +129,45 @@ const Account = () => {
 							</p>
 							<button onClick={handleLogout}>Se déconnecter</button>
 						</div>
+					</div>
+					<div className='flex flex-col gap-4'>
+						<input
+							type='text'
+							placeholder='Nouveau prénom'
+							value={newFirstName}
+							onChange={(e) => setNewFirstName(e.target.value)}
+						/>
+						<input
+							type='text'
+							placeholder='Nouveau nom'
+							value={newLastName}
+							onChange={(e) => setNewLastName(e.target.value)}
+						/>
+						<input
+							type='email'
+							placeholder='Nouvel email'
+							value={newEmail}
+							onChange={(e) => setNewEmail(e.target.value)}
+						/>
+						<input
+							type='text'
+							placeholder='Nouveau pseudo'
+							value={newPseudo}
+							onChange={(e) => setNewPseudo(e.target.value)}
+						/>
+						<input
+							type='text'
+							placeholder='Nouvelle direction'
+							value={newDirection}
+							onChange={(e) => setNewDirection(e.target.value)}
+						/>
+						<input
+							type='text'
+							placeholder='Nouvelle localisation'
+							value={newLocation}
+							onChange={(e) => setNewLocation(e.target.value)}
+						/>
+						<button onClick={handleUpdate}>Mettre à jour</button>
 					</div>
 				</main>
 			{/* </UserNavBar> */}

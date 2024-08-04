@@ -50,6 +50,7 @@ export default function AdminNavbar({
   const auth = getAuth();
   const [loading, setLoading] = useState(true);
   const [hasNewRequest, setHasNewRequest] = useState(false);
+  const [requestsVisited, setRequestsVisited] = useState(false); // Nouvel état pour suivre la visite
 
 	useEffect(() => {
 		if (typeof document !== 'undefined') {
@@ -95,11 +96,13 @@ export default function AdminNavbar({
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "userRequests"), (snapshot) => {
-      setHasNewRequest(!snapshot.empty);
+      if (!requestsVisited) {
+        setHasNewRequest(!snapshot.empty);
+      }
     });
 
     return () => unsubscribe();
-  }, []); // Supprimer 'db' des dépendances
+  }, [requestsVisited]); // Ajout de requestsVisited dans les dépendances
 
 	const handleThemeToggle = () => {
 		if (typeof document !== 'undefined') {
@@ -116,6 +119,11 @@ export default function AdminNavbar({
 		} catch (error) {
 			console.error("Erreur lors de la déconnexion:", error);
 		}
+	};
+
+	const handleRequestsClick = () => {
+		setRequestsVisited(true);
+		setHasNewRequest(false);
 	};
 
 	return (
@@ -145,6 +153,7 @@ export default function AdminNavbar({
         <Link
           href="/adminRequests"
           className='text-muted-foreground transition-colors hover:text-foreground w-full'
+          onClick={handleRequestsClick}
         >
           {hasNewRequest ? (
             <Badge color="primary" variant="dot">
@@ -202,6 +211,7 @@ export default function AdminNavbar({
             <Link
               href="/adminRequests"
               className='text-muted-foreground transition-colors hover:text-foreground w-full'
+              onClick={handleRequestsClick}
             >
               Intervention
             </Link>

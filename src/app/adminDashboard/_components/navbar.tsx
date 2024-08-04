@@ -27,6 +27,11 @@ import Badge from '@mui/material/Badge';
 import { db } from "@/lib/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
+async function fetchNewRequests() {
+  // Logique pour récupérer les nouvelles demandes
+  // Remplacez ceci par votre propre logique
+  return [];
+}
 
 export default function AdminNavbar({
 	children,
@@ -44,7 +49,7 @@ export default function AdminNavbar({
 	} | null>(null);
   const auth = getAuth();
   const [loading, setLoading] = useState(true);
-
+  const [hasNewRequest, setHasNewRequest] = useState(false);
 
 	useEffect(() => {
 		if (typeof document !== 'undefined') {
@@ -88,6 +93,14 @@ export default function AdminNavbar({
     return () => unsubscribe();
   }, [auth, router]); // Ajout de router dans les dépendances
 
+  useEffect(() => {
+    const checkForNewRequests = async () => {
+      const newRequests = await fetchNewRequests(); // Utilisation de la fonction définie
+      setHasNewRequest(newRequests.length > 0);
+    };
+
+    checkForNewRequests();
+  }, []);
 
 	const handleThemeToggle = () => {
 		if (typeof document !== 'undefined') {
@@ -126,7 +139,7 @@ export default function AdminNavbar({
           href="/adminDashboard"
           className='text-foreground transition-colors hover:text-foreground'
         >
-              <Badge badgeContent={4} color="primary">
+              <Badge color="primary" variant="dot">
                 Dashboard
               </Badge>
         </Link>
@@ -134,9 +147,12 @@ export default function AdminNavbar({
           href="/adminRequests"
           className='text-muted-foreground transition-colors hover:text-foreground w-full'
         >
-              <Badge badgeContent={4} color="primary">
-                Intervention
-              </Badge>
+          {hasNewRequest && (
+            <Badge color="primary" variant="dot">
+              Intervention
+            </Badge>
+          )}
+          {!hasNewRequest && "Intervention"}
         </Link>
         <Link
           href="/adminInventory"

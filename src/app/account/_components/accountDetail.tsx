@@ -1,5 +1,7 @@
 "use client";
 
+import { useToast } from "@/components/ui/use-toast";
+
 import { db } from "@/lib/firebaseConfig";
 import { User, getAuth, onAuthStateChanged, signOut, updatePassword } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -42,8 +44,13 @@ const Account = () => {
 	const [newDirection, setNewDirection] = useState("");
 	const [newLocation, setNewLocation] = useState("");
 	const [newPassword, setNewPassword] = useState("");
+	const [isUpdating, setIsUpdating] = useState(false);
+
+	const { toast } = useToast();
+
 
 	const handleUpdate = async () => {
+		setIsUpdating(true);
 		if (user) {
 			const userDocRef = doc(db, "users", user.uid);
 			try {
@@ -72,6 +79,7 @@ const Account = () => {
 				console.error("Erreur lors de la mise à jour des informations:", error);
 			}
 		}
+		setIsUpdating(false);
 	};
 
 	const handleLogout = async () => {
@@ -100,6 +108,7 @@ const Account = () => {
 						direction?: string;
 						location?: string;
 					};
+					
 					setUserData({
 						uid: user.uid,
 						email: data.email,
@@ -252,8 +261,9 @@ const Account = () => {
 								</form>
 							</CardContent>
 							<CardFooter className="border-t px-6 py-4">
-							<Button onClick={handleUpdate} className='btn-primary'>Mettre à jour</Button>
-							</CardFooter>
+							<Button onClick={handleUpdate} className='btn-primary' disabled={isUpdating}>
+								{isUpdating ? "Mise à jour..." : "Mettre à jour"}
+							</Button>							</CardFooter>
 						</Card>
 					</div>
 					{/* <Button onClick={handleLogout}>Se déconnecter</Button> */}

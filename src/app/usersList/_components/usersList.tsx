@@ -94,60 +94,62 @@ export default function UsersList() {
   }, [users, db]); // Ajout de 'db' comme dépendance manquante
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Utilisateurs</CardTitle>
-        <CardDescription>
-          Gérez vos utilisateurs et consultez leurs détails.        
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nom & Prenoms</TableHead>
-              <TableHead>Direction</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Addresse IP</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-medium">{user.firstName} {user.lastName}</TableCell>
-                <TableCell>{user.direction}</TableCell>
-                <TableCell>
-                  <Badge variant="outline">{user.email}</Badge>
-                </TableCell>
-                <TableCell>{user.ip || "N/A"}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Toggle menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>Modifier</DropdownMenuItem>
-                      <DropdownMenuItem>Supprimer</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
+    <div className='flex min-h-screen w-full flex-col bg-muted/40 '>
+      <Card>
+        <CardHeader>
+          <CardTitle>Utilisateurs</CardTitle>
+          <CardDescription>
+            Gérez vos utilisateurs et consultez leurs détails.        
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nom & Prenoms</TableHead>
+                <TableHead>Direction</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Addresse IP</TableHead>
+                <TableHead>
+                  <span className="sr-only">Actions</span>
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-      <CardFooter>
-        <div className="text-xs text-muted-foreground">
-          Affichage de <strong>{users.length}</strong> Utilisateurs.
-        </div>
-      </CardFooter>
-    </Card>
+            </TableHeader>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell className="font-medium">{user.firstName} {user.lastName}</TableCell>
+                  <TableCell>{user.direction}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline">{user.email}</Badge>
+                  </TableCell>
+                  <TableCell>{user.ip || "N/A"}</TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button aria-haspopup="true" size="icon" variant="ghost">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>Modifier</DropdownMenuItem>
+                        <DropdownMenuItem>Supprimer</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+        <CardFooter>
+          <div className="text-xs text-muted-foreground">
+            Affichage de <strong>{users.length}</strong> Utilisateurs.
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
   )
 }

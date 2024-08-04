@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -25,14 +26,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { initializeApp } from "firebase/app"
 import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
 import { MoreHorizontal } from "lucide-react"
 import { useEffect, useState } from "react"
 
-// Initialiser Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 async function getUserIP() {
   const res = await fetch('https://api.ipify.org?format=json');
@@ -51,6 +48,7 @@ interface User {
 
 export default function UsersList() {
   const [users, setUsers] = useState<User[]>([]);
+  const db = getFirestore(); // Added this line to initialize 'db'
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -58,11 +56,15 @@ export default function UsersList() {
         const usersCollection = collection(db, 'users');
         const usersSnapshot = await getDocs(usersCollection);
         const usersData = usersSnapshot.docs.map(doc => {
-          const data = doc.data();
+          const data = doc.data() as User; // Cast data to User type
           console.log("Données de l'utilisateur :", data);
           return {
             id: doc.id,
-            ...data
+            firstName: data.firstName,
+            lastName: data.lastName,
+            direction: data.direction,
+            email: data.email,
+            ip: data.ip
           };
         });
         setUsers(usersData);
@@ -73,7 +75,7 @@ export default function UsersList() {
     };
 
     fetchUsers();
-  }, []);
+  }, [db]); // Ajout de 'db' comme dépendance
 
   useEffect(() => {
     const updateUserIP = async () => {
@@ -89,7 +91,7 @@ export default function UsersList() {
     if (users.length > 0) {
       updateUserIP();
     }
-  }, [users]);
+  }, [users, db]); // Ajout de 'db' comme dépendance manquante
 
   return (
     <Card>

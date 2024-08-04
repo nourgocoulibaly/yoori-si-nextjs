@@ -2,7 +2,6 @@
 
 import AdminNavBar from "@/app/adminDashboard/_components/navbar";
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
@@ -67,7 +66,6 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
-import Progress from "@/tools/progress";
 
 import { Document, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
@@ -290,7 +288,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.log("Données de la requête:", request);
 			setFormData({
 				...request,
-				interventionDate: request.interventionDate ? request.interventionDate : '',
+				interventionDate: request.interventionDate ? request.interventionDate.toString() : '',
 			});
 		}
 	}, [request]);
@@ -378,16 +376,15 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 
 	const updateDateInFirestore = async (selectedDate: Date) => {
 		try {
-			const formattedDate = format(selectedDate, "dd MMMM yyyy 'à' HH:mm:ss 'UTC'", { locale: fr });
 			const timestamp = selectedDate.getTime(); // Convertir en timestamp
 			const docRef = doc(db, 'userRequests', id as string);
 			await updateDoc(docRef, { interventionDate: timestamp });
 			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
-	
+
 			// Mettre à jour l'état avec la nouvelle date
 			setFormData(prevFormData => ({
 				...prevFormData,
-				interventionDate: formattedDate
+				interventionDate: timestamp.toString() // Convertir en chaîne de caractères
 			}));
 		} catch (error) {
 			console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
@@ -437,9 +434,12 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 											<h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
 												Demande d&apos;Intervention
 											</h1>
-											<Badge variant='outline' className='ml-auto sm:ml-0'>
-												DMISSA
-											</Badge>
+												<Badge variant='outline' className='ml-auto sm:ml-0'>
+													DMISSA
+												</Badge>
+												<Badge variant='outline' className='flex justify-end sm:ml-0'>
+													Envoyé le {formData.createdAt ? new Date(formData.createdAt).toLocaleString() : 'N/A'}
+												</Badge>
 										</div>
 										<div className='grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8'>
 											<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
@@ -635,7 +635,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 															Date d&apos;Intervention {" "}
 															<Badge variant='outline' className='ml-auto sm:ml-0'>
 																{formData.interventionDate &&
-																	new Date(parseInt(formData.interventionDate)).toLocaleString()}											
+																	new Date(parseInt(formData.interventionDate)).toLocaleString()}
 															</Badge>
 														</CardTitle>
 															<Popover>

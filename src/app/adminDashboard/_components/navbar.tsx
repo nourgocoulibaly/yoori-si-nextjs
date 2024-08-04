@@ -164,10 +164,10 @@ export default function AdminNavbar({
           )}
         </Link>
         <Link
-          href="/adminInventory"
+          href="/usersList"
           className='text-muted-foreground transition-colors hover:text-foreground'
         >
-          Inventaires
+          Utilisateurs
         </Link>
         <Link
           href="/adminChatbot"
@@ -216,10 +216,10 @@ export default function AdminNavbar({
               Intervention
             </Link>
             <Link
-              href="/adminInventory"
+              href="/usersList"
               className='text-muted-foreground transition-colors hover:text-foreground'
             >
-              Inventaires
+              Utilisateurs
             </Link>
             <Link
               href="/adminChatbot"

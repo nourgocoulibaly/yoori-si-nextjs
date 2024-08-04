@@ -21,8 +21,8 @@ function GradientCircularProgress() {
 
 export default function Progress() {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <Stack spacing={2} sx={{ flexGrow: 1 }}>
+    <div className="flex items-center justify-center h-screen bg-gray-900">
+      <Stack spacing={2} className="flex items-center justify-center w-full">
         <GradientCircularProgress />
       </Stack>
     </div>

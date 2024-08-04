@@ -30,25 +30,18 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 
+import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 
-import { useRouter } from 'next/navigation';
 
 
 export default function UserDashboardContent() {
-
-  const [filteredRequests, setFilteredRequests] = useState<any[]>([]); // Déclarez filteredRequests ici
-  const [newRequests, setNewRequests] = useState(0); // Ajoutez cette ligne
-
-  useEffect(() => {
-    const countNewRequests = filteredRequests.filter(req => req.isNew || !req.isOpened).length;
-    setNewRequests(countNewRequests);
-  }, [filteredRequests]);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -58,6 +51,7 @@ export default function UserDashboardContent() {
 
   const [usersList, setUsersList] = useState<any[]>([]);
 	const [requests, setRequests] = useState<any[]>([]);
+  const [filteredRequests, setFilteredRequests] = useState<any[]>([]);
 	const [filteredUsersList, setFilteredUsersList] = useState<any[]>([]);
 	const [pendingRequests, setPendingRequests] = useState(0);
 	const [resolvedRequests, setResolvedRequests] = useState(0);
@@ -225,11 +219,8 @@ export default function UserDashboardContent() {
               .sort((a, b) => b.createdAt?.toDate().getTime() - a.createdAt?.toDate().getTime())
               .slice(0, 5)
               .map((request) => (
-                <TableRow
-                  key={request.id}
-                  onClick={() => handleEditRequest(request.id)}
-                  style={{ cursor: 'pointer', backgroundColor: request.isNew || !request.isOpened ? '#f0f0f0' : 'transparent' }}
-                >
+                <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
+                style={{ cursor: 'pointer' }}>
 						
 										<TableCell className='hidden sm:table-cell'>
 											<div className='font-medium'>{request.userName}</div>
@@ -239,7 +230,9 @@ export default function UserDashboardContent() {
 											{request.requestContent}
 										</TableCell>
 										<TableCell className='hidden sm:table-cell'>
-											{request.requestStatus}
+											<Badge className='text-xs' variant='secondary'>
+												{request.requestStatus}
+											</Badge>
 										</TableCell>
 										<TableCell className='hidden sm:table-cell'>
 											{request.createdAt?.toDate()?.toLocaleString() || ''}

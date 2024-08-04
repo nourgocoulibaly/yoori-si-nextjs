@@ -149,43 +149,43 @@ const Account = () => {
 								</CardDescription>
 								</CardHeader>
 								<CardContent>
-									<form className="flex flex-col gap-4">
-										<div className="flex items-center space-x-2"> 
+									<form className="flex flex-col items-center gap-4">
+										<div className="flex flex-col items-center space-y-2 w-full max-w-[700px]">
 											<label
-													htmlFor="include"
+													htmlFor="email"
 													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 												>
 													Votre Email
 											</label>
+											<Input id="email" placeholder="Votre email" defaultValue={userData.email} className="w-full" />
 										</div>
-										<Input placeholder="Votre email" defaultValue={userData.email} />         
-										<div className="flex items-center space-x-2"> 
+										<div className="flex flex-col items-center space-y-2 w-full max-w-[700px]">
 											<label
-													htmlFor="include"
+													htmlFor="pseudo"
 													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 												>
 													Votre Pseudo
-											</label>
+												</label>
+											<Input id="pseudo" placeholder="Votre Pseudo" defaultValue={userData.pseudo} className="w-full" />
 										</div>
-										<Input placeholder="Votre Pseudo" defaultValue={userData.pseudo} />         
-										<div className="flex items-center space-x-2"> 
+										<div className="flex flex-col items-center space-y-2 w-full max-w-[700px]">
 											<label
-													htmlFor="include"
+													htmlFor="direction"
 													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 												>
 													Votre Direction
 											</label>
+											<Input id="direction" placeholder="Votre Direction" defaultValue={userData.direction} className="w-full" />
 										</div>
-										<Input placeholder="Votre Direction" defaultValue={userData.direction} />         
-										<div className="flex items-center space-x-2"> 
+										<div className="flex flex-col items-center space-y-2 w-full max-w-[700px]">
 											<label
-													htmlFor="include"
+													htmlFor="location"
 													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 												>
 													Votre Localisation
 											</label>
+											<Input id="location" placeholder="Votre Localisation" defaultValue={userData.location} className="w-full" />
 										</div>
-										<Input placeholder="Votre Localisation" defaultValue={userData.location} />         
 									</form>
 								</CardContent>
 						</Card>
@@ -199,60 +199,60 @@ const Account = () => {
 								</CardDescription>
 							</CardHeader>
 							<CardContent>
-								<form>
+								<form className="flex flex-col items-center gap-4">
 								<Input
 									type='text'
 									placeholder='Nouveau prénom'
 									value={newFirstName}
 									onChange={(e) => setNewFirstName(e.target.value)}
-									className='input'
+									className='w-full max-w-[700px]'
 								/>
 								<Input
 								type='text'
 								placeholder='Nouveau nom'
 								value={newLastName}
 								onChange={(e) => setNewLastName(e.target.value)}
-								className='input'
+								className='w-full max-w-[700px]'
 							/>
 							<Input
 								type='email'
 								placeholder='Nouvel email'
 								value={newEmail}
 								onChange={(e) => setNewEmail(e.target.value)}
-								className='input'
+								className='w-full max-w-[700px]'
 							/>
 							<Input
 								type='text'
 								placeholder='Nouveau pseudo'
 								value={newPseudo}
 								onChange={(e) => setNewPseudo(e.target.value)}
-								className='input'
+								className='w-full max-w-[700px]'
 							/>
 							<Input
 								type='text'
 								placeholder='Nouvelle direction'
 								value={newDirection}
 								onChange={(e) => setNewDirection(e.target.value)}
-								className='input'
+								className='w-full max-w-[700px]'
 							/>
 							<Input
 								type='text'
 								placeholder='Nouvelle localisation'
 								value={newLocation}
 								onChange={(e) => setNewLocation(e.target.value)}
-								className='input'
+								className='w-full max-w-[700px]'
 							/>
 							<Input
 								type='password'
 								placeholder='Nouveau mot de passe'
 								value={newPassword}
 								onChange={(e) => setNewPassword(e.target.value)}
-								className='input'
+								className='w-full max-w-[700px]'
 							/>
 								</form>
 							</CardContent>
 							<CardFooter className="border-t px-6 py-4">
-								<Button>Save</Button>
+							<Button onClick={handleUpdate} className='btn-primary'>Mettre à jour</Button>
 							</CardFooter>
 						</Card>
 					</div>

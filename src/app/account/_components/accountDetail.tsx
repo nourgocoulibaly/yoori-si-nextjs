@@ -6,6 +6,18 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
 import Progress from "@/tools/progress";
 
 const Account = () => {
@@ -126,86 +138,125 @@ const Account = () => {
 						Bienvenue, {userData.lastName} {userData.firstName}
 					</h1>
 				</div>
-				<div className='flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm'>
-					<div className='flex flex-col items-center gap-1 text-center'>
-						<h3 className='text-2xl font-bold tracking-tight'>Mon compte</h3>
-						<p className='text-sm text-muted-foreground'>
-							Email: {userData.email}
-						</p>
-						<button onClick={handleLogout}>Se déconnecter</button>
-					</div>
-				</div>
+
 				<div className='flex flex-col gap-4'>
 					<div>
-						<label>Prénom actuel: {userData.firstName}</label>
-						<input
-							type='text'
-							placeholder='Nouveau prénom'
-							value={newFirstName}
-							onChange={(e) => setNewFirstName(e.target.value)}
-							className='input'
-						/>
+						<Card>
+								<CardHeader>
+									<CardTitle>mon Compte</CardTitle>
+									<CardDescription>
+										Retrouver toutes vos informations de compte. 
+								</CardDescription>
+								</CardHeader>
+								<CardContent>
+									<form className="flex flex-col gap-4">
+										<div className="flex items-center space-x-2"> 
+											<label
+													htmlFor="include"
+													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+												>
+													Votre Email
+											</label>
+										</div>
+										<Input placeholder="Votre email" defaultValue={userData.email} />         
+										<div className="flex items-center space-x-2"> 
+											<label
+													htmlFor="include"
+													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+												>
+													Votre Pseudo
+											</label>
+										</div>
+										<Input placeholder="Votre Pseudo" defaultValue={userData.pseudo} />         
+										<div className="flex items-center space-x-2"> 
+											<label
+													htmlFor="include"
+													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+												>
+													Votre Direction
+											</label>
+										</div>
+										<Input placeholder="Votre Direction" defaultValue={userData.direction} />         
+										<div className="flex items-center space-x-2"> 
+											<label
+													htmlFor="include"
+													className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+												>
+													Votre Localisation
+											</label>
+										</div>
+										<Input placeholder="Votre Localisation" defaultValue={userData.location} />         
+									</form>
+								</CardContent>
+						</Card>
 					</div>
 					<div>
-						<label>Nom actuel: {userData.lastName}</label>
-						<input
-							type='text'
-							placeholder='Nouveau nom'
-							value={newLastName}
-							onChange={(e) => setNewLastName(e.target.value)}
-							className='input'
-						/>
+						<Card>
+							<CardHeader>
+								<CardTitle>Modifier vos informations</CardTitle>
+								<CardDescription>
+									Used to identify your store in the marketplace.
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<form>
+								<Input
+									type='text'
+									placeholder='Nouveau prénom'
+									value={newFirstName}
+									onChange={(e) => setNewFirstName(e.target.value)}
+									className='input'
+								/>
+								<Input
+								type='text'
+								placeholder='Nouveau nom'
+								value={newLastName}
+								onChange={(e) => setNewLastName(e.target.value)}
+								className='input'
+							/>
+							<Input
+								type='email'
+								placeholder='Nouvel email'
+								value={newEmail}
+								onChange={(e) => setNewEmail(e.target.value)}
+								className='input'
+							/>
+							<Input
+								type='text'
+								placeholder='Nouveau pseudo'
+								value={newPseudo}
+								onChange={(e) => setNewPseudo(e.target.value)}
+								className='input'
+							/>
+							<Input
+								type='text'
+								placeholder='Nouvelle direction'
+								value={newDirection}
+								onChange={(e) => setNewDirection(e.target.value)}
+								className='input'
+							/>
+							<Input
+								type='text'
+								placeholder='Nouvelle localisation'
+								value={newLocation}
+								onChange={(e) => setNewLocation(e.target.value)}
+								className='input'
+							/>
+							<Input
+								type='password'
+								placeholder='Nouveau mot de passe'
+								value={newPassword}
+								onChange={(e) => setNewPassword(e.target.value)}
+								className='input'
+							/>
+								</form>
+							</CardContent>
+							<CardFooter className="border-t px-6 py-4">
+								<Button>Save</Button>
+							</CardFooter>
+						</Card>
 					</div>
-					<div>
-						<label>Email actuel: {userData.email}</label>
-						<input
-							type='email'
-							placeholder='Nouvel email'
-							value={newEmail}
-							onChange={(e) => setNewEmail(e.target.value)}
-							className='input'
-						/>
-					</div>
-					<div>
-						<label>Pseudo actuel: {userData.pseudo}</label>
-						<input
-							type='text'
-							placeholder='Nouveau pseudo'
-							value={newPseudo}
-							onChange={(e) => setNewPseudo(e.target.value)}
-							className='input'
-						/>
-					</div>
-					<div>
-						<label>Direction actuelle: {userData.direction}</label>
-						<input
-							type='text'
-							placeholder='Nouvelle direction'
-							value={newDirection}
-							onChange={(e) => setNewDirection(e.target.value)}
-							className='input'
-						/>
-					</div>
-					<div>
-						<label>Localisation actuelle: {userData.location}</label>
-						<input
-							type='text'
-							placeholder='Nouvelle localisation'
-							value={newLocation}
-							onChange={(e) => setNewLocation(e.target.value)}
-							className='input'
-						/>
-					</div>
-					<div>
-						<input
-							type='password'
-							placeholder='Nouveau mot de passe'
-							value={newPassword}
-							onChange={(e) => setNewPassword(e.target.value)}
-							className='input'
-						/>
-					</div>
-					<button onClick={handleUpdate} className='btn-primary'>Mettre à jour</button>
+					{/* <Button onClick={handleLogout}>Se déconnecter</Button> */}
 				</div>
 			</main>
 		</div>

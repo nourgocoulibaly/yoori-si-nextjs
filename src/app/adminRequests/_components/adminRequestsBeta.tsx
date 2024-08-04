@@ -59,6 +59,8 @@ interface Request {
   requestStatus: string;
   createdAt?: { toDate: () => Date };
   updatedAt?: { toDate: () => Date };
+  isNew?: boolean;
+  isOpened?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -232,6 +234,7 @@ const AdminRequestsBeta = () => {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('all');
+  const [newRequests, setNewRequests] = useState(0);
 
   useEffect(() => {
     setIsClient(true);
@@ -247,7 +250,9 @@ const AdminRequestsBeta = () => {
         const requestStatus = userData.requestStatus;
         const createdAt = userData.createdAt;
         const updatedAt = userData.updatedAt;
-        requestsData.push({ id: doc.id, userName, userDirection, requestContent, requestStatus, createdAt, updatedAt });
+        const isNew = userData.isNew;
+        const isOpened = userData.isOpened;
+        requestsData.push({ id: doc.id, userName, userDirection, requestContent, requestStatus, createdAt, updatedAt, isNew, isOpened });
       });
 
       // Tri des requêtes par ordre décroissant de date
@@ -266,6 +271,11 @@ const AdminRequestsBeta = () => {
 
     fetchRequests();
   }, []);
+
+  useEffect(() => {
+    const countNewRequests = filteredRequests.filter(req => req.isNew || !req.isOpened).length;
+    setNewRequests(countNewRequests);
+  }, [filteredRequests]);
 
   const handleMarkAs = async (id: string, status: string) => {
     const requestDoc = doc(db, "userRequests", id);
@@ -495,8 +505,11 @@ const AdminRequestsBeta = () => {
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
-                        <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
-                          style={{ cursor: 'pointer' }}>
+                        <TableRow 
+                          key={request.id} 
+                          onClick={() => handleEditRequest(request.id)} 
+                          className={`cursor-pointer ${request.isNew || !request.isOpened ? 'bg-gray-200' : ''}`}
+                        >
                           <TableCell className='hidden sm:table-cell'>
                             <div className='font-medium'>{request.userName}</div>
                             <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
@@ -545,8 +558,11 @@ const AdminRequestsBeta = () => {
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
-                        <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
-                          style={{ cursor: 'pointer' }}>
+                        <TableRow 
+                          key={request.id} 
+                          onClick={() => handleEditRequest(request.id)} 
+                          className={`cursor-pointer ${request.isNew || !request.isOpened ? 'bg-gray-200' : ''}`}
+                        >
                           <TableCell className='hidden sm:table-cell'>
                             <div className='font-medium'>{request.userName}</div>
                             <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
@@ -596,8 +612,11 @@ const AdminRequestsBeta = () => {
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
-                        <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
-                          style={{ cursor: 'pointer' }}>
+                        <TableRow 
+                          key={request.id} 
+                          onClick={() => handleEditRequest(request.id)} 
+                          className={`cursor-pointer ${request.isNew || !request.isOpened ? 'bg-gray-200' : ''}`}
+                        >
                           <TableCell className='hidden sm:table-cell'>
                             <div className='font-medium'>{request.userName}</div>
                             <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
@@ -647,8 +666,11 @@ const AdminRequestsBeta = () => {
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
-                        <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
-                          style={{ cursor: 'pointer' }}>
+                        <TableRow 
+                          key={request.id} 
+                          onClick={() => handleEditRequest(request.id)} 
+                          className={`cursor-pointer ${request.isNew || !request.isOpened ? 'bg-gray-200' : ''}`}
+                        >
                           <TableCell className='hidden sm:table-cell'>
                             <div className='font-medium'>{request.userName}</div>
                             <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
@@ -717,3 +739,6 @@ const AdminRequestsBeta = () => {
 };
 
 export default AdminRequestsBeta;
+
+
+

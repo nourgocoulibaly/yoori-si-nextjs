@@ -22,9 +22,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+import Badge from '@mui/material/Badge';
+
 import { db } from "@/lib/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
+async function getNewRequestsCountFromAPI(): Promise<number> {
+  // Implémentez la logique pour récupérer le nombre de nouvelles requêtes
+  // Par exemple, une requête API
+  const response = await fetch('/api/new-requests-count');
+  const data = await response.json();
+  return data.count;
+}
 
 export default function AdminNavbar({
 	children,
@@ -42,6 +51,7 @@ export default function AdminNavbar({
 	} | null>(null);
   const auth = getAuth();
   const [loading, setLoading] = useState(true);
+  const [newRequestsCount, setNewRequestsCount] = useState(0);
 
 
 	useEffect(() => {
@@ -86,6 +96,14 @@ export default function AdminNavbar({
     return () => unsubscribe();
   }, [auth, router]); // Ajout de router dans les dépendances
 
+	useEffect(() => {
+		const fetchNewRequestsCount = async () => {
+			const count = await getNewRequestsCountFromAPI();
+			setNewRequestsCount(count);
+		};
+
+		fetchNewRequestsCount();
+	}, []);
 
 	const handleThemeToggle = () => {
 		if (typeof document !== 'undefined') {
@@ -124,13 +142,21 @@ export default function AdminNavbar({
           href="/adminDashboard"
           className='text-foreground transition-colors hover:text-foreground'
         >
-          Dashboard
+              {newRequestsCount > 0 && (
+                <Badge badgeContent={newRequestsCount} color="primary">
+                  Dashboard
+                </Badge>
+              )}
         </Link>
         <Link
           href="/adminRequests"
           className='text-muted-foreground transition-colors hover:text-foreground w-full'
         >
-          Intervention
+              {newRequestsCount > 0 && (
+                <Badge badgeContent={newRequestsCount} color="primary">
+                  Intervention
+                </Badge>
+              )}
         </Link>
         <Link
           href="/adminInventory"

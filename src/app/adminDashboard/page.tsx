@@ -1,10 +1,9 @@
 "use client"
 
-import * as React from "react";
-import { useEffect, useState } from "react"; // Ajoutez cette ligne
+import { useEffect } from "react"; // Ajoutez cette ligne
 
-import { Progress } from "@/components/ui/progress";
 import { useAuth } from '@/contexts/useAuth'; // Assurez-vous d'avoir ce hook
+import Progress from "@/tools/progress";
 import { useRouter } from 'next/navigation';
 import AdminDashboardContent from "./_components/content";
 import AdminNavBar from "./_components/navbar";
@@ -12,14 +11,7 @@ import AdminNavBar from "./_components/navbar";
 function AdminDashboard() {
     const { user, loading } = useAuth();
     const router = useRouter();
-    const [progress, setProgress] = useState(13) // Modifiez cette ligne
-
-
-
-    React.useEffect(() => {
-        const timer = setTimeout(() => setProgress(66), 500)
-        return () => clearTimeout(timer)
-      }, [])
+   
 
     useEffect(() => {
         if (!loading) {
@@ -37,7 +29,7 @@ function AdminDashboard() {
     }, []);
 
     if (loading) {
-        return <div><Progress value={progress} className="w-[100%]" /></div>;
+        return <div><Progress /></div>;
     }
 
     return (

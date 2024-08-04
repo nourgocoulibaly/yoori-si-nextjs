@@ -1,6 +1,7 @@
 "use client"
 
 import { useAuth } from '@/contexts/useAuth'; // Assurez-vous d'avoir ce hook
+import Progress from "@/tools/progress";
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import AdminNavbar from "../adminDashboard/_components/navbar";
@@ -26,7 +27,7 @@ function AdminInventoryPage() {
     }, []);
 
     if (loading) {
-        return <div>Chargement...</div>;
+        return <div><Progress /></div>;
     }
 
     return (

@@ -6,6 +6,8 @@ import { DocumentData, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import RequestPage from './index';
 
+import Progress from "@/tools/progress";
+
 // Fonction pour obtenir les données en fonction de l'ID
 async function fetchData(id: string) {
     try {
@@ -33,7 +35,7 @@ export default function RequestPageWrapper({ params }: { params: { id: string } 
     }, [params.id]);
 
     if (loading) {
-        return <div>Chargement...</div>;
+        return <div><Progress /></div>;
     }
 
     if (!data) {

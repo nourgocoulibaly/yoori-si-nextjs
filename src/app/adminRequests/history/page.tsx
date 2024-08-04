@@ -1,11 +1,9 @@
 'use client'
 
-import * as React from "react";
-import { useEffect, useState } from "react"; // Ajoutez cette ligne
-
-import { Progress } from "@/components/ui/progress";
+import { useEffect } from "react"; // Ajoutez cette ligne
 
 import { useAuth } from '@/contexts/useAuth'; // Assurez-vous d'avoir ce hook
+import Progress from "@/tools/progress";
 import { useRouter } from 'next/navigation';
 import AdminNavBar from "../../adminDashboard/_components/navbar"; // Change the import path
 import RequestHistory from "./_components/history";
@@ -13,14 +11,7 @@ import RequestHistory from "./_components/history";
 export default function AdminRequestsHistoryPage() {
     const { user, loading } = useAuth();
     const router = useRouter();
-    const [progress, setProgress] = useState(13) // Modifiez cette ligne
 
-
-
-    React.useEffect(() => {
-        const timer = setTimeout(() => setProgress(66), 500)
-        return () => clearTimeout(timer)
-      }, [])
 
     useEffect(() => {
         if (!loading) {
@@ -38,7 +29,7 @@ export default function AdminRequestsHistoryPage() {
     }, []);
 
     if (loading) {
-        return <div><Progress value={progress} className="w-[100%]" /></div>;
+        return <div><Progress /></div>;
     }
 
     return (

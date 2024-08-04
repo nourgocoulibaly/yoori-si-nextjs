@@ -67,13 +67,15 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
+import Progress from "@/tools/progress";
+
 import { Document, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
-const options = [
-  { label: "React", value: "react" },
-  { label: "Vue", value: "vue" },
-  { label: "Svelte", value: "svelte" },
-];
+// const options = [
+//   { label: "React", value: "react" },
+//   { label: "Vue", value: "vue" },
+//   { label: "Svelte", value: "svelte" },
+// ];
 
 const styles = StyleSheet.create({
   page: { padding: 30 },

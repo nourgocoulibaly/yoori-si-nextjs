@@ -14,8 +14,11 @@
 		"clean-build": "rm -rf .next out && npm run build"
 	},
 	"dependencies": {
+		"@emotion/react": "^11.13.0",
+		"@emotion/styled": "^11.13.0",
 		"@firebase/firestore": "^4.6.3",
 		"@hookform/resolvers": "^3.4.2",
+		"@mui/material": "^5.16.6",
 		"@nextui-org/react": "^2.4.0",
 		"@nextui-org/system": "^2.2.0",
 		"@nextui-org/theme": "^2.2.4",

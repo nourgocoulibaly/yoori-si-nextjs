@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 import Badge from '@mui/material/Badge';
 
 import { db } from "@/lib/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 
 async function fetchNewRequests() {
   // Logique pour récupérer les nouvelles demandes
@@ -94,13 +94,12 @@ export default function AdminNavbar({
   }, [auth, router]); // Ajout de router dans les dépendances
 
   useEffect(() => {
-    const checkForNewRequests = async () => {
-      const newRequests = await fetchNewRequests(); // Utilisation de la fonction définie
-      setHasNewRequest(newRequests.length > 0);
-    };
+    const unsubscribe = onSnapshot(collection(db, "userRequests"), (snapshot) => {
+      setHasNewRequest(!snapshot.empty);
+    });
 
-    checkForNewRequests();
-  }, []);
+    return () => unsubscribe();
+  }, []); // Supprimer 'db' des dépendances
 
 	const handleThemeToggle = () => {
 		if (typeof document !== 'undefined') {
@@ -147,12 +146,13 @@ export default function AdminNavbar({
           href="/adminRequests"
           className='text-muted-foreground transition-colors hover:text-foreground w-full'
         >
-          {hasNewRequest && (
+          {hasNewRequest ? (
             <Badge color="primary" variant="dot">
               Intervention
             </Badge>
+          ) : (
+            "Intervention"
           )}
-          {!hasNewRequest && "Intervention"}
         </Link>
         <Link
           href="/adminInventory"

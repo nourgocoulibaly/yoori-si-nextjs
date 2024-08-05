@@ -13,9 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getAuth, updatePassword } from "firebase/auth";
+import { doc, getFirestore, updateDoc } from "firebase/firestore"; // Importer les fonctions nécessaires
 import { useEffect, useState } from 'react';
 import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
-import { getFirestore, doc, updateDoc } from "firebase/firestore"; // Importer les fonctions nécessaires
 
 import { useToast } from "@/components/ui/use-toast";
 

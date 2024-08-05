@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { app } from "@/firebase"; // Assurez-vous d'importer votre configuration Firebase
+import { app } from "@/lib/firebaseConfig"; // Assurez-vous d'importer votre configuration Firebase
 import { useToast } from "@/components/ui/use-toast";
 
 interface User {

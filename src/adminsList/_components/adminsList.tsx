@@ -116,7 +116,7 @@ export default function AdminsList() {
   }, [users, db]);
 
   return (
-    <div className='flex min-h-screen w-full flex-col bg-muted/40 mt-10 '>
+    <div className='flex min-h-screen w-full flex-col bg-muted/40 mt-10 my-16 '>
       <Card>
         <CardHeader>
           <CardTitle>Utilisateurs</CardTitle>

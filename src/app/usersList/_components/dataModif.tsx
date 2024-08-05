@@ -16,6 +16,9 @@ import { getAuth, updatePassword } from "firebase/auth";
 import { useEffect, useState } from 'react';
 import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
 
+import { useToast } from "@/components/ui/use-toast";
+
+
 interface User {
   id: string;
   firstName: string;
@@ -35,6 +38,9 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   const [location, setLocation] = useState(user.location || '');
   const [password, setPassword] = useState('');
   const [userList, setUserList] = useState<User[]>([]);
+
+  const { toast } = useToast();
+
 
   useEffect(() => {
     async function fetchData() {
@@ -67,7 +73,22 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         console.error("Erreur lors de la mise à jour du mot de passe:", error);
       }
     }
-    onSave({ ...user, firstName, lastName, direction, email, ip, location });
+
+    const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
+    onSave(updatedUser);
+
+    // Mettre à jour la liste des utilisateurs après la sauvegarde
+    const users = await getUserList();
+    const completeUsers = users.map((user: any) => ({
+      ...user,
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      direction: user.direction || '',
+      email: user.email || '',
+      ip: user.ip || '',
+      location: user.location || ''
+    }));
+    setUserList(completeUsers);
   };
 
   return (
@@ -127,7 +148,15 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleSave}>Sauvegarder</Button>
+          <Button type="button" onClick={() => {
+            handleSave();
+            toast({
+              title: "✅ Demande envoyée avec succès !",
+              description: "Cette action ne peut pas être annulée. Cela modifiera directement vos données du serveur.",
+            });
+          }}>
+            Sauvegarder
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

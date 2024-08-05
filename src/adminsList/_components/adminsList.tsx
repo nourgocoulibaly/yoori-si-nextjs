@@ -49,7 +49,7 @@ interface User {
   location?: string;
 }
 
-export default function UsersList() {
+export default function AdminsList() {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isAddAdminDialogOpen, setIsAddAdminDialogOpen] = useState(false);

@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getAuth, updatePassword } from "firebase/auth"; // Importer getAuth
+import { getAuth, updatePassword } from "firebase/auth";
 import { useEffect, useState } from 'react';
-import { getUserList } from '../api/page'; // Correction du chemin d'accès
+import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
 
 interface User {
   id: string;
@@ -34,12 +34,12 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   const [ip, setIp] = useState(user.ip || '');
   const [location, setLocation] = useState(user.location || '');
   const [password, setPassword] = useState('');
-  const [userList, setUserList] = useState<User[]>([]); // Spécifiez le type User[]
+  const [userList, setUserList] = useState<User[]>([]);
 
   useEffect(() => {
     async function fetchData() {
       const users = await getUserList();
-      const completeUsers = users.map((user: any) => ({ // Utilisation de 'any' pour contourner l'erreur de type
+      const completeUsers = users.map((user: any) => ({
         ...user,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
@@ -59,7 +59,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         const auth = getAuth();
         const currentUser = auth.currentUser;
         if (currentUser) {
-          await updatePassword(currentUser, password); // Mettre à jour le mot de passe
+          await updatePassword(currentUser, password);
         } else {
           console.error("Aucun utilisateur authentifié");
         }

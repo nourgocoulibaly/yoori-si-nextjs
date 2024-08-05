@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { getAuth, updatePassword } from "firebase/auth";
 import { useEffect, useState } from 'react';
 import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
+import { getFirestore, doc, updateDoc } from "firebase/firestore"; // Importer les fonctions nécessaires
 
 import { useToast } from "@/components/ui/use-toast";
 
@@ -75,6 +76,17 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
     }
 
     const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
+
+    // Mettre à jour les données de l'utilisateur dans Firestore
+    try {
+      const db = getFirestore();
+      const userDoc = doc(db, "users", user.id); // Assurez-vous que l'ID de l'utilisateur est correct
+      await updateDoc(userDoc, updatedUser);
+      console.log("Données de l'utilisateur mises à jour avec succès dans Firestore");
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des données de l'utilisateur dans Firestore:", error);
+    }
+
     onSave(updatedUser);
 
     // Mettre à jour la liste des utilisateurs après la sauvegarde

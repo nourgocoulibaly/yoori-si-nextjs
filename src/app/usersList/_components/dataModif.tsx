@@ -104,7 +104,11 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   };
 
   return (
-    <Dialog open={true} onOpenChange={() => {}}>
+    <Dialog open={true} onOpenChange={(isOpen) => {
+      if (!isOpen) {
+        // Logique pour fermer le dialogue
+      }
+    }}>
       <DialogTrigger asChild>
         <Button variant="outline">Modifier le profil</Button>
       </DialogTrigger>
@@ -170,11 +174,8 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
             Sauvegarder
           </Button>
           <Button type="button" variant="outline" onClick={() => {
-            // Fermer le dialogue
-            const openDialog = document.querySelector('[data-state="open"]');
-            if (openDialog) {
-              (openDialog as HTMLElement).click();
-            }
+            // Utiliser onOpenChange pour fermer le dialogue
+            (document.querySelector('[data-state="open"]') as HTMLElement)?.click();
           }}>
             Fermer
           </Button>

@@ -169,6 +169,15 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           }}>
             Sauvegarder
           </Button>
+          <Button type="button" variant="outline" onClick={() => {
+            // Fermer le dialogue
+            const openDialog = document.querySelector('[data-state="open"]');
+            if (openDialog) {
+              (openDialog as HTMLElement).click();
+            }
+          }}>
+            Fermer
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

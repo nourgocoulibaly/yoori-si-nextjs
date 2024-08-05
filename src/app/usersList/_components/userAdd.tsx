@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { CirclePlus } from 'lucide-react';
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,10 +14,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { app } from "@/lib/firebaseConfig"; // Assurez-vous d'importer votre configuration Firebase
 import { useToast } from "@/components/ui/use-toast";
+import { app } from "@/lib/firebaseConfig"; // Assurez-vous d'importer votre configuration Firebase
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { useState } from "react";
 
 interface User {
   id: string;
@@ -76,11 +78,11 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Ajouter un utilisateur</Button>
+        <Button variant="outline"><CirclePlus className='h-3.5 w-3.5' /> <span>Ajouter</span></Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Ajouter un utilisateur</DialogTitle>
+          <DialogTitle>Ajouter</DialogTitle>
           <DialogDescription>
             Entrez les informations de l&apos;utilisateur ci-dessous. Cliquez sur enregistrer lorsque vous avez terminé.
           </DialogDescription>

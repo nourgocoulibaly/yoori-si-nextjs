@@ -1,4 +1,5 @@
-"use client";
+"use client"
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
 
 import { useToast } from "@/components/ui/use-toast";
+
 
 interface User {
   id: string;
@@ -41,6 +43,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
   const { toast } = useToast();
 
+
   useEffect(() => {
     async function fetchData() {
       const users = await getUserList();
@@ -59,60 +62,46 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   }, []);
 
   const handleSave = async () => {
-    try {
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-
-      if (password && currentUser) {
-        // Mise à jour du mot de passe de l'utilisateur
-        await updatePassword(currentUser, password);
-        toast({
-          title: "✅ Mot de passe mis à jour !",
-          description: "Votre mot de passe a été mis à jour avec succès.",
-        });
-      } else if (password) {
-        toast({
-          title: "Erreur",
-          description: "Vous devez être connecté pour changer le mot de passe.",
-          variant: 'destructive',
-        });
+    if (password) {
+      try {
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          await updatePassword(currentUser, password);
+        } else {
+          console.error("Aucun utilisateur authentifié");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour du mot de passe:", error);
       }
-
-      // Mise à jour des informations de l'utilisateur dans Firestore
-      const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
-
-      const db = getFirestore();
-      const userDoc = doc(db, "admins", user.id);
-      await updateDoc(userDoc, updatedUser);
-
-      toast({
-        title: "✅ Données utilisateur mises à jour avec succès !",
-        description: "Les informations de l'utilisateur ont été mises à jour dans Firestore.",
-      });
-
-      onSave(updatedUser);
-
-      // Mettre à jour la liste des utilisateurs après la sauvegarde
-      const users = await getUserList();
-      const completeUsers = users.map((user: any) => ({
-        ...user,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        direction: user.direction || '',
-        email: user.email || '',
-        ip: user.ip || '',
-        location: user.location || ''
-      }));
-      setUserList(completeUsers);
-
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour:", error);
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la mise à jour. Veuillez réessayer.",
-        variant: 'destructive',
-      });
     }
+
+    const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
+
+    // Mettre à jour les données de l'utilisateur dans Firestore
+    try {
+      const db = getFirestore();
+      const userDoc = doc(db, "admins", user.id); // Assurez-vous que l'ID de l'utilisateur est correct
+      await updateDoc(userDoc, updatedUser);
+      console.log("Données de l'utilisateur mises à jour avec succès dans Firestore");
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des données de l'utilisateur dans Firestore:", error);
+    }
+
+    onSave(updatedUser);
+
+    // Mettre à jour la liste des utilisateurs après la sauvegarde
+    const users = await getUserList();
+    const completeUsers = users.map((user: any) => ({
+      ...user,
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      direction: user.direction || '',
+      email: user.email || '',
+      ip: user.ip || '',
+      location: user.location || ''
+    }));
+    setUserList(completeUsers);
   };
 
   return (
@@ -128,13 +117,13 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         <DialogHeader>
           <DialogTitle>Modifier le profil</DialogTitle>
           <DialogDescription>
-            Modifiez votre profil ici. Cliquez sur Enregistrer lorsque vous avez terminé.
+          Modifiez votre profil ici. Cliquez sur Enregistrer lorsque vous avez terminé.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="firstName" className="text-right">
-              Prénoms
+            Prénoms
             </Label>
             <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="col-span-3" />
           </div>
@@ -178,6 +167,10 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         <DialogFooter>
           <Button type="button" onClick={() => {
             handleSave();
+            toast({
+              title: "✅ Demande envoyée avec succès !",
+              description: "Cette action ne peut pas être annulée. Cela modifiera directement vos données du serveur.",
+            });
           }}>
             Sauvegarder
           </Button>
@@ -190,5 +183,5 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

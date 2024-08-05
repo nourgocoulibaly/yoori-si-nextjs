@@ -170,6 +170,12 @@ export default function AdminNavbar({
           Utilisateurs
         </Link>
         <Link
+          href="/adminsList"
+          className='text-muted-foreground transition-colors hover:text-foreground'
+        >
+          Administrateurs
+        </Link>
+        <Link
           href="/adminChatbot"
           className='text-muted-foreground transition-colors hover:text-foreground'
         >
@@ -220,6 +226,12 @@ export default function AdminNavbar({
               className='text-muted-foreground transition-colors hover:text-foreground'
             >
               Utilisateurs
+            </Link>
+            <Link
+              href="/adminsList"
+              className='text-muted-foreground transition-colors hover:text-foreground'
+            >
+              Administrateurs
             </Link>
             <Link
               href="/adminChatbot"

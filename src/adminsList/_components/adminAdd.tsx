@@ -33,7 +33,7 @@ interface AddUserDialogProps {
   onSave: (user: User) => void;
 }
 
-export function AddUserDialog({ onSave }: AddUserDialogProps) {
+export function AddAdminDialog({ onSave }: AddUserDialogProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [direction, setDirection] = useState("");
@@ -42,16 +42,15 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
   const [ip, setIp] = useState("");
   const [location, setLocation] = useState("");
   const { toast } = useToast();
-  const db = getFirestore(app);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
   const handleAddUser = async () => {
-    // Validation des champs
-    if (!email || !password || !firstName || !lastName || !direction) {
+    if (!email || !password) {
       toast({
         title: "Erreur",
-        description: "Tous les champs obligatoires doivent être remplis.",
-        variant: "destructive",
+        description: "L'email et le mot de passe sont requis.",
+        variant: 'destructive',
       });
       return;
     }
@@ -61,7 +60,7 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const userId = userCredential.user.uid;
 
-      // Ajouter les informations de l'utilisateur dans Firestore
+      // Créer l'objet utilisateur avec les données supplémentaires
       const newUser: User = {
         id: userId,
         firstName,
@@ -72,29 +71,24 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
         location,
       };
 
-      await addDoc(collection(db, "users"), newUser);
+      // Ajouter les informations de l'utilisateur dans Firestore dans la collection 'admins'
+      await addDoc(collection(db, "admins"), newUser);
 
       toast({
         title: "✅ Utilisateur ajouté avec succès !",
         description: "L'utilisateur a été ajouté à la base de données et un compte a été créé.",
       });
 
+      // Appeler la fonction onSave pour notifier le parent de l'ajout
       onSave(newUser);
+
     } catch (e) {
-      if (e instanceof Error) {
-        toast({
-          title: "Erreur",
-          description: `Erreur lors de l'ajout de l'utilisateur : ${e.message}`,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Erreur",
-          description: "Une erreur inconnue est survenue.",
-          variant: "destructive",
-        });
-      }
       console.error("Erreur lors de l'ajout de l'utilisateur: ", e);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la création du compte. Veuillez réessayer.",
+        variant: 'destructive',
+      });
     }
   };
 

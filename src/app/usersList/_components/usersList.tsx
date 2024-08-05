@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/table"
 
 import { collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
-import { MoreHorizontal } from "lucide-react"
+import { CirclePlus, MoreHorizontal } from "lucide-react"
 import { useEffect, useState } from "react"
 import { DataModif } from "./dataModif"
 import { AddUserDialog } from "./userAdd"; // Importer le composant AddUserDialog
@@ -124,7 +124,15 @@ export default function UsersList() {
             Gérez vos utilisateurs et consultez leurs détails.        
           </CardDescription>
           <div className='ml-auto flex items-center gap-2 justify-end'>
-            
+            <Button
+              variant='outline'
+              size='sm'
+              className='h-7 gap-1 text-sm'
+              onClick={() => setIsAddUserDialogOpen(true)}
+            >
+              <CirclePlus className='h-3.5 w-3.5' />
+              <span className='sr-only sm:not-sr-only'>Ajouter</span>
+            </Button>
             {isAddUserDialogOpen && (
               <AddUserDialog
                 onSave={(newUser) => {

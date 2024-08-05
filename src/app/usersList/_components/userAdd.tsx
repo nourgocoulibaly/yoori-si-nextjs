@@ -82,7 +82,7 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Ajouter</DialogTitle>
+          <DialogTitle>Ajouter un utilisateur</DialogTitle>
           <DialogDescription>
             Entrez les informations de l&apos;utilisateur ci-dessous. Cliquez sur enregistrer lorsque vous avez terminé.
           </DialogDescription>

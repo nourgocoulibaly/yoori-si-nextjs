@@ -26,10 +26,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
+import { collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
 import { MoreHorizontal } from "lucide-react"
 import { useEffect, useState } from "react"
-
+import { DataModif } from "./dataModif"; // Importer le composant DialogDemo
 
 async function getUserIP() {
   const res = await fetch('https://api.ipify.org?format=json');
@@ -44,11 +44,23 @@ interface User {
   direction: string;
   email: string;
   ip?: string;
+  location?: string; // Added location property
 }
 
 export default function UsersList() {
   const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null); // État pour l'utilisateur sélectionné
   const db = getFirestore(); // Added this line to initialize 'db'
+
+  const handleDelete = async (userId: string) => {
+    try {
+      const userRef = doc(db, "users", userId);
+      await deleteDoc(userRef);
+      setUsers(users.filter(user => user.id !== userId));
+    } catch (error) {
+      console.error("Erreur lors de la suppression de l'utilisateur :", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -64,8 +76,17 @@ export default function UsersList() {
             lastName: data.lastName,
             direction: data.direction,
             email: data.email,
-            ip: data.ip
+            ip: data.ip,
+            location: data.location // Added location property
           };
+        }).sort((a, b) => {
+          if (a.direction < b.direction) return -1;
+          if (a.direction > b.direction) return 1;
+          if ((a.location || '') < (b.location || '')) return -1; // Sort by location
+          if ((a.location || '') > (b.location || '')) return 1;
+          if ((a.ip || '') < (b.ip || '')) return -1; // Handle undefined IP
+          if ((a.ip || '') > (b.ip || '')) return 1;  // Handle undefined IP
+          return 0;
         });
         setUsers(usersData);
         console.log("Toutes les données des utilisateurs :", usersData);
@@ -134,8 +155,8 @@ export default function UsersList() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Modifier</DropdownMenuItem>
-                        <DropdownMenuItem>Supprimer</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSelectedUser(user)}>Modifier</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDelete(user.id)}>Supprimer</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -146,10 +167,19 @@ export default function UsersList() {
         </CardContent>
         <CardFooter>
           <div className="text-xs text-muted-foreground">
-            Affichage de <strong>{users.length}</strong> Utilisateurs.
+            Affichage d&apos;Un Total de <strong>{users.length}</strong> Utilisateurs.
           </div>
         </CardFooter>
       </Card>
+      {selectedUser && (
+        <DataModif
+          user={selectedUser}
+          onSave={(updatedUser) => {
+            setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u));
+            setSelectedUser(null);
+          }}
+        />
+      )}
     </div>
   )
 }

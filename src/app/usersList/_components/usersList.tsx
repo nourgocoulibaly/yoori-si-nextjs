@@ -28,9 +28,10 @@ import {
 } from "@/components/ui/table"
 
 import { collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
-import { MoreHorizontal, CirclePlus } from "lucide-react"
+import { CirclePlus, MoreHorizontal } from "lucide-react"
 import { useEffect, useState } from "react"
-import { DataModif } from "./dataModif"; // Importer le composant DialogDemo
+import { DataModif } from "./dataModif"
+import { AddUserDialog } from "./userAdd"; // Importer le composant AddUserDialog
 
 async function getUserIP() {
   const res = await fetch('https://api.ipify.org?format=json');
@@ -45,13 +46,14 @@ interface User {
   direction: string;
   email: string;
   ip?: string;
-  location?: string; // Added location property
+  location?: string;
 }
 
 export default function UsersList() {
   const [users, setUsers] = useState<User[]>([]);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null); // État pour l'utilisateur sélectionné
-  const db = getFirestore(); // Added this line to initialize 'db'
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
+  const db = getFirestore();
 
   const handleDelete = async (userId: string) => {
     try {
@@ -69,8 +71,7 @@ export default function UsersList() {
         const usersCollection = collection(db, 'users');
         const usersSnapshot = await getDocs(usersCollection);
         const usersData = usersSnapshot.docs.map(doc => {
-          const data = doc.data() as User; // Cast data to User type
-          console.log("Données de l'utilisateur :", data);
+          const data = doc.data() as User;
           return {
             id: doc.id,
             firstName: data.firstName,
@@ -78,26 +79,25 @@ export default function UsersList() {
             direction: data.direction,
             email: data.email,
             ip: data.ip,
-            location: data.location // Added location property
+            location: data.location
           };
         }).sort((a, b) => {
           if (a.direction < b.direction) return -1;
           if (a.direction > b.direction) return 1;
-          if ((a.location || '') < (b.location || '')) return -1; // Sort by location
+          if ((a.location || '') < (b.location || '')) return -1;
           if ((a.location || '') > (b.location || '')) return 1;
-          if ((a.ip || '') < (b.ip || '')) return -1; // Handle undefined IP
-          if ((a.ip || '') > (b.ip || '')) return 1;  // Handle undefined IP
+          if ((a.ip || '') < (b.ip || '')) return -1;
+          if ((a.ip || '') > (b.ip || '')) return 1;
           return 0;
         });
         setUsers(usersData);
-        console.log("Toutes les données des utilisateurs :", usersData);
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs :", error);
       }
     };
 
     fetchUsers();
-  }, [db]); // Ajout de 'db' comme dépendance
+  }, [db]);
 
   useEffect(() => {
     const updateUserIP = async () => {
@@ -113,7 +113,7 @@ export default function UsersList() {
     if (users.length > 0) {
       updateUserIP();
     }
-  }, [users, db]); // Ajout de 'db' comme dépendance manquante
+  }, [users, db]);
 
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40 '>
@@ -124,29 +124,33 @@ export default function UsersList() {
             Gérez vos utilisateurs et consultez leurs détails.        
           </CardDescription>
           <div className='ml-auto flex items-center gap-2 justify-end'>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      className='h-7 gap-1 text-sm'
-                    >
-
-                      <CirclePlus className='h-3.5 w-3.5' />
-                      <span className='sr-only sm:not-sr-only'>Ajouter</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                </DropdownMenu>
+            <Button
+              variant='outline'
+              size='sm'
+              className='h-7 gap-1 text-sm'
+              onClick={() => setIsAddUserDialogOpen(true)}
+            >
+              <CirclePlus className='h-3.5 w-3.5' />
+              <span className='sr-only sm:not-sr-only'>Ajouter</span>
+            </Button>
+            {isAddUserDialogOpen && (
+              <AddUserDialog
+                onSave={(newUser) => {
+                  setUsers([...users, newUser]);
+                  setIsAddUserDialogOpen(false);
+                }}
+              />
+            )}
           </div>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nom & Prenoms</TableHead>
+                <TableHead>Nom & Prénoms</TableHead>
                 <TableHead>Direction</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Addresse IP</TableHead>
+                <TableHead>Adresse IP</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>

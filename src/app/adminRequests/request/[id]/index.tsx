@@ -214,10 +214,14 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 						</View>
 					<View style={styles.tableRow}>
 						<View style={styles.tableColFull}>
-						<Text style={styles.tableCell}>Date de Signalisation: {formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}</Text>
+						<Text style={styles.tableCell}>
+							Date de Signalisation: {formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}
+						</Text>
 						</View>
 						<View style={styles.tableColFull}>
-						<Text style={styles.tableCell}>Date de l&apos;Intervention: {formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}</Text>
+						<Text style={styles.tableCell}>
+							Date de l&apos;Intervention: {formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
+						</Text>
 					</View>
 						</View>
 					<View style={styles.tableRow}>
@@ -300,8 +304,8 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.log("Données de la requête:", request);
 			setFormData({
 				...request,
-				createdAt: request.createdAt?.toDate() || null,
-				interventionDate: request.interventionDate?.toDate() || null,
+				createdAt: request.createdAt?.toDate ? request.createdAt.toDate() : null,
+				interventionDate: request.interventionDate?.toDate ? request.interventionDate.toDate() : null,
 			});
 		}
 	}, [request]);

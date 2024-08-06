@@ -215,20 +215,15 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 						</View>
 					<View style={styles.tableRow}>
 						<View style={styles.tableColFull}>
-						<Text style={styles.tableCell}>
-							Date de Signalisation: {formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}
-						</Text>
+							<Text style={styles.tableCell}>
+								Date de Signalisation: {formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}
+							</Text>
 						</View>
-						{/* <View style={styles.tableColFull}>
+						<View style={styles.tableColFull}>
 							<Text style={styles.tableCell}>
 								Date de l&apos;Intervention: {formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
 							</Text>
-						</View> */}
-						<View style={styles.tableColFull}>
-						<Text style={styles.tableCell}>
-							Date de l&apos;Intervention: {formData.interventionDate ? new Date(formData.interventionDate).toLocaleString('fr-FR') : 'Non définie'}
-						</Text>
-					</View>
+						</View>
 						</View>
 					<View style={styles.tableRow}>
 							<View style={styles.tableCol}>
@@ -654,11 +649,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "} <br/>
 																<Badge>
-																	{formData.interventionDate 
-																			? (formData.interventionDate instanceof Date 
-																					? formData.interventionDate.toLocaleString('fr-FR')
-																					: new Date(formData.interventionDate).toLocaleString('fr-FR'))
-																			: 'Non définie'}					
+																{formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
 																</Badge> 																				
 														</CardTitle>
 															<Popover>

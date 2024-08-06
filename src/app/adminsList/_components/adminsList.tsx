@@ -31,7 +31,7 @@ import { collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "fi
 import { CirclePlus, MoreHorizontal } from "lucide-react"
 import { useEffect, useState } from "react"
 import { DataModif } from "./dataModif"
-import { AddUserDialog } from "./userAdd"; // Importer le composant AddUserDialog
+import { AddAdminDialog } from "./adminAdd";
 
 async function getUserIP() {
   const res = await fetch('https://api.ipify.org?format=json');
@@ -49,15 +49,15 @@ interface User {
   location?: string;
 }
 
-export default function UsersList() {
+export default function AdminsList() {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
+  const [isAddAdminDialogOpen, setIsAddAdminDialogOpen] = useState(false);
   const db = getFirestore();
 
   const handleDelete = async (userId: string) => {
     try {
-      const userRef = doc(db, "users", userId);
+      const userRef = doc(db, "admins", userId);
       await deleteDoc(userRef);
       setUsers(users.filter(user => user.id !== userId));
     } catch (error) {
@@ -68,7 +68,7 @@ export default function UsersList() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const usersCollection = collection(db, 'users');
+        const usersCollection = collection(db, 'admins');
         const usersSnapshot = await getDocs(usersCollection);
         const usersData = usersSnapshot.docs.map(doc => {
           const data = doc.data() as User;
@@ -104,7 +104,7 @@ export default function UsersList() {
       const ip = await getUserIP();
       users.forEach(async (user) => {
         if (!user.ip) {
-          const userRef = doc(db, "users", user.id);
+          const userRef = doc(db, "admins", user.id);
           await updateDoc(userRef, { ip });
         }
       });
@@ -128,16 +128,16 @@ export default function UsersList() {
               variant='outline'
               size='sm'
               className='h-7 gap-1 text-sm'
-              onClick={() => setIsAddUserDialogOpen(true)}
+              onClick={() => setIsAddAdminDialogOpen(true)}
             >
               <CirclePlus className='h-3.5 w-3.5' />
               <span className='sr-only sm:not-sr-only'>Ajouter</span>
             </Button>
-            {isAddUserDialogOpen && (
-              <AddUserDialog
+            {isAddAdminDialogOpen && (
+              <AddAdminDialog
                 onSave={(newUser) => {
                   setUsers([...users, newUser]);
-                  setIsAddUserDialogOpen(false);
+                  setIsAddAdminDialogOpen(false);
                 }}
               />
             )}

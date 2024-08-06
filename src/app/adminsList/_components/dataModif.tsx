@@ -73,7 +73,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
 
       const db = getFirestore();
-      const userDoc = doc(db, "users", user.id);
+      const userDoc = doc(db, "admins", user.id);
       await updateDoc(userDoc, updatedUser);
 
       // Mise à jour du mot de passe si nécessaire

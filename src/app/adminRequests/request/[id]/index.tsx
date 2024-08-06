@@ -648,9 +648,11 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<div className='grid gap-3'>
 														<CardTitle>
 															Date d&apos;Intervention {" "} <br/>
-																<Badge>
-																{formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
-																</Badge> 																				
+															<Badge>
+																{formData.interventionDate 
+																	? new Date(formData.interventionDate).toLocaleString() 
+																	: 'Non définie'}
+															</Badge>																				
 														</CardTitle>
 															<Popover>
 																<PopoverTrigger asChild>

@@ -654,16 +654,11 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "} <br/>
 																<Badge>
-																{formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
-																	{/* {formData.interventionDate instanceof Date 
-																		? formData.interventionDate.toLocaleString('fr-FR', {
-																				year: 'numeric',
-																				month: 'long',
-																				day: 'numeric',
-																				hour: '2-digit',
-																				minute: '2-digit'
-																			})
-																		: 'Non définie'} */}
+																	{formData.interventionDate 
+																			? (formData.interventionDate instanceof Date 
+																					? formData.interventionDate.toLocaleString('fr-FR')
+																					: new Date(formData.interventionDate).toLocaleString('fr-FR'))
+																			: 'Non définie'}					
 																</Badge> 																				
 														</CardTitle>
 															<Popover>

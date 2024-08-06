@@ -20,11 +20,13 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+
 import { cn } from "@/lib/utils";
 
 import { ChevronLeft, File } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+
 import {
 	Card,
 	CardContent,
@@ -66,14 +68,8 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
-
 import { Document, Image, PDFDownloadLink, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
-// const options = [
-//   { label: "React", value: "react" },
-//   { label: "Vue", value: "vue" },
-//   { label: "Svelte", value: "svelte" },
-// ];
 
 const styles = StyleSheet.create({
   page: { padding: 30 },
@@ -170,84 +166,85 @@ const styles = StyleSheet.create({
 const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-		<View style={styles.header}>  
-        	<Image style={styles.headerImage} src="/mclu.png" />              
-						<View style={{ alignItems: 'center' }}>  {/* Ajout de l'alignement centré */}
-							<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
-							<Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
-							<Text style={styles.headerText}> (DMISSA)</Text>       
-							<Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
-							<Text style={styles.headerText}>********************************</Text>
-							<Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
-						</View>
-    	</View>
-
-		<View style={styles.section}>
-			<Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
-      <Text style={styles.text}>Id de la fiche : {params.id}</Text> 
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColFull}>
-              <Text style={styles.tableCell}>Nom & Prénoms: {formData.userName}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCellHeader}>Direction/Service:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{formData.userDirection}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{formData.requestContent}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCellHeader}>Domaine de l&apos;Intervention:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{formData.requestDomain}</Text>
-            </View>
-          </View>
-				<View style={styles.tableRow}>
-					<View style={styles.tableColFull}>
-					<Text style={styles.tableCell}>Date de Signalisation: {formData.createdAt?.toDate()?.toLocaleString() || ''}</Text>
-					</View>
-					<View style={styles.tableColFull}>
-
-					<Text style={styles.tableCell}>Date de l&apos;Intervention: {formData.interventionDate?.toDate()?.toLocaleString() || ''}</Text>
-					<Text style={styles.tableCell}>Date de l&apos;Intervention: {new Date(formData.interventionDate).toLocaleString()}</Text>
+			<View style={styles.header}>  
+						<Image style={styles.headerImage} src="/mclu.png" />              
+							<View style={{ alignItems: 'center' }}>  {/* Ajout de l'alignement centré */}
+								<Text style={styles.headerText}>DIRECTION DE LA MODERNISATION, DE L&apos;INFORMATIQUE,</Text>       
+								<Text style={styles.headerText}> DE LA SIMPLIFICATION ET DE LA SECURISATION DES ACTES</Text>       
+								<Text style={styles.headerText}> (DMISSA)</Text>       
+								<Text style={styles.headerText}>SOUS DIRECTION DE L&apos;INFORMATIQUE</Text>
+								<br/>
+								<Text style={styles.headerText}>********************************</Text>
+								<Text style={styles.headerText}>SERVICE INFRASTRUCTURE INFORMATIQUE</Text>
+							</View>
 				</View>
-          </View>
-         <View style={styles.tableRow}>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCellHeader}>Description de l&apos;Intervention:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{formData.requestDescription}</Text>
-            </View> 
-          </View>      
-          <View style={styles.tableRow}>
-            <View style={styles.tableColFull}>
-              <Text style={styles.tableCell}>Intervenants: {formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
-            </View>
-          </View>
+
+				<View style={styles.section}>
+					<Text style={styles.title}>FICHE D&apos;INTERVENTION</Text>
+					<Text style={styles.text}>Id de la fiche : {params.id}</Text> 
+					<View style={styles.table}>
+						<View style={styles.tableRow}>
+							<View style={styles.tableColFull}>
+								<Text style={styles.tableCell}>Nom & Prénoms: {formData.userName}</Text>
+							</View>
+						</View>
+						<View style={styles.tableRow}>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCellHeader}>Direction/Service:</Text>
+							</View>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCell}>{formData.userDirection}</Text>
+							</View>
+						</View>
+						<View style={styles.tableRow}>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCellHeader}>Nature de l&apos;Intervention:</Text>
+							</View>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCell}>{formData.requestContent}</Text>
+							</View>
+						</View>
+						<View style={styles.tableRow}>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCellHeader}>Domaine de l&apos;Intervention:</Text>
+							</View>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCell}>{formData.requestDomain}</Text>
+							</View>
+						</View>
 					<View style={styles.tableRow}>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCellHeader}>Statut de l&apos;Intervention:</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{formData.requestStatus}</Text>
-            </View> 
-          </View>
-        </View>
-      </View>
+						<View style={styles.tableColFull}>
+						<Text style={styles.tableCell}>Date de Signalisation: {formData.createdAt?.toDate()?.toLocaleString() || ''}</Text>
+						</View>
+						<View style={styles.tableColFull}>
+
+						<Text style={styles.tableCell}>Date de l&apos;Intervention: {formData.interventionDate?.toDate()?.toLocaleString() || ''}</Text>
+						<Text style={styles.tableCell}>Date de l&apos;Intervention: {new Date(formData.interventionDate).toLocaleString()}</Text>
+					</View>
+						</View>
+					<View style={styles.tableRow}>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCellHeader}>Description de l&apos;Intervention:</Text>
+							</View>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCell}>{formData.requestDescription}</Text>
+							</View> 
+						</View>      
+						<View style={styles.tableRow}>
+							<View style={styles.tableColFull}>
+								<Text style={styles.tableCell}>Intervenants: {formData.requestAdminSolved ? formData.requestAdminSolved.join(', ') : ''}</Text>
+							</View>
+						</View>
+						<View style={styles.tableRow}>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCellHeader}>Statut de l&apos;Intervention:</Text>
+							</View>
+							<View style={styles.tableCol}>
+								<Text style={styles.tableCell}>{formData.requestStatus}</Text>
+							</View> 
+						</View>
+					</View>
+				</View>
     </Page>
   </Document>
 );
@@ -345,15 +342,17 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			requestDomain: requestDomainRef.current?.textContent || formData.requestDomain,
 			requestStatus: requestStatusRef.current?.textContent || formData.requestStatus,
 			requestDescription: requestDescriptionRef.current?.value || formData.requestDescription,
+			interventionDate: date ? date : formData.interventionDate,
+			requestAdminSolved: value
 		};
 
-		// Filtrer les champs indéfinis
+		// Filtrer les champs indéfinis et null
 		const filteredFormData = Object.fromEntries(
-			Object.entries(updatedFormData).filter(([key, value]) => value !== undefined && key !== 'createdAt')
+			Object.entries(updatedFormData).filter(([key, value]) => value !== undefined && value !== null && key !== 'createdAt')
 		);
 
 		if (!filteredFormData.requestContent || !filteredFormData.requestDomain || !filteredFormData.requestStatus) {
-			alert("⛔Veuillez remplir tous les champs");
+			alert("⛔Veuillez remplir tous les champs obligatoires");
 			setLoading(false);
 			return;
 		}
@@ -366,19 +365,14 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 				// Mettre à jour l'état avec les nouvelles valeurs
 				setFormData(filteredFormData as typeof formData);
 
-				// Réinitialiser les champs du formulaire
-				requestContentRef.current!.value = "";
-				requestDomainRef.current!.textContent = "";
-				requestStatusRef.current!.textContent = "";
-				requestDescriptionRef.current!.value = "";
-				requestAdminSolvedRef.current!.textContent = "";
-
+				alert("✅ Demande mise à jour avec succès !");
 			} catch (error) {
-				console.log("⛔Impossible d'ajouter au document", error);
-				alert("⛔Erreur d'Enregistrement, Reessayer plus tard!");
+				console.error("⛔Erreur lors de la mise à jour du document", error);
+				alert("⛔Erreur d'Enregistrement, Veuillez réessayer plus tard!");
+			} finally {
+				setLoading(false);
 			}
 		}
-		setLoading(false);
 	};
 
 	const updateAdminsInFirestore = async (selectedAdmins: string[]) => {

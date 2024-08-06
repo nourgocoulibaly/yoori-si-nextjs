@@ -209,16 +209,19 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
           </View>
           <View style={styles.tableRow}>
             <View style={styles.tableCol}>
-              <Text style={styles.tableCellHeader}>Domaine d&apos;Intervention:</Text>
+              <Text style={styles.tableCellHeader}>Domaine de l&apos;Intervention:</Text>
             </View>
             <View style={styles.tableCol}>
               <Text style={styles.tableCell}>{formData.requestDomain}</Text>
             </View>
           </View>
-					<View style={styles.tableRow}>
-            <View style={styles.tableColFull}>
-              <Text style={styles.tableCell}>Date d&apos;Intervention: {new Date(formData.interventionDate).toLocaleString()}</Text>
-            </View>
+				<View style={styles.tableRow}>
+					<View style={styles.tableColFull}>
+					<Text style={styles.tableCell}>Date de Signalisation: {formData.createdAt?.toDate()?.toLocaleString() || ''}</Text>
+					</View>
+					<View style={styles.tableColFull}>
+					<Text style={styles.tableCell}>Date de l&apos;Intervention: {new Date(formData.interventionDate).toLocaleString()}</Text>
+				</View>
           </View>
          <View style={styles.tableRow}>
             <View style={styles.tableCol}>
@@ -637,8 +640,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 															Date d&apos;Intervention {" "}
 															<Badge>
 																	{formData.interventionDate?.toString()?.toLocaleString() || ''}
-															</Badge>
-																						
+															</Badge>																				
 														</CardTitle>
 															<Popover>
 																<PopoverTrigger asChild>

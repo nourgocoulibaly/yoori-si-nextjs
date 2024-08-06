@@ -214,12 +214,10 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 						</View>
 					<View style={styles.tableRow}>
 						<View style={styles.tableColFull}>
-						<Text style={styles.tableCell}>Date de Signalisation: {formData.createdAt?.toDate()?.toLocaleString() || ''}</Text>
+						<Text style={styles.tableCell}>Date de Signalisation: {formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}</Text>
 						</View>
 						<View style={styles.tableColFull}>
-
-						<Text style={styles.tableCell}>Date de l&apos;Intervention: {formData.interventionDate?.toDate()?.toLocaleString() || ''}</Text>
-						<Text style={styles.tableCell}>Date de l&apos;Intervention: {new Date(formData.interventionDate).toLocaleString()}</Text>
+						<Text style={styles.tableCell}>Date de l&apos;Intervention: {formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}</Text>
 					</View>
 						</View>
 					<View style={styles.tableRow}>
@@ -260,8 +258,8 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		requestContent: string;
 		requestDomain: string;
 		requestStatus: string;
-		createdAt: { toDate: () => DateConstructor };
-		interventionDate: { toDate: () => Date };
+		createdAt: Date | null;
+		interventionDate: Date | null;
 		requestDescription: string;
 		requestAdminSolved: string[];
 	}>({
@@ -271,8 +269,8 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		requestContent: '',
 		requestDomain: '',
 		requestStatus: '',
-		createdAt: { toDate: () => Date },
-		interventionDate: { toDate: () => new Date() },
+		createdAt: null,
+		interventionDate: null,
 		requestDescription: '',
 		requestAdminSolved: []
 	});
@@ -302,7 +300,8 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.log("Données de la requête:", request);
 			setFormData({
 				...request,
-				interventionDate: request.interventionDate || { toDate: () => new Date() },
+				createdAt: request.createdAt?.toDate() || null,
+				interventionDate: request.interventionDate?.toDate() || null,
 			});
 		}
 	}, [request]);
@@ -387,20 +386,15 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 
 	const updateDateInFirestore = async (selectedDate: Date) => {
 		try {
-			const timestamp = selectedDate.getTime();
 			const docRef = doc(db, 'userRequests', id as string);
-			await updateDoc(docRef, { interventionDate: { toDate: () => new Date(timestamp) } });
+			await updateDoc(docRef, { interventionDate: selectedDate });
 			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
 
 			// Mettre à jour l'état avec la nouvelle date
 			setFormData(prevFormData => ({
 				...prevFormData,
-				interventionDate: { toDate: () => new Date(timestamp) }
+				interventionDate: selectedDate
 			}));
-			// setFormData(prevFormData => ({
-			//	...prevFormData,
-			//	interventionDate: timestamp.toString() // Convertir en chaîne de caractères
-			// }));
 		} catch (error) {
 			console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
 		}
@@ -453,9 +447,8 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													DMISSA
 												</Badge>
 												<Badge className="flex justify-end ml-auto sm:ml-0">
-													Envoyé le {request.createdAt?.toDate()?.toLocaleString() || ''}
+													Envoyé le {formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}
 												</Badge>		
-											
 										</div>
 										<div className='grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8'>
 											<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8'>
@@ -650,7 +643,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "}
 															<Badge>
-																	{formData.interventionDate?.toString()?.toLocaleString() || ''}
+																	{formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
 															</Badge>																				
 														</CardTitle>
 															<Popover>
@@ -675,13 +668,6 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																			if (selectedDate) {
 																				updateDateInFirestore(selectedDate);
 																			}
-																		//	if (selectedDate) {
-																		//		updateDateInFirestore(selectedDate);
-																		//		setFormData((prevFormData) => ({
-																		//			...prevFormData,
-																		//			interventionDate: selectedDate.getTime().toString() // Convertir en chaîne de caractères
-																		//		}));
-																		//	}
 																		}}
 																		initialFocus
 																	/>

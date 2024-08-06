@@ -38,7 +38,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   const [location, setLocation] = useState(user.location || '');
   const [password, setPassword] = useState('');
   const [userList, setUserList] = useState<User[]>([]);
-
+  const [dialogOpen, setDialogOpen] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -116,11 +116,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   };
 
   return (
-    <Dialog open={true} onOpenChange={(isOpen) => {
-      if (!isOpen) {
-        // Logique pour fermer le dialogue
-      }
-    }}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Modifier le profil</Button>
       </DialogTrigger>
@@ -176,7 +172,12 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Sauvegarder</Button>
+          <Button type="button" onClick={handleSave}>
+            Sauvegarder
+          </Button>
+          <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+            Fermer
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

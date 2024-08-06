@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
 });
 
 const MyDocument = ({ formData, params }: { formData: any, params: { id: string } }) => (
+
   <Document>
     <Page size="A4" style={styles.page}>
 			<View style={styles.header}>  
@@ -250,6 +251,7 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
     </Page>
   </Document>
 );
+
 
 const RequestPage = ({ params, data }: { params: { id: string }; data: any }) => {
 	const router = useRouter();
@@ -646,9 +648,17 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<div className='grid gap-3'>
 														<CardTitle>
 															Date d&apos;Intervention {" "}
-															<Badge>
-																	{formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
-															</Badge>																				
+																<Badge>
+																	{formData.interventionDate instanceof Date 
+																		? formData.interventionDate.toLocaleString('fr-FR', {
+																				year: 'numeric',
+																				month: 'long',
+																				day: 'numeric',
+																				hour: '2-digit',
+																				minute: '2-digit'
+																			})
+																		: 'Non définie'}
+																</Badge> 																				
 														</CardTitle>
 															<Popover>
 																<PopoverTrigger asChild>

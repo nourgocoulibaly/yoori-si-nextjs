@@ -13,9 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getAuth, updatePassword } from "firebase/auth";
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { doc, getFirestore, updateDoc } from "firebase/firestore"; // Importer les fonctions nécessaires
 import { useEffect, useState } from 'react';
-import { getUserList } from '../api/utils'; // Assurez-vous que ce chemin est correct
+import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
+
 import { useToast } from "@/components/ui/use-toast";
 
 interface User {
@@ -36,23 +37,23 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   const [ip, setIp] = useState(user.ip || '');
   const [location, setLocation] = useState(user.location || '');
   const [password, setPassword] = useState('');
-  const [dialogOpen, setDialogOpen] = useState(true);
+  const [userList, setUserList] = useState<User[]>([]);
 
   const { toast } = useToast();
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const users = await getUserList();
-        // Traitez les données des utilisateurs si nécessaire
-      } catch (error) {
-        console.error("Erreur lors de la récupération des utilisateurs:", error);
-        toast({
-          title: "Erreur",
-          description: "Impossible de récupérer la liste des utilisateurs.",
-          variant: 'destructive',
-        });
-      }
+      const users = await getUserList();
+      const completeUsers = users.map((user: any) => ({
+        ...user,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        direction: user.direction || '',
+        email: user.email || '',
+        ip: user.ip || '',
+        location: user.location || ''
+      }));
+      setUserList(completeUsers);
     }
     fetchData();
   }, []);
@@ -63,6 +64,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       const currentUser = auth.currentUser;
 
       if (password && currentUser) {
+        // Mise à jour du mot de passe de l'utilisateur
         await updatePassword(currentUser, password);
         toast({
           title: "✅ Mot de passe mis à jour !",
@@ -76,6 +78,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         });
       }
 
+      // Mise à jour des informations de l'utilisateur dans Firestore
       const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
 
       const db = getFirestore();
@@ -89,8 +92,18 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
       onSave(updatedUser);
 
-      // Fermer le dialogue après la sauvegarde
-      setDialogOpen(false);
+      // Mettre à jour la liste des utilisateurs après la sauvegarde
+      const users = await getUserList();
+      const completeUsers = users.map((user: any) => ({
+        ...user,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        direction: user.direction || '',
+        email: user.email || '',
+        ip: user.ip || '',
+        location: user.location || ''
+      }));
+      setUserList(completeUsers);
 
     } catch (error) {
       console.error("Erreur lors de la mise à jour:", error);
@@ -103,7 +116,11 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   };
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={true} onOpenChange={(isOpen) => {
+      if (!isOpen) {
+        // Logique pour fermer le dialogue
+      }
+    }}>
       <DialogTrigger asChild>
         <Button variant="outline">Modifier le profil</Button>
       </DialogTrigger>
@@ -159,12 +176,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleSave}>
-            Sauvegarder
-          </Button>
-          <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-            Fermer
-          </Button>
+          <Button type="submit">Sauvegarder</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

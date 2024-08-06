@@ -219,9 +219,14 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 							Date de Signalisation: {formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}
 						</Text>
 						</View>
+						{/* <View style={styles.tableColFull}>
+							<Text style={styles.tableCell}>
+								Date de l&apos;Intervention: {formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
+							</Text>
+						</View> */}
 						<View style={styles.tableColFull}>
 						<Text style={styles.tableCell}>
-							Date de l&apos;Intervention: {formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
+							Date de l&apos;Intervention: {formData.interventionDate ? new Date(formData.interventionDate).toLocaleString('fr-FR') : 'Non définie'}
 						</Text>
 					</View>
 						</View>

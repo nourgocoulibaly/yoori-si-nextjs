@@ -44,7 +44,10 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   const [userList, setUserList] = useState<User[]>([]);
   const [dialogOpen, setDialogOpen] = useState(true);
   const { toast } = useToast();
+<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState(false);
+=======
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
 
   useEffect(() => {
     async function fetchData() {
@@ -64,15 +67,37 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   }, []);
 
   const handleSave = async () => {
+<<<<<<< HEAD
     setIsLoading(true);
+=======
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
     try {
       const auth = getAuth();
       const currentUser = auth.currentUser;
 
+<<<<<<< HEAD
+=======
+      if (password && currentUser) {
+        // Mise à jour du mot de passe de l'utilisateur
+        await updatePassword(currentUser, password);
+        toast({
+          title: "✅ Mot de passe mis à jour !",
+          description: "Votre mot de passe a été mis à jour avec succès.",
+        });
+      } else if (password) {
+        toast({
+          title: "Erreur",
+          description: "Vous devez être connecté pour changer le mot de passe.",
+          variant: 'destructive',
+        });
+      }
+
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
       // Mise à jour des informations de l'utilisateur dans Firestore
       const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
 
       const db = getFirestore();
+<<<<<<< HEAD
       const userDoc = doc(db, "users", user.id);
       await updateDoc(userDoc, updatedUser);
 
@@ -96,6 +121,14 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       toast({
         title: "✅ Données utilisateur mises à jour avec succès !",
         description: "Les informations de l'utilisateur ont été mises à jour.",
+=======
+      const userDoc = doc(db, "admins", user.id);
+      await updateDoc(userDoc, updatedUser);
+
+      toast({
+        title: "✅ Données utilisateur mises à jour avec succès !",
+        description: "Les informations de l'utilisateur ont été mises à jour dans Firestore.",
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
       });
 
       onSave(updatedUser);
@@ -113,7 +146,10 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       }));
       setUserList(completeUsers);
 
+<<<<<<< HEAD
       setDialogOpen(false);
+=======
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
     } catch (error) {
       console.error("Erreur lors de la mise à jour:", error);
       toast({
@@ -121,14 +157,21 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         description: "Une erreur est survenue lors de la mise à jour. Veuillez réessayer.",
         variant: 'destructive',
       });
+<<<<<<< HEAD
     } finally {
       setIsLoading(false);
+=======
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
     }
   };
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+<<<<<<< HEAD
       {/* <DialogTrigger asChild>
+=======
+      <DialogTrigger asChild>
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
         <Button variant="outline">Modifier le profil</Button>
       </DialogTrigger> */}
       <DialogContent className="sm:max-w-[425px]">
@@ -183,14 +226,25 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           </div>
         </div>
         <DialogFooter>
+<<<<<<< HEAD
           <Button type="button" onClick={handleSave} disabled={isLoading}>
             {isLoading ? "Sauvegarde en cours..." : "Sauvegarder"}
           </Button>
           <Button type="button" variant="outline" onClick={() => setDialogOpen(false)} disabled={isLoading}>
+=======
+          <Button type="button" onClick={handleSave}>
+            Sauvegarder
+          </Button>
+          <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
             Fermer
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb

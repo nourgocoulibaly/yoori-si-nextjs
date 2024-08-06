@@ -220,7 +220,11 @@ const MyDocument = ({ formData, params }: { formData: any, params: { id: string 
 					<Text style={styles.tableCell}>Date de Signalisation: {formData.createdAt?.toDate()?.toLocaleString() || ''}</Text>
 					</View>
 					<View style={styles.tableColFull}>
+<<<<<<< HEAD
 					<Text style={styles.tableCell}>Date de l&apos;Intervention: {formData.interventionDate?.toDate()?.toLocaleString() || ''}</Text>
+=======
+					<Text style={styles.tableCell}>Date de l&apos;Intervention: {new Date(formData.interventionDate).toLocaleString()}</Text>
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
 				</View>
           </View>
          <View style={styles.tableRow}>
@@ -273,7 +277,11 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		requestDomain: '',
 		requestStatus: '',
 		createdAt: { toDate: () => Date },
+<<<<<<< HEAD
 		interventionDate: { toDate: () => new Date() },
+=======
+		interventionDate: '',
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
 		requestDescription: '',
 		requestAdminSolved: []
 	});
@@ -303,7 +311,11 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.log("Données de la requête:", request);
 			setFormData({
 				...request,
+<<<<<<< HEAD
 				interventionDate: request.interventionDate || { toDate: () => new Date() },
+=======
+				interventionDate: request.interventionDate ? request.interventionDate.toDat() : '',
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
 			});
 		}
 	}, [request]);
@@ -397,10 +409,17 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
 
 			// Mettre à jour l'état avec la nouvelle date
+<<<<<<< HEAD
 			setFormData(prevFormData => ({
 				...prevFormData,
 				interventionDate: { toDate: () => new Date(timestamp) }
 			}));
+=======
+			// setFormData(prevFormData => ({
+			//	...prevFormData,
+			//	interventionDate: timestamp.toString() // Convertir en chaîne de caractères
+			// }));
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
 		} catch (error) {
 			console.error('Erreur lors de la mise à jour de la date d\'intervention dans Firestore:', error);
 		}
@@ -650,7 +669,11 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "}
 															<Badge>
+<<<<<<< HEAD
 																	{formData.interventionDate?.toDate().toLocaleString() || ''}
+=======
+																	{formData.interventionDate?.toString()?.toLocaleString() || ''}
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
 															</Badge>																				
 														</CardTitle>
 															<Popover>
@@ -672,9 +695,19 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																		selected={date}
 																		onSelect={(selectedDate) => {
 																			setDate(selectedDate);
+<<<<<<< HEAD
 																			if (selectedDate) {
 																				updateDateInFirestore(selectedDate);
 																			}
+=======
+																		//	if (selectedDate) {
+																		//		updateDateInFirestore(selectedDate);
+																		//		setFormData((prevFormData) => ({
+																		//			...prevFormData,
+																		//			interventionDate: selectedDate.getTime().toString() // Convertir en chaîne de caractères
+																		//		}));
+																		//	}
+>>>>>>> ab4cd32c84e95ebeed6dd5e34f006e3637015cfb
 																		}}
 																		initialFocus
 																	/>

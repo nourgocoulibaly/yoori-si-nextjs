@@ -636,7 +636,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "}
 															<Badge>
-																	{formData.createdAt?.toDate()?.toLocaleString() || ''}
+																	{formData.interventionDate?.toDate()?.toLocaleString() || ''}
 															</Badge>
 																						
 														</CardTitle>

@@ -649,7 +649,8 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "}
 																<Badge>
-																	{formData.interventionDate instanceof Date 
+																{formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}
+																	{/* {formData.interventionDate instanceof Date 
 																		? formData.interventionDate.toLocaleString('fr-FR', {
 																				year: 'numeric',
 																				month: 'long',
@@ -657,7 +658,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 																				hour: '2-digit',
 																				minute: '2-digit'
 																			})
-																		: 'Non définie'}
+																		: 'Non définie'} */}
 																</Badge> 																				
 														</CardTitle>
 															<Popover>

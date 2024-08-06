@@ -289,7 +289,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.log("Données de la requête:", request);
 			setFormData({
 				...request,
-				interventionDate: request.interventionDate ? request.interventionDate.toString() : '',
+				interventionDate: request.interventionDate ? request.interventionDate.toDate() : '',
 			});
 		}
 	}, [request]);

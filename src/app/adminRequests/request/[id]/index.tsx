@@ -654,7 +654,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "} <br/>
 																<Badge>
-																{formData.interventionDate instanceof Date ? formData.createdAt.toLocaleString() : ''}
+																{formData.interventionDate instanceof Date ? formData.interventionDate.toLocaleString() : ''}
 																	{/* {formData.interventionDate instanceof Date 
 																		? formData.interventionDate.toLocaleString('fr-FR', {
 																				year: 'numeric',

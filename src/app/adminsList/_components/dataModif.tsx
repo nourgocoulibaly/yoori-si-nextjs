@@ -75,9 +75,9 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         console.error("Erreur lors de la mise à jour du mot de passe:", error);
       }
     }
-
-    const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
-
+  
+    const updatedUser = { firstName, lastName, direction, email, ip, location };
+  
     // Mettre à jour les données de l'utilisateur dans Firestore
     try {
       const db = getFirestore();
@@ -85,23 +85,35 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       await updateDoc(userDoc, updatedUser);
       console.log("Données de l'utilisateur mises à jour avec succès dans Firestore");
     } catch (error) {
-      console.error("Erreur lors de la mise à jour des données de l'utilisateur dans Firestore:", error);
+      console.error("Erreur lors de la mise à jour des données de l'utilisateur dans Firestore:", error.message);
+      toast({
+        title: "Erreur",
+        description: `Erreur lors de la mise à jour des données: ${error.message}`,
+      });
     }
-
+  
     onSave(updatedUser);
-
+  
     // Mettre à jour la liste des utilisateurs après la sauvegarde
-    const users = await getUserList();
-    const completeUsers = users.map((user: any) => ({
-      ...user,
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
-      direction: user.direction || '',
-      email: user.email || '',
-      ip: user.ip || '',
-      location: user.location || ''
-    }));
-    setUserList(completeUsers);
+    try {
+      const users = await getUserList();
+      const completeUsers = users.map((user: any) => ({
+        ...user,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        direction: user.direction || '',
+        email: user.email || '',
+        ip: user.ip || '',
+        location: user.location || ''
+      }));
+      setUserList(completeUsers);
+    } catch (error) {
+      console.error("Erreur lors de la récupération de la liste des utilisateurs:", error.message);
+      toast({
+        title: "Erreur",
+        description: `Erreur lors de la récupération de la liste des utilisateurs: ${error.message}`,
+      });
+    }
   };
 
   return (

@@ -259,7 +259,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 		requestDomain: '',
 		requestStatus: '',
 		createdAt: { toDate: () => Date },
-		interventionDate: { toDate: () => Date },
+		interventionDate: '',
 		requestDescription: '',
 		requestAdminSolved: [] as string[]
 	});
@@ -289,7 +289,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			console.log("Données de la requête:", request);
 			setFormData({
 				...request,
-				interventionDate: request.interventionDate ? request.interventionDate.toDate() : '',
+				interventionDate: request.interventionDate ? request.interventionDate.toDat() : '',
 			});
 		}
 	}, [request]);
@@ -636,7 +636,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "}
 															<Badge>
-																	{formData.interventionDate?.toDate()?.toLocaleString() || ''}
+																	{formData.interventionDate?.toString()?.toLocaleString() || ''}
 															</Badge>
 																						
 														</CardTitle>

@@ -652,7 +652,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 													<CardContent>
 														<div className='grid gap-3'>
 														<CardTitle>
-															Date d&apos;Intervention {" "}
+															Date d&apos;Intervention {" "} <br/>
 																<Badge>
 																{formData.createdAt instanceof Date ? formData.createdAt.toLocaleString() : ''}
 																	{/* {formData.interventionDate instanceof Date 

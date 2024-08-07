@@ -80,8 +80,8 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           // Mise à jour du mot de passe dans Firebase Auth
           await updatePassword(currentUser, password);
           
-          // Mise à jour du mot de passe dans Firestore
-          await updateDoc(userDoc, { password: password });
+          // Ne pas stocker le mot de passe dans Firestore pour des raisons de sécurité
+          // Supprimez cette ligne : await updateDoc(userDoc, { password: password });
           
           toast({
             title: "✅ Mot de passe mis à jour !",
@@ -94,6 +94,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
             description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez vous reconnecter et réessayer.",
             variant: 'destructive',
           });
+          // Ne pas interrompre le processus de sauvegarde si la mise à jour du mot de passe échoue
         }
       }
 

@@ -22,7 +22,7 @@ interface User {
   id: string;
   firstName: string;
   lastName: string;
-  pseudo: string;
+  pseudo: string; // Assurez-vous que cette ligne est présente
   direction: string;
   email: string;
   ip?: string;

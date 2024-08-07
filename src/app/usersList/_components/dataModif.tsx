@@ -76,11 +76,21 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       await updateDoc(userDoc, updatedUser);
 
       if (password) {
-        await updatePassword(currentUser, password);
-        toast({
-          title: "✅ Mot de passe mis à jour !",
-          description: "Votre mot de passe a été mis à jour avec succès.",
-        });
+        // Vérifier si l'utilisateur actuel est le même que celui en cours de modification
+        if (currentUser.uid === user.id) {
+          await updatePassword(currentUser, password);
+          toast({
+            title: "✅ Mot de passe mis à jour !",
+            description: "Votre mot de passe a été mis à jour avec succès.",
+          });
+        } else {
+          // Si ce n'est pas l'utilisateur actuel, ne pas mettre à jour le mot de passe
+          toast({
+            title: "⚠️ Attention",
+            description: "Le mot de passe ne peut être modifié que pour l'utilisateur actuellement connecté.",
+            variant: 'destructive',          
+          });
+        }
       }
 
       toast({

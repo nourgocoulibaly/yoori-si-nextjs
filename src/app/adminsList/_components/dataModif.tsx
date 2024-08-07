@@ -66,7 +66,16 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
       const db = getFirestore();
       const userDoc = doc(db, "admins", user.id);
-      await updateDoc(userDoc, userData);
+      
+      // Mise à jour des données utilisateur sans le mot de passe
+      await updateDoc(userDoc, {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        direction: userData.direction,
+        email: userData.email,
+        ip: userData.ip,
+        location: userData.location
+      });
 
       if (userData.password) {
         try {
@@ -106,11 +115,11 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       setUserList(completeAdmins);
 
       setDialogOpen(false);
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour:", error);
+    } catch (error: unknown) {
+      console.error("Erreur détaillée lors de la mise à jour:", error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de la mise à jour. Veuillez réessayer.",
+        description: `Une erreur est survenue lors de la mise à jour : ${error instanceof Error ? error.message : 'Erreur inconnue'}`,
         variant: 'destructive',
       });
     } finally {

@@ -471,8 +471,8 @@ const AdminRequestsBeta = () => {
             </div>
             {/* Tabs value Week */}
             <TabsContent value="all">
-              <Card x-chunk='dashboard-05-chunk-3'>
-                <CardHeader className='px-7'>
+              <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
+                <CardHeader className='flex flex-row items-center'>
                   <CardTitle>Interventions</CardTitle>
                   <CardDescription>
                     Liste des demandes des Interventions

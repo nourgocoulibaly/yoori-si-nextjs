@@ -36,7 +36,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
   const [ip, setIp] = useState(user.ip || '');
   const [location, setLocation] = useState(user.location || '');
   const [password, setPassword] = useState('');
-  const [adminList, setAdminList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<User[]>([]);
   const [dialogOpen, setDialogOpen] = useState(true);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -44,17 +44,17 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
   useEffect(() => {
     async function fetchData() {
-      const admins = await getUserList();
-      const completeAdmins = admins.map((admin: any) => ({
-        ...admin,
-        firstName: admin.firstName || '',
-        lastName: admin.lastName || '',
-        direction: admin.direction || '',
-        email: admin.email || '',
-        ip: admin.ip || '',
-        location: admin.location || ''
+      const users = await getUserList();
+      const completeUsers = users.map((user: any) => ({
+        ...user,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        direction: user.direction || '',
+        email: user.email || '',
+        ip: user.ip || '',
+        location: user.location || ''
       }));
-      setAdminList(completeAdmins);
+      setUserList(completeUsers);
     }
     fetchData();
   }, []);
@@ -77,12 +77,8 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
       if (password) {
         try {
-          // Mise à jour du mot de passe dans Firebase Auth
+          // Mise à jour du mot de passe sans réauthentification
           await updatePassword(currentUser, password);
-          
-          // Ne pas stocker le mot de passe dans Firestore pour des raisons de sécurité
-          // Supprimez cette ligne : await updateDoc(userDoc, { password: password });
-          
           toast({
             title: "✅ Mot de passe mis à jour !",
             description: "Le mot de passe a été mis à jour avec succès.",
@@ -91,10 +87,11 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
           toast({
             title: "⚠️ Erreur de mise à jour du mot de passe",
-            description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez vous reconnecter et réessayer.",
+            description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez réessayer.",
             variant: 'destructive',
           });
-          // Ne pas interrompre le processus de sauvegarde si la mise à jour du mot de passe échoue
+          setIsLoading(false);
+          return;
         }
       }
 
@@ -105,16 +102,16 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
       onSave(updatedUser);
 
-      // Mettre à jour la liste des administrateurs après la sauvegarde
-      const admins = await getUserList();
-      setAdminList(admins.map((admin: any) => ({
-        ...admin,
-        firstName: admin.firstName || '',
-        lastName: admin.lastName || '',
-        direction: admin.direction || '',
-        email: admin.email || '',
-        ip: admin.ip || '',
-        location: admin.location || ''
+      // Mettre à jour la liste des utilisateurs après la sauvegarde
+      const users = await getUserList();
+      setUserList(users.map((user: any) => ({
+        ...user,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        direction: user.direction || '',
+        email: user.email || '',
+        ip: user.ip || '',
+        location: user.location || ''
       })));
 
       setDialogOpen(false);
@@ -178,7 +175,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="password" className="text-right">
-              Mot de passe
+              Nouveau mot de passe
             </Label>
             <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="col-span-3" />
           </div>

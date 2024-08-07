@@ -117,8 +117,8 @@ export default function AdminsList() {
 
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40 mt-10 my-16 '>
-      <Card>
-        <CardHeader>
+      <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
+        <CardHeader className='flex flex-row items-center'>
           <CardTitle>Utilisateurs</CardTitle>
           <CardDescription>
             Gérez vos utilisateurs et consultez leurs détails.        

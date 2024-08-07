@@ -347,7 +347,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 			requestDomain: requestDomainRef.current?.textContent || formData.requestDomain,
 			requestStatus: requestStatusRef.current?.textContent || formData.requestStatus,
 			requestDescription: requestDescriptionRef.current?.value || formData.requestDescription,
-			interventionDate: date ? date : formData.interventionDate,
+			interventionDate: date ? Timestamp.fromDate(date) : formData.interventionDate,
 			requestAdminSolved: value
 		};
 
@@ -649,8 +649,8 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 														<CardTitle>
 															Date d&apos;Intervention {" "} <br/>
 															<Badge>
-																{formData.interventionDate 
-																	? new Date(formData.interventionDate).toLocaleString() 
+																{formData.interventionDate instanceof Timestamp 
+																	? formData.interventionDate.toDate().toLocaleString() 
 																	: 'Non définie'}
 															</Badge>																				
 														</CardTitle>

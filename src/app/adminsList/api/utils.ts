@@ -1,6 +1,6 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 
-export async function getAdminList() {
+export async function getUserList() {
 	const db = getFirestore();
 	const usersCollection = collection(db, "admins");
 	const usersSnapshot = await getDocs(usersCollection);

@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { getAuth, updatePassword } from "firebase/auth";
 import { doc, getFirestore, updateDoc } from "firebase/firestore"; // Importer les fonctions nécessaires
 import { useEffect, useState } from 'react';
-import { getAdminList } from '../api/utils'; // Mise à jour du chemin d'accès
+import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
 
 import { useToast } from "@/components/ui/use-toast";
 
@@ -22,15 +22,22 @@ interface User {
   id: string;
   firstName: string;
   lastName: string;
+  pseudo: string;
   direction: string;
   email: string;
   ip?: string;
   location?: string;
-  password?: string; // Ajout de cette ligne
 }
 
 export function DataModif({ user, onSave }: { user: User; onSave: (user: User) => void }) {
-  const [userData, setUserData] = useState({ ...user });
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [pseudo, setPseudo] = useState(user.pseudo);
+  const [direction, setDirection] = useState(user.direction);
+  const [email, setEmail] = useState(user.email);
+  const [ip, setIp] = useState(user.ip || '');
+  const [location, setLocation] = useState(user.location || '');
+  const [password, setPassword] = useState('');
   const [userList, setUserList] = useState<User[]>([]);
   const [dialogOpen, setDialogOpen] = useState(true);
   const { toast } = useToast();
@@ -39,17 +46,18 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
   useEffect(() => {
     async function fetchData() {
-      const admins = await getAdminList();
-      const completeAdmins = admins.map((user: any) => ({
+      const users = await getUserList();
+      const completeUsers = users.map((user: any) => ({
         ...user,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
+        pseudo: user.pseudo || '',
         direction: user.direction || '',
         email: user.email || '',
         ip: user.ip || '',
         location: user.location || ''
       }));
-      setUserList(completeAdmins);
+      setUserList(completeUsers);
     }
     fetchData();
   }, []);
@@ -64,34 +72,34 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         throw new Error("Utilisateur non connecté");
       }
 
+      const updatedUser = { ...user, firstName, lastName, pseudo, direction, email, ip, location };
+
       const db = getFirestore();
       const userDoc = doc(db, "admins", user.id);
-      
-      // Mise à jour des données utilisateur sans le mot de passe
-      await updateDoc(userDoc, {
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        direction: userData.direction,
-        email: userData.email,
-        ip: userData.ip,
-        location: userData.location
-      });
+      await updateDoc(userDoc, updatedUser);
 
-      if (userData.password) {
-        try {
-          await updatePassword(currentUser, userData.password);
+      if (password) {
+        if (currentUser.email === user.email) {
+          try {
+            await updatePassword(currentUser, password);
+            toast({
+              title: "✅ Mot de passe mis à jour !",
+              description: "Votre mot de passe a été mis à jour avec succès.",
+            });
+          } catch (passwordError) {
+            console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
+            toast({
+              title: "⚠️ Erreur de mise à jour du mot de passe",
+              description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez vous reconnecter et réessayer.",
+              variant: 'destructive',
+            });
+          }
+        } else {
           toast({
-            title: "✅ Mot de passe mis à jour !",
-            description: "Votre mot de passe a été mis à jour avec succès.",
-          });
-        } catch (passwordError) {
-          console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
-          toast({
-            title: "Erreur",
-            description: "Impossible de mettre à jour le mot de passe. Veuillez réessayer plus tard.",
+            title: "⚠️ Attention",
+            description: "Le mot de passe ne peut être modifié que pour l'utilisateur actuellement connecté.",
             variant: 'destructive',
           });
-          return;
         }
       }
 
@@ -100,26 +108,27 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         description: "Les informations de l'utilisateur ont été mises à jour.",
       });
 
-      onSave(userData);
+      onSave(updatedUser);
 
-      const admins = await getAdminList();
-      const completeAdmins = admins.map((user: any) => ({
+      // Mettre à jour la liste des utilisateurs après la sauvegarde
+      const users = await getUserList();
+      setUserList(users.map((user: any) => ({
         ...user,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
+        pseudo: user.pseudo || '',
         direction: user.direction || '',
         email: user.email || '',
         ip: user.ip || '',
         location: user.location || ''
-      }));
-      setUserList(completeAdmins);
+      })));
 
       setDialogOpen(false);
-    } catch (error: unknown) {
-      console.error("Erreur détaillée lors de la mise à jour:", error);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour:", error);
       toast({
         title: "Erreur",
-        description: `Une erreur est survenue lors de la mise à jour : ${error instanceof Error ? error.message : 'Erreur inconnue'}`,
+        description: "Une erreur est survenue lors de la mise à jour. Veuillez réessayer.",
         variant: 'destructive',
       });
     } finally {
@@ -141,43 +150,49 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
             <Label htmlFor="firstName" className="text-right">
               Prénoms
             </Label>
-            <Input id="firstName" value={userData.firstName} onChange={(e) => setUserData({ ...userData, firstName: e.target.value })} className="col-span-3" />
+            <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="lastName" className="text-right">
               Nom
             </Label>
-            <Input id="lastName" value={userData.lastName} onChange={(e) => setUserData({ ...userData, lastName: e.target.value })} className="col-span-3" />
+            <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="pseudo" className="text-right">
+              Pseudo
+            </Label>
+            <Input id="pseudo" value={pseudo} onChange={(e) => setPseudo(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="direction" className="text-right">
               Direction
             </Label>
-            <Input id="direction" value={userData.direction} onChange={(e) => setUserData({ ...userData, direction: e.target.value })} className="col-span-3" />
+            <Input id="direction" value={direction} onChange={(e) => setDirection(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="email" className="text-right">
               Email
             </Label>
-            <Input id="email" value={userData.email} onChange={(e) => setUserData({ ...userData, email: e.target.value })} className="col-span-3" />
+            <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="ip" className="text-right">
               IP
             </Label>
-            <Input id="ip" value={userData.ip || ''} onChange={(e) => setUserData({ ...userData, ip: e.target.value })} className="col-span-3" />
+            <Input id="ip" value={ip} onChange={(e) => setIp(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">
               Localisation
             </Label>
-            <Input id="location" value={userData.location || ''} onChange={(e) => setUserData({ ...userData, location: e.target.value })} className="col-span-3" />
+            <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="password" className="text-right">
               Mot de passe
             </Label>
-            <Input id="password" type="password" value={userData.password || ''} onChange={(e) => setUserData({ ...userData, password: e.target.value })} className="col-span-3" />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="col-span-3" />
           </div>
         </div>
         <DialogFooter>

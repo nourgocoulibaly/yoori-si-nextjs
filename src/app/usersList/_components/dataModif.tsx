@@ -22,7 +22,6 @@ interface User {
   id: string;
   firstName: string;
   lastName: string;
-  pseudo: string;
   direction: string;
   email: string;
   ip?: string;
@@ -32,7 +31,6 @@ interface User {
 export function DataModif({ user, onSave }: { user: User; onSave: (user: User) => void }) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
-  const [pseudo, setPseudo] = useState(user.pseudo);  
   const [direction, setDirection] = useState(user.direction);
   const [email, setEmail] = useState(user.email);
   const [ip, setIp] = useState(user.ip || '');
@@ -51,7 +49,6 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         ...user,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
-        pseudo: user.pseudo || '',
         direction: user.direction || '',
         email: user.email || '',
         ip: user.ip || '',
@@ -72,34 +69,29 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         throw new Error("Utilisateur non connecté");
       }
 
-      const updatedUser = { ...user, firstName, lastName, pseudo, direction, email, ip, location };
+      const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
 
       const db = getFirestore();
       const userDoc = doc(db, "users", user.id);
       await updateDoc(userDoc, updatedUser);
 
       if (password) {
-        if (currentUser.uid === user.id) {
-          try {
-            await updatePassword(currentUser, password);
-            toast({
-              title: "✅ Mot de passe mis à jour !",
-              description: "Votre mot de passe a été mis à jour avec succès.",
-            });
-          } catch (passwordError) {
-            console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
-            toast({
-              title: "⚠️ Erreur de mise à jour du mot de passe",
-              description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez vous reconnecter et réessayer.",
-              variant: 'destructive',
-            });
-          }
-        } else {
+        try {
+          // Mise à jour du mot de passe sans réauthentification
+          await updatePassword(currentUser, password);
           toast({
-            title: "⚠️ Attention",
-            description: "Le mot de passe ne peut être modifié que pour l'utilisateur actuellement connecté.",
+            title: "✅ Mot de passe mis à jour !",
+            description: "Le mot de passe a été mis à jour avec succès.",
+          });
+        } catch (passwordError) {
+          console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
+          toast({
+            title: "⚠️ Erreur de mise à jour du mot de passe",
+            description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez réessayer.",
             variant: 'destructive',
           });
+          setIsLoading(false);
+          return;
         }
       }
 
@@ -116,7 +108,6 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         ...user,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
-        pseudo: user.pseudo || '',
         direction: user.direction || '',
         email: user.email || '',
         ip: user.ip || '',
@@ -159,12 +150,6 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
             <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="pseudo" className="text-right">
-              Pseudo
-            </Label>
-            <Input id="pseudo" value={pseudo} onChange={(e) => setPseudo(e.target.value)} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="direction" className="text-right">
               Direction
             </Label>
@@ -190,7 +175,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="password" className="text-right">
-              Mot de passe
+              Nouveau mot de passe
             </Label>
             <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="col-span-3" />
           </div>

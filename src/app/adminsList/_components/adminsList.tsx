@@ -30,8 +30,8 @@ import {
 import { collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
 import { CirclePlus, MoreHorizontal } from "lucide-react"
 import { useEffect, useState } from "react"
+import { AddAdminDialog } from "./adminAdd"
 import { DataModif } from "./dataModif"
-import { AddAdminDialog } from "./adminAdd";
 
 async function getUserIP() {
   const res = await fetch('https://api.ipify.org?format=json');

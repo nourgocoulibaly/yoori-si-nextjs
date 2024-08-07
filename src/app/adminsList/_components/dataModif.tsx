@@ -22,7 +22,6 @@ interface User {
   id: string;
   firstName: string;
   lastName: string;
-  pseudo: string; // Assurez-vous que cette ligne est présente
   direction: string;
   email: string;
   ip?: string;
@@ -32,13 +31,12 @@ interface User {
 export function DataModif({ user, onSave }: { user: User; onSave: (user: User) => void }) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
-  const [pseudo, setPseudo] = useState(user.pseudo);
   const [direction, setDirection] = useState(user.direction);
   const [email, setEmail] = useState(user.email);
   const [ip, setIp] = useState(user.ip || '');
   const [location, setLocation] = useState(user.location || '');
   const [password, setPassword] = useState('');
-  const [userList, setUserList] = useState<User[]>([]);
+  const [adminList, setAdminList] = useState<User[]>([]);
   const [dialogOpen, setDialogOpen] = useState(true);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,18 +44,17 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
   useEffect(() => {
     async function fetchData() {
-      const users = await getUserList();
-      const completeUsers = users.map((user: any) => ({
-        ...user,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        pseudo: user.pseudo || '',
-        direction: user.direction || '',
-        email: user.email || '',
-        ip: user.ip || '',
-        location: user.location || ''
+      const admins = await getUserList();
+      const completeAdmins = admins.map((admin: any) => ({
+        ...admin,
+        firstName: admin.firstName || '',
+        lastName: admin.lastName || '',
+        direction: admin.direction || '',
+        email: admin.email || '',
+        ip: admin.ip || '',
+        location: admin.location || ''
       }));
-      setUserList(completeUsers);
+      setAdminList(completeAdmins);
     }
     fetchData();
   }, []);
@@ -72,32 +69,29 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         throw new Error("Utilisateur non connecté");
       }
 
-      const updatedUser = { ...user, firstName, lastName, pseudo, direction, email, ip, location };
+      const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
 
       const db = getFirestore();
       const userDoc = doc(db, "admins", user.id);
       await updateDoc(userDoc, updatedUser);
 
       if (password) {
-        if (currentUser.email === user.email) {
-          try {
-            await updatePassword(currentUser, password);
-            toast({
-              title: "✅ Mot de passe mis à jour !",
-              description: "Votre mot de passe a été mis à jour avec succès.",
-            });
-          } catch (passwordError) {
-            console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
-            toast({
-              title: "⚠️ Erreur de mise à jour du mot de passe",
-              description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez vous reconnecter et réessayer.",
-              variant: 'destructive',
-            });
-          }
-        } else {
+        try {
+          // Mise à jour du mot de passe dans Firebase Auth
+          await updatePassword(currentUser, password);
+          
+          // Mise à jour du mot de passe dans Firestore
+          await updateDoc(userDoc, { password: password });
+          
           toast({
-            title: "⚠️ Attention",
-            description: "Le mot de passe ne peut être modifié que pour l'utilisateur actuellement connecté.",
+            title: "✅ Mot de passe mis à jour !",
+            description: "Le mot de passe a été mis à jour avec succès.",
+          });
+        } catch (passwordError) {
+          console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
+          toast({
+            title: "⚠️ Erreur de mise à jour du mot de passe",
+            description: "Une erreur est survenue lors de la mise à jour du mot de passe. Veuillez vous reconnecter et réessayer.",
             variant: 'destructive',
           });
         }
@@ -110,17 +104,16 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
       onSave(updatedUser);
 
-      // Mettre à jour la liste des utilisateurs après la sauvegarde
-      const users = await getUserList();
-      setUserList(users.map((user: any) => ({
-        ...user,
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        pseudo: user.pseudo || '',
-        direction: user.direction || '',
-        email: user.email || '',
-        ip: user.ip || '',
-        location: user.location || ''
+      // Mettre à jour la liste des administrateurs après la sauvegarde
+      const admins = await getUserList();
+      setAdminList(admins.map((admin: any) => ({
+        ...admin,
+        firstName: admin.firstName || '',
+        lastName: admin.lastName || '',
+        direction: admin.direction || '',
+        email: admin.email || '',
+        ip: admin.ip || '',
+        location: admin.location || ''
       })));
 
       setDialogOpen(false);
@@ -157,12 +150,6 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
               Nom
             </Label>
             <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="pseudo" className="text-right">
-              Pseudo
-            </Label>
-            <Input id="pseudo" value={pseudo} onChange={(e) => setPseudo(e.target.value)} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="direction" className="text-right">

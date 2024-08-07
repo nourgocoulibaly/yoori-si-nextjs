@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import * as React from "react";
 
 import { db } from '@/lib/firebaseConfig';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { Timestamp, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { LegacyRef, useEffect, useRef, useState } from 'react';
 
 import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons";
@@ -393,7 +393,7 @@ const RequestPage = ({ params, data }: { params: { id: string }; data: any }) =>
 	const updateDateInFirestore = async (selectedDate: Date) => {
 		try {
 			const docRef = doc(db, 'userRequests', id as string);
-			await updateDoc(docRef, { interventionDate: selectedDate });
+			await updateDoc(docRef, { interventionDate: Timestamp.fromDate(selectedDate) });
 			console.log('Date d\'intervention mise à jour avec succès dans Firestore');
 
 			// Mettre à jour l'état avec la nouvelle date

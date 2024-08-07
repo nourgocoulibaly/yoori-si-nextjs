@@ -30,7 +30,10 @@ interface User {
 
 const promptForCredentials = (currentUser: any) => {
   const password = prompt("Veuillez entrer votre mot de passe actuel pour confirmer:");
-  return EmailAuthProvider.credential(currentUser.email!, password!);
+  if (!password) {
+    throw new Error("Mot de passe non fourni");
+  }
+  return EmailAuthProvider.credential(currentUser.email, password);
 };
 
 export function DataModif({ user, onSave }: { user: User; onSave: (user: User) => void }) {
@@ -70,6 +73,10 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
       const auth = getAuth();
       const currentUser = auth.currentUser;
 
+      if (!currentUser) {
+        throw new Error("Utilisateur non connecté");
+      }
+
       // Mise à jour des informations de l'utilisateur dans Firestore
       const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
 
@@ -79,18 +86,22 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
       // Mise à jour du mot de passe si nécessaire
       if (password) {
-        if (currentUser) {
-          // Réauthentifier l'utilisateur avant de changer le mot de passe
-          const credential = promptForCredentials(currentUser); // Fonction à implémenter pour demander les identifiants
+        try {
+          const credential = await promptForCredentials(currentUser);
           await reauthenticateWithCredential(currentUser, credential);
-          
           await updatePassword(currentUser, password);
           toast({
             title: "✅ Mot de passe mis à jour !",
             description: "Votre mot de passe a été mis à jour avec succès.",
           });
-        } else {
-          throw new Error("Utilisateur non connecté");
+        } catch (passwordError) {
+          console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
+          toast({
+            title: "Erreur",
+            description: "Impossible de mettre à jour le mot de passe. Veuillez vérifier vos informations.",
+            variant: 'destructive',
+          });
+          return; // Arrêter l'exécution si la mise à jour du mot de passe échoue
         }
       }
 

@@ -6,7 +6,7 @@ First, run the development server:
 
 ```bash
 
-//If you use pnpm coremack
+//If you use pnpm corepack
 
 corepack use pnpm@latest
 pnpm install

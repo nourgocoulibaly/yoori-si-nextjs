@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { EmailAuthProvider, getAuth, reauthenticateWithCredential, updatePassword } from "firebase/auth";
+import { getAuth, updatePassword } from "firebase/auth";
 import { doc, getFirestore, updateDoc } from "firebase/firestore"; // Importer les fonctions nécessaires
 import { useEffect, useState } from 'react';
-import { getUserList } from '../api/utils'; // Mise à jour du chemin d'accès
+import { getAdminList } from '../api/utils'; // Mise à jour du chemin d'accès
 
 import { useToast } from "@/components/ui/use-toast";
 
@@ -26,24 +26,11 @@ interface User {
   email: string;
   ip?: string;
   location?: string;
+  password?: string; // Ajout de cette ligne
 }
 
-const promptForCredentials = (currentUser: any) => {
-  const password = prompt("Veuillez entrer votre mot de passe actuel pour confirmer:");
-  if (!password) {
-    throw new Error("Mot de passe non fourni");
-  }
-  return EmailAuthProvider.credential(currentUser.email, password);
-};
-
 export function DataModif({ user, onSave }: { user: User; onSave: (user: User) => void }) {
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [direction, setDirection] = useState(user.direction);
-  const [email, setEmail] = useState(user.email);
-  const [ip, setIp] = useState(user.ip || '');
-  const [location, setLocation] = useState(user.location || '');
-  const [password, setPassword] = useState('');
+  const [userData, setUserData] = useState({ ...user });
   const [userList, setUserList] = useState<User[]>([]);
   const [dialogOpen, setDialogOpen] = useState(true);
   const { toast } = useToast();
@@ -52,8 +39,8 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
 
   useEffect(() => {
     async function fetchData() {
-      const users = await getUserList();
-      const completeUsers = users.map((user: any) => ({
+      const admins = await getAdminList();
+      const completeAdmins = admins.map((user: any) => ({
         ...user,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
@@ -62,7 +49,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         ip: user.ip || '',
         location: user.location || ''
       }));
-      setUserList(completeUsers);
+      setUserList(completeAdmins);
     }
     fetchData();
   }, []);
@@ -77,19 +64,13 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         throw new Error("Utilisateur non connecté");
       }
 
-      // Mise à jour des informations de l'utilisateur dans Firestore
-      const updatedUser = { ...user, firstName, lastName, direction, email, ip, location };
-
       const db = getFirestore();
       const userDoc = doc(db, "admins", user.id);
-      await updateDoc(userDoc, updatedUser);
+      await updateDoc(userDoc, userData);
 
-      // Mise à jour du mot de passe si nécessaire
-      if (password) {
+      if (userData.password) {
         try {
-          const credential = await promptForCredentials(currentUser);
-          await reauthenticateWithCredential(currentUser, credential);
-          await updatePassword(currentUser, password);
+          await updatePassword(currentUser, userData.password);
           toast({
             title: "✅ Mot de passe mis à jour !",
             description: "Votre mot de passe a été mis à jour avec succès.",
@@ -98,10 +79,10 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
           console.error("Erreur lors de la mise à jour du mot de passe:", passwordError);
           toast({
             title: "Erreur",
-            description: "Impossible de mettre à jour le mot de passe. Veuillez vérifier vos informations.",
+            description: "Impossible de mettre à jour le mot de passe. Veuillez réessayer plus tard.",
             variant: 'destructive',
           });
-          return; // Arrêter l'exécution si la mise à jour du mot de passe échoue
+          return;
         }
       }
 
@@ -110,11 +91,10 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         description: "Les informations de l'utilisateur ont été mises à jour.",
       });
 
-      onSave(updatedUser);
+      onSave(userData);
 
-      // Mettre à jour la liste des utilisateurs après la sauvegarde
-      const users = await getUserList();
-      const completeUsers = users.map((user: any) => ({
+      const admins = await getAdminList();
+      const completeAdmins = admins.map((user: any) => ({
         ...user,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
@@ -123,7 +103,7 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
         ip: user.ip || '',
         location: user.location || ''
       }));
-      setUserList(completeUsers);
+      setUserList(completeAdmins);
 
       setDialogOpen(false);
     } catch (error) {
@@ -152,43 +132,43 @@ export function DataModif({ user, onSave }: { user: User; onSave: (user: User) =
             <Label htmlFor="firstName" className="text-right">
               Prénoms
             </Label>
-            <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="col-span-3" />
+            <Input id="firstName" value={userData.firstName} onChange={(e) => setUserData({ ...userData, firstName: e.target.value })} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="lastName" className="text-right">
               Nom
             </Label>
-            <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} className="col-span-3" />
+            <Input id="lastName" value={userData.lastName} onChange={(e) => setUserData({ ...userData, lastName: e.target.value })} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="direction" className="text-right">
               Direction
             </Label>
-            <Input id="direction" value={direction} onChange={(e) => setDirection(e.target.value)} className="col-span-3" />
+            <Input id="direction" value={userData.direction} onChange={(e) => setUserData({ ...userData, direction: e.target.value })} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="email" className="text-right">
               Email
             </Label>
-            <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="col-span-3" />
+            <Input id="email" value={userData.email} onChange={(e) => setUserData({ ...userData, email: e.target.value })} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="ip" className="text-right">
               IP
             </Label>
-            <Input id="ip" value={ip} onChange={(e) => setIp(e.target.value)} className="col-span-3" />
+            <Input id="ip" value={userData.ip || ''} onChange={(e) => setUserData({ ...userData, ip: e.target.value })} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">
               Localisation
             </Label>
-            <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} className="col-span-3" />
+            <Input id="location" value={userData.location || ''} onChange={(e) => setUserData({ ...userData, location: e.target.value })} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="password" className="text-right">
               Mot de passe
             </Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="col-span-3" />
+            <Input id="password" type="password" value={userData.password || ''} onChange={(e) => setUserData({ ...userData, password: e.target.value })} className="col-span-3" />
           </div>
         </div>
         <DialogFooter>

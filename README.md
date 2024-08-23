@@ -5,6 +5,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+
+//If you use pnpm corepack
+
+corepack use pnpm@latest
+pnpm install
+pnpm run dev
+#or
+npm install
 npm run dev
 # or
 yarn dev

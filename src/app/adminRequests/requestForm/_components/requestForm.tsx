@@ -50,6 +50,8 @@ interface User {
   firstName: string;
   lastName: string;
   direction: string;
+	localisation: string;
+	phoneNumber?: string;
 }
 
 const RequestForm = () => {
@@ -57,6 +59,8 @@ const RequestForm = () => {
 		const { toast } = useToast();
 		const requestUserFullNameRef = useRef<HTMLInputElement>(null);
 		const requestUserDirectionRef =useRef<HTMLInputElement>(null);
+		const requestUserLocalisationRef =useRef<HTMLInputElement>(null);
+		const requestUserPhoneNumberRef = useRef<HTMLInputElement>(null);
 		const requestContentRef = useRef<HTMLTextAreaElement>(null);
 		const requestDomainRef = useRef<HTMLButtonElement>(null);
 		const requestStatusRef = useRef<HTMLButtonElement>(null);
@@ -67,17 +71,21 @@ const RequestForm = () => {
 			: "";
 
 		const direction = currentUser ? currentUser.direction : "";
+		const localisation = currentUser ? currentUser.localisation : "";
+		const phoneNumber = currentUser?.phoneNumber || "";
 
     	const handleSubmit = async (e: React.FormEvent) => {
 
       e.preventDefault();
 			const userName = requestUserFullNameRef.current?.value;
 			const userDirection = requestUserDirectionRef.current?.value;
+			const userLocalisation = requestUserLocalisationRef.current?.value;
+			const userPhoneNumber = requestUserPhoneNumberRef.current?.value || phoneNumber;
 			const requestContent = requestContentRef.current?.value;
 			const requestDomain = requestDomainRef.current?.textContent;
 			const requestStatus = requestStatusRef.current?.textContent || "En attente";
 
-      console.log("🟢", userName, ",", userDirection, ",", requestContent, ",", requestDomain, ",", requestStatus);
+      console.log("🟢", userName, ",", userDirection, ",", userLocalisation, ",", userPhoneNumber, ",", requestContent, ",", requestDomain, ",", requestStatus);
 
       if (!requestContent || !requestDomain) {
         alert("⛔Veuillez remplir tous les champs obligatoires");
@@ -90,6 +98,8 @@ const RequestForm = () => {
         await addDoc (collection(db, "userRequests"), {
           userName,
 					userDirection,
+					userLocalisation,
+					userPhoneNumber,
           requestContent,
           requestDomain,
           requestStatus,
@@ -99,6 +109,8 @@ const RequestForm = () => {
 
 				requestUserFullNameRef.current!.value = "";
 				requestUserDirectionRef.current!.value = "";
+				requestUserLocalisationRef.current!.value = "";
+				requestUserPhoneNumberRef.current!.value = "";
         requestContentRef.current!.value = "";
 				requestDomainRef.current!.textContent = "";
 				requestStatusRef.current!.textContent = "";
@@ -181,6 +193,27 @@ const RequestForm = () => {
 														className='w-full'
 														ref={requestUserDirectionRef}
 														placeholder="Entrer sa Direction"
+													/>
+												</div>
+												<div className='grid gap-3'>
+													<Label htmlFor='name'>localisation</Label>
+													<Input
+														id='direction'
+														type='text'
+														className='w-full'
+														ref={requestUserLocalisationRef}
+														placeholder="Entrer sa Direction"
+													/>
+												</div>
+												<div className='grid gap-3'>
+													<Label htmlFor='name'>Numéro de téléphone</Label>
+													<Input
+														id='phoneNumber'
+														type='tel'
+														className='w-full'
+														ref={requestUserPhoneNumberRef}
+														defaultValue={phoneNumber}
+														placeholder="Entrer le numéro de téléphone"
 													/>
 												</div>
 												<div className='grid gap-3'>

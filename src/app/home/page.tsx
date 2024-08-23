@@ -141,18 +141,40 @@ export default function BentoDemo() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen dark:bg-gray-900">
-            <Image
-                src={`/YooriLinkLarge.png`}
-                className="w-60 h-auto my-8"
-                alt="Logo Yoori Link"
-                loading="lazy"
-            />
+            <div className="flex justify-center items-center space-x-4">
+                <Image
+                    src={`/mclu-logo.png`}
+                    className="w-40 h-auto"
+                    width={160}
+                    height={160}
+                    alt="Logo MCLU"
+                    loading="lazy"
+                />
+                <Image
+                    src={`/logo-sigfu.png`}
+                    className="w-40 h-auto"
+                    width={160}
+                    height={160}
+                    alt="Logo SIGFU"
+                    loading="lazy"
+                />
+            </div>
             <div className="w-full max-w-4xl">
                 <BentoGrid>
                     {features.map((feature, idx) => (
                         <BentoCard key={idx} {...feature} />
                     ))}
                 </BentoGrid>
+            </div>
+            <div>
+              <Image
+                  src={`/YooriLink.png`}
+                  className="w-60 h-auto my-8"
+                  width={240}
+                  height={240}
+                  alt="Logo Yoori Link"
+                  loading="lazy"
+              />
             </div>
         </div>
     );

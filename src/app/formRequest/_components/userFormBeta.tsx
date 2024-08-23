@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from 'next/navigation'; // Importer useRouter
 
 // Importer LegacyRef pour convertir le type de référence en HTMLSelectElement
-import { LegacyRef } from 'react';
+import { LegacyRef, useEffect } from 'react';
 
 import { db } from "@/lib/firebaseConfig";
 import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
@@ -43,13 +43,14 @@ import {
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 
-
-
 interface User {
   uid: string;
   firstName: string;
   lastName: string;
   direction: string;
+  localisationTour: string;
+  localisationEtagePorte: string;
+  phoneNumber: string | null; // Modifié ici pour accepter null
 }
 
 const UserFormBeta = () => {
@@ -67,16 +68,33 @@ const UserFormBeta = () => {
 
   const { currentUser } = useAuth() as { currentUser: User | null };
 
-	const fullName = currentUser
-		? `${currentUser.firstName} ${currentUser.lastName}`
-		: "";
+  // Utilisez useState pour stocker les valeurs
+  const [fullName, setFullName] = useState("");
+  const [direction, setDirection] = useState("");
+  const [localisation, setLocalisation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<string>(""); // Modifié ici pour accepter null
 
-	const direction = currentUser ? currentUser.direction : "";
+  // Utilisez useEffect pour mettre à jour les valeurs lorsque currentUser change
+  useEffect(() => {
+    if (currentUser) {
+      setFullName(`${currentUser.firstName} ${currentUser.lastName}`);
+      setLocalisation(`${currentUser.localisationTour} ${currentUser.localisationEtagePorte}`);
+      setDirection(currentUser.direction);
+      setPhoneNumber(currentUser.phoneNumber || ""); // Modifié ici pour utiliser une chaîne vide si phoneNumber est null
+    }
+  }, [currentUser]);
 
+  useEffect(() => {
+    console.log("Localisation:", localisation);
+  }, [localisation]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+  const fullNameValue = fullName;
+  const directionValue = direction;
+  const localisationValue = localisation;
 
-      e.preventDefault();
+  console.log("🟢",fullNameValue, "," ,directionValue, "," ,localisationValue);
+
+    const handleSubmit = async (e: React.FormEvent) => { e.preventDefault();
 
      const requestContent = requestContentRef.current?.value;
       const requestDomain = requestDomainRef.current?.textContent; // Modifier la récupération de la valeur
@@ -92,8 +110,10 @@ const UserFormBeta = () => {
       try {
         await addDoc (collection(db, "userRequests"), {
           userId: currentUser?.uid,
-          userName: fullName,
-          userDirection: direction,
+          userName: fullNameValue,
+          userDirection: directionValue,
+			userLocalisation: localisationValue,
+          userPhoneNumber: phoneNumber || "Non spécifié", // Utilisez une valeur par défaut si vide
           requestContent,
           requestDomain,
           requestStatus: status, // Utilisez l'état du statut
@@ -149,38 +169,57 @@ const UserFormBeta = () => {
 										<CardContent>
 											<div className='grid gap-6'>
 												<div className='grid gap-3'>
-													<Label htmlFor='name'>Nom & Prenoms</Label>
+													<Label htmlFor='name'>Nom & Prénoms</Label>
 													<Input
 														id='name'
 														type='text'
 														className='w-full'
-														defaultValue={fullName}
-														disabled
+														value={fullName}
+														readOnly
 													/>
 												</div>
-												{/* <div className='grid gap-6'> */}
 												<div className='grid gap-3'>
-													<Label htmlFor='name'>Direction/Service</Label>
+													<Label htmlFor='direction'>Direction/Service</Label>
 													<Input
 														id='direction'
 														type='text'
 														className='w-full'
-														defaultValue={direction}
-														disabled
+														value={direction}
+														readOnly
 													/>
 												</div>
 												<div className='grid gap-3'>
-													<Label htmlFor='content'>
-														Nature de l&apos;Intervention
-													</Label>
-													<Textarea
-														id='requestRef'
-														ref={requestContentRef}
-														placeholder="Entrer la nature de l'intervention"
-														className='min-h-32'
-														required
+													<Label htmlFor='localisation'>Localisation</Label>
+													<Input
+														id='localisation'
+														type='text'
+														className='w-full'
+														value={localisation}
+														readOnly
 													/>
 												</div>
+												<div className='grid gap-3'>
+													<Label htmlFor='phoneNumber'>Numéro de téléphone</Label>
+													<Input
+														id='phoneNumber'
+														type='text'
+														className='w-full'
+														value={phoneNumber}
+														readOnly
+													/>
+												</div>
+												<div className='grid gap-3'>
+														<Label htmlFor='content'>
+															Nature de l&apos;Intervention
+														</Label>
+														<Textarea
+															id='requestRef'
+															ref={requestContentRef}
+															placeholder="Entrer la nature de l'intervention"
+															className='min-h-32'
+															required
+														/>
+													</div>
 											</div>
 										</CardContent>
 									</Card>
@@ -216,7 +255,6 @@ const UserFormBeta = () => {
 															</SelectContent>
 														</Select>
 													</div>
-												{/* </div> */}
 												<div className='grid gap-3'>
 													<Label htmlFor='domain'>
 														Logiciels & Applications

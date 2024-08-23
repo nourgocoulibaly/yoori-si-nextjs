@@ -1,6 +1,5 @@
 "use client";
 
-import { CirclePlus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,8 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { app } from "@/lib/firebaseConfig"; // Assurez-vous d'importer votre configuration Firebase
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
+import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, where } from "firebase/firestore"; // Ajoutez cette ligne pour importer getDoc
+import { CirclePlus } from "lucide-react";
 import { useState } from "react";
 
 interface User {
@@ -26,7 +26,10 @@ interface User {
   direction: string;
   email: string;
   ip?: string;
-  location?: string;
+  localisationTour?: string;
+  localisationEtagePorte?: string;
+  pseudo: string;
+  phoneNumber?: string;
 }
 
 interface AddUserDialogProps {
@@ -38,16 +41,20 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
   const [lastName, setLastName] = useState("");
   const [direction, setDirection] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [ip, setIp] = useState("");
-  const [location, setLocation] = useState("");
+  const [localisationTour, setLocalisationTour] = useState("");
+  const [localisationEtagePorte, setLocalisationEtagePorte] = useState("");
+  const [pseudo, setPseudo] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const { toast } = useToast();
   const db = getFirestore(app);
   const auth = getAuth(app);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
+  const defaultPassword = "DMISSA@2024"; // Définissez le mot de passe par défaut ici
 
   const handleAddUser = async () => {
-    // Validation des champs
-    if (!email || !password || !firstName || !lastName || !direction) {
+    if (!email || !firstName || !lastName || !direction || !pseudo) {
       toast({
         title: "Erreur",
         description: "Tous les champs obligatoires doivent être remplis.",
@@ -56,52 +63,100 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
       return;
     }
 
-    try {
-      // Créer un compte utilisateur avec email et mot de passe
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const userId = userCredential.user.uid;
+    setIsSubmitting(true);
 
-      // Ajouter les informations de l'utilisateur dans Firestore
-      const newUser: User = {
-        id: userId,
+    try {
+      // Vérifier si le pseudo est déjà utilisé
+      const pseudoQuery = query(collection(db, "users"), where("pseudo", "==", pseudo));
+      const pseudoQuerySnapshot = await getDocs(pseudoQuery);
+      if (!pseudoQuerySnapshot.empty) {
+        throw new Error("Ce pseudo est déjà utilisé. Veuillez en choisir un autre.");
+      }
+
+      // Créer l'utilisateur avec Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, defaultPassword);
+      const user = userCredential.user;
+
+      // Mettre à jour le profil avec le nom d'affichage
+      await updateProfile(user, { displayName: `${firstName} ${lastName}` });
+
+      // Stocker des informations supplémentaires dans Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        id: user.uid,
         firstName,
         lastName,
         direction,
         email,
         ip,
-        location,
-      };
+        localisationTour,
+        localisationEtagePorte,
+        pseudo,
+        phoneNumber: phoneNumber || "", // Utiliser une chaîne vide au lieu de null
+      });
 
-      await addDoc(collection(db, "users"), newUser);
+      // Vérifiez si l'utilisateur a été ajouté avec succès
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (!userDoc.exists()) {
+        throw new Error("Erreur lors de l'ajout de l'utilisateur dans Firestore.");
+      }
 
       toast({
         title: "✅ Utilisateur ajouté avec succès !",
-        description: "L'utilisateur a été ajouté à la base de données et un compte a été créé.",
+        description: `L'utilisateur a été ajouté à la base de données. Email: ${email}, Mot de passe par défaut: ${defaultPassword}`,
       });
 
-      onSave(newUser);
-    } catch (e) {
-      if (e instanceof Error) {
-        toast({
-          title: "Erreur",
-          description: `Erreur lors de l'ajout de l'utilisateur : ${e.message}`,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Erreur",
-          description: "Une erreur inconnue est survenue.",
-          variant: "destructive",
-        });
+      onSave({
+        id: user.uid,
+        firstName,
+        lastName,
+        direction,
+        email,
+        ip,
+        localisationTour,
+        localisationEtagePorte,
+        pseudo,
+        phoneNumber: phoneNumber || "", // Utiliser une chaîne vide au lieu de undefined
+      });
+      
+      // Fermer le dialogue
+      setOpen(false);
+    } catch (error: any) {
+      console.error("Erreur lors de l'ajout de l'utilisateur:", error);
+      let errorMessage = "Une erreur inconnue est survenue.";
+      switch(error.code) {
+        case 'auth/email-already-in-use':
+          errorMessage = "Cette adresse email est déjà utilisée.";
+          break;
+        case 'auth/invalid-email':
+          errorMessage = "L'adresse email n'est pas valide.";
+          break;
+        case 'auth/operation-not-allowed':
+          errorMessage = "La création de compte est désactivée.";
+          break;
+        case 'auth/weak-password':
+          errorMessage = "Le mot de passe est trop faible. Il doit contenir au moins 6 caractères.";
+          break;
+        default:
+          if (error instanceof Error) {
+            errorMessage = error.message;
+          }
       }
-      console.error("Erreur lors de l'ajout de l'utilisateur: ", e);
+      toast({
+        title: "Erreur",
+        description: `Erreur lors de l'ajout de l'utilisateur : ${errorMessage}`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline"><CirclePlus className='h-3.5 w-3.5' /> <span>Ajouter</span></Button>
+        <Button variant="outline" onClick={() => setOpen(true)}>
+          <CirclePlus className='h-3.5 w-3.5' /> <span>Ajouter</span>
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -156,18 +211,6 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">
-              Mot de passe
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="ip" className="text-right">
               IP
             </Label>
@@ -180,19 +223,52 @@ export function AddUserDialog({ onSave }: AddUserDialogProps) {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">
-              Localisation
+              Localisation (Tour)
             </Label>
             <Input
               id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              value={localisationTour}
+              onChange={(e) => setLocalisationTour(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="location" className="text-right">
+              Localisation (Etage/Porte)
+            </Label>
+            <Input
+              id="location"
+              value={localisationEtagePorte}
+              onChange={(e) => setLocalisationEtagePorte(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="pseudo" className="text-right">
+              Pseudo
+            </Label>
+            <Input
+              id="pseudo"
+              value={pseudo}
+              onChange={(e) => setPseudo(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="phoneNumber" className="text-right">
+              Numéro de téléphone
+            </Label>
+            <Input
+              id="phoneNumber"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="col-span-3"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleAddUser}>
-            Enregistrer
+          <Button type="button" onClick={handleAddUser} disabled={isSubmitting}>
+            {isSubmitting ? "Ajout en cours..." : "Enregistrer"}
           </Button>
         </DialogFooter>
       </DialogContent>

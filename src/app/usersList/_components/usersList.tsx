@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/table"
 
 import { collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
-import { CirclePlus, MoreHorizontal } from "lucide-react"
+import { CirclePlus, MoreHorizontal, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { DataModif } from "./dataModif"
 import { AddUserDialog } from "./userAdd"; // Importer le composant AddUserDialog
@@ -47,6 +47,8 @@ interface User {
   email: string;
   ip?: string;
   location?: string;
+  pseudo: string;
+  phoneNumber: string; // Ajoutez cette ligne
 }
 
 export default function UsersList() {
@@ -79,7 +81,9 @@ export default function UsersList() {
             direction: data.direction,
             email: data.email,
             ip: data.ip,
-            location: data.location
+            location: data.location,
+            pseudo: data.pseudo,
+            phoneNumber: data.phoneNumber, // Ajoutez cette ligne
           };
         }).sort((a, b) => {
           if (a.direction < b.direction) return -1;
@@ -116,7 +120,7 @@ export default function UsersList() {
   }, [users, db]);
 
   return (
-    <div className='flex min-h-screen w-full flex-col bg-muted/40 mt-10 my-16 '>
+    <div className='flex h-screen flex-col mt-16 mx-6'>
       <Card>
         <CardHeader>
           <CardTitle>Utilisateurs</CardTitle>
@@ -128,15 +132,21 @@ export default function UsersList() {
               variant='outline'
               size='sm'
               className='h-7 gap-1 text-sm'
-              onClick={() => setIsAddUserDialogOpen(true)}
+              onClick={() => setIsAddUserDialogOpen(!isAddUserDialogOpen)}
             >
-              <CirclePlus className='h-3.5 w-3.5' />
-              <span className='sr-only sm:not-sr-only'>Ajouter</span>
+              {isAddUserDialogOpen ? (
+                <X className='h-3.5 w-3.5' />
+              ) : (
+                <CirclePlus className='h-3.5 w-3.5' />
+              )}
+              <span className='sr-only sm:not-sr-only'>
+                {isAddUserDialogOpen ? '' : 'Ajouter'}
+              </span>
             </Button>
             {isAddUserDialogOpen && (
               <AddUserDialog
                 onSave={(newUser) => {
-                  setUsers([...users, newUser]);
+                  setUsers([...users, newUser as User]);
                   setIsAddUserDialogOpen(false);
                 }}
               />
@@ -195,7 +205,7 @@ export default function UsersList() {
         <DataModif
           user={selectedUser}
           onSave={(updatedUser) => {
-            setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u));
+            setUsers(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser as User : u));
             setSelectedUser(null);
           }}
         />

@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
+import Footer from "./footer";
 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -86,7 +87,7 @@ export default function AdminNavbar({
         }
       } else {
         console.log("Utilisateur non connecté");
-        router.push("/auth"); // Redirection vers la page d'authentification
+        router.push("/adminAuth"); // Redirection vers la page d'authentification
       }
       setLoading(false);
     });
@@ -115,7 +116,7 @@ export default function AdminNavbar({
 		try {
 			await signOut(auth);
 			console.log("Déconnexion réussie");
-			router.push("/adminAuth");
+			router.push("/adminAuth"); // Utilisation de router.push pour éviter l'erreur 404
 		} catch (error) {
 			console.error("Erreur lors de la déconnexion:", error);
 		}
@@ -127,15 +128,17 @@ export default function AdminNavbar({
 	};
 
 	return (
-    <>
-      <header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 bg-opacity-100'>
+    <div className="flex flex-col min-h-screen">
+      <header className='sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 bg-opacity-100 shadow-md z-10'>
           <Link
             href="/home"
             className='flex items-center gap-2 text-lg font-semibold md:text-base'
           >
           <Image
-            src={`/YooriLinkNavbar.png`}
+            src={`/mclu-logo.png`}
             className="w-72 h-auto mr-35"
+            width={288}
+            height={288}
             alt="Logo Yoori Link"
             loading="lazy"
           />
@@ -176,7 +179,7 @@ export default function AdminNavbar({
           Administrateurs
         </Link>
         <Link
-          href="/adminChatbot"
+          href="/chatBot"
           className='text-muted-foreground transition-colors hover:text-foreground'
         >
           ChatBot
@@ -190,7 +193,7 @@ export default function AdminNavbar({
             className='shrink-0 md:hidden'
           >
             <Menu className='h-5 w-5' />
-            <span className='sr-only'>Toggle navigation menu</span>
+            <span className='sr-only'>Menu de navigation</span>
           </Button>
         </SheetTrigger>
         <SheetContent side='left'>
@@ -200,7 +203,7 @@ export default function AdminNavbar({
               className='flex items-center gap-2 text-lg font-semibold md:text-base'
             >
               <Image
-                src={`/YooriLink.png`}
+                src={`/mclu-logo.png`}
                 className="h-7 w-7 flex-shrink-0 rounded-full"
                 width={50}
                 height={50}
@@ -234,7 +237,7 @@ export default function AdminNavbar({
               Administrateurs
             </Link>
             <Link
-              href="/adminChatbot"
+              href="/chatBot"
               className='text-muted-foreground transition-colors hover:text-foreground'
             >
               ChatBot
@@ -263,11 +266,13 @@ export default function AdminNavbar({
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel asChild>
-              <Link href="/account/adminAccount">Mon Compte</Link>
+              Mon Compte
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Paramètres</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/account/adminAccount">Paramètres</Link>
+            </DropdownMenuItem>
+            {/* <DropdownMenuItem>Support</DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               Se déconnecter
@@ -276,11 +281,14 @@ export default function AdminNavbar({
         </DropdownMenu>
         <div className="flex items-center space-x-2">
           <Switch id="dark-mode" onClick={handleThemeToggle} />
-          <Label htmlFor="dark-mode">{darkMode ? "Mode Clair" : "Mode Sombre"}</Label>
+          <Label htmlFor="dark-mode">{darkMode ? "Mode Sombre" : "Mode Clair"}</Label>
         </div>
         </div>
       </header>
-			{children}
-		</>
+      <main className="flex-grow">
+			  {children}
+      </main>
+      <Footer />
+    </div>
 	);
 }

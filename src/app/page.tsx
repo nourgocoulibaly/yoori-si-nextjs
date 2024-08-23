@@ -20,6 +20,24 @@ export default function HeroScrollDemo() {
     <ContainerScroll
       titleComponent={
         <>
+          <div className="flex justify-center items-center space-x-4 mb-6 mt-[-2rem]">
+            <Image
+              src={`/mclu-logo.png`}
+              className="w-40 h-auto"
+              width={160}
+              height={160}
+              alt="Logo MCLU"
+              loading="lazy"
+            />
+            <Image
+              src={`/logo-sigfu.png`}
+              className="w-40 h-auto my-6"
+              width={160}
+              height={160}
+              alt="Logo SIGFU"
+              loading="lazy"
+            />
+          </div>
           <h1 className="text-4xl font-semibold text-black dark:text-white text-center">
             Bienvenue !✌️ <br />
             <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
@@ -47,7 +65,7 @@ function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
   return (
     <div
-      className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}
+      className={cn("fixed top-5 inset-x-0 max-w-2xl mx-auto z-50", className)}
     >
       <Menu setActive={setActive}>    
         <MenuItem setActive={setActive} active={active} item="Se Connecter">

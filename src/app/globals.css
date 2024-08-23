@@ -74,6 +74,6 @@
 		@apply bg-background text-foreground;
 	}
 	body.dark {
-		@apply bg-gray-900 text-white; /* Exemple de styles pour le mode sombre */
+		@apply bg-sky-radix-3 text-white; /* Exemple de styles pour le mode sombre */
 	}
 }

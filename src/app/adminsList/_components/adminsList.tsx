@@ -28,9 +28,9 @@ import {
 } from "@/components/ui/table"
 
 import { collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
-import { CirclePlus, MoreHorizontal } from "lucide-react"
+import { CirclePlus, MoreHorizontal, X } from "lucide-react"
 import { useEffect, useState } from "react"
-import { AddAdminDialog } from "./adminAdd"
+import { AddUserDialog } from "./adminAdd"; // Importer le composant AddUserDialog
 import { DataModif } from "./dataModif"
 
 async function getUserIP() {
@@ -47,19 +47,21 @@ interface User {
   email: string;
   ip?: string;
   location?: string;
+  pseudo: string;
+  phoneNumber: string; // Ajoutez cette ligne
 }
 
-export default function AdminsList() {
-  const [users, setUsers] = useState<User[]>([]);
+export default function UsersList() {
+  const [admins, setAdmins] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [isAddAdminDialogOpen, setIsAddAdminDialogOpen] = useState(false);
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
   const db = getFirestore();
 
   const handleDelete = async (userId: string) => {
     try {
       const userRef = doc(db, "admins", userId);
       await deleteDoc(userRef);
-      setUsers(users.filter(user => user.id !== userId));
+      setAdmins(admins.filter(user => user.id !== userId));
     } catch (error) {
       console.error("Erreur lors de la suppression de l'utilisateur :", error);
     }
@@ -79,7 +81,9 @@ export default function AdminsList() {
             direction: data.direction,
             email: data.email,
             ip: data.ip,
-            location: data.location
+            location: data.location,
+            pseudo: data.pseudo,
+            phoneNumber: data.phoneNumber, // Ajoutez cette ligne
           };
         }).sort((a, b) => {
           if (a.direction < b.direction) return -1;
@@ -90,7 +94,7 @@ export default function AdminsList() {
           if ((a.ip || '') > (b.ip || '')) return 1;
           return 0;
         });
-        setUsers(usersData);
+        setAdmins(usersData);
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs :", error);
       }
@@ -102,7 +106,7 @@ export default function AdminsList() {
   useEffect(() => {
     const updateUserIP = async () => {
       const ip = await getUserIP();
-      users.forEach(async (user) => {
+      admins.forEach(async (user) => {
         if (!user.ip) {
           const userRef = doc(db, "admins", user.id);
           await updateDoc(userRef, { ip });
@@ -110,15 +114,15 @@ export default function AdminsList() {
       });
     };
 
-    if (users.length > 0) {
+    if (admins.length > 0) {
       updateUserIP();
     }
-  }, [users, db]);
+  }, [admins, db]);
 
   return (
-    <div className='flex min-h-screen w-full flex-col bg-muted/40 mt-10 my-16 '>
-      <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
-        <CardHeader className='flex flex-row items-center'>
+    <div className='flex h-screen flex-col mt-16 mx-6'>
+      <Card>
+        <CardHeader>
           <CardTitle>Utilisateurs</CardTitle>
           <CardDescription>
             Gérez vos utilisateurs et consultez leurs détails.        
@@ -128,16 +132,22 @@ export default function AdminsList() {
               variant='outline'
               size='sm'
               className='h-7 gap-1 text-sm'
-              onClick={() => setIsAddAdminDialogOpen(true)}
+              onClick={() => setIsAddUserDialogOpen(!isAddUserDialogOpen)}
             >
-              <CirclePlus className='h-3.5 w-3.5' />
-              <span className='sr-only sm:not-sr-only'>Ajouter</span>
+              {isAddUserDialogOpen ? (
+                <X className='h-3.5 w-3.5' />
+              ) : (
+                <CirclePlus className='h-3.5 w-3.5' />
+              )}
+              <span className='sr-only sm:not-sr-only'>
+                {isAddUserDialogOpen ? '' : 'Ajouter'}
+              </span>
             </Button>
-            {isAddAdminDialogOpen && (
-              <AddAdminDialog
+            {isAddUserDialogOpen && (
+              <AddUserDialog
                 onSave={(newUser) => {
-                  setUsers([...users, newUser]);
-                  setIsAddAdminDialogOpen(false);
+                  setAdmins([...admins, newUser as User]);
+                  setIsAddUserDialogOpen(false);
                 }}
               />
             )}
@@ -157,7 +167,7 @@ export default function AdminsList() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
+              {admins.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.firstName} {user.lastName}</TableCell>
                   <TableCell>{user.direction}</TableCell>
@@ -187,7 +197,7 @@ export default function AdminsList() {
         </CardContent>
         <CardFooter>
           <div className="text-xs text-muted-foreground">
-            Affichage d&apos;Un Total de <strong>{users.length}</strong> Utilisateurs.
+            Affichage d&apos;Un Total de <strong>{admins.length}</strong> Utilisateurs.
           </div>
         </CardFooter>
       </Card>
@@ -195,7 +205,7 @@ export default function AdminsList() {
         <DataModif
           user={selectedUser}
           onSave={(updatedUser) => {
-            setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u));
+            setAdmins(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser as User : u));
             setSelectedUser(null);
           }}
         />

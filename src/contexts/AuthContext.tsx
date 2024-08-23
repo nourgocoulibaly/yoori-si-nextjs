@@ -4,8 +4,8 @@ import {
 	createUserWithEmailAndPassword,
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
-	signOut, // Renommer User en FirebaseUser
-	UserCredential,
+	signOut,
+	UserCredential
 } from "firebase/auth";
 
 import { auth, db } from "@/lib/firebaseConfig";
@@ -30,24 +30,34 @@ import {
 interface User {
 	uid: string;
 	email: string;
-	firstName: string; // Prénom de l'utilisateur
-	lastName: string; // Nom de famille de l'utilisateur
-	direction: string; // Direction/Service de l'utilisateur
+	pseudo: string;
+	firstName: string;
+	lastName: string;
+	direction: string;
+	localisationTour: string;
+	localisationEtagePorte: string;
+	phoneNumber: string; // Added phoneNumber field
 }
 
 interface AuthContextType {
 	currentUser: User | null;
-	isAdmin: boolean; // Added isAdmin property
+	isAdmin: boolean;
+	userRole: string | null;
+	setUserRole: (role: string) => Promise<void>;
 
 	signup: (
 		email: string,
 		password: string,
+		pseudo: string,
 		passwordConfirm: string,
 		firstName: string,
 		lastName: string,
-		direction: string
+		direction: string,
+		localisationTour: string,
+		localisationEtagePorte: string,
+		phoneNumber: string // Added phoneNumber parameter
 	) => Promise<UserCredential>;
-	login: (email: string, password: string) => Promise<UserCredential>;
+	login: (email: string, password: string, pseudo?: string) => Promise<UserCredential>;
 	logout: () => Promise<void>;
 	userId: string | null;
 }
@@ -55,6 +65,10 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
 	currentUser: null,
 	isAdmin: false,
+	userRole: null,
+	setUserRole: async () => {
+		throw new Error("setUserRole non implémenté");
+	},
 	signup: async () => {
 		throw new Error("signup non implémenté");
 	},
@@ -83,6 +97,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const [currentUser, setCurrentUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [userId, setUserId] = useState<string | null>(null);
+	const [userRole, setUserRoleState] = useState<string | null>(null);
+
+	const setUserRole = async (role: string) => {
+		setUserRoleState(role);
+		localStorage.setItem('userRole', role);
+	};
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -91,9 +111,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				const user: User = {
 					uid: firebaseUser.uid,
 					email: firebaseUser.email!,
-					firstName: userDoc ? userDoc.firstName : "", // Utilisez une valeur par défaut si non trouvé
-					lastName: userDoc ? userDoc.lastName : "", // Utilisez une valeur par défaut si non trouvé
-					direction: userDoc ? userDoc.direction : "", // Utilisez une valeur par défaut si non trouvé
+					pseudo: userDoc?.pseudo ?? "",
+					firstName: userDoc?.firstName ?? "",
+					lastName: userDoc?.lastName ?? "",
+					direction: userDoc?.direction ?? "",
+					localisationTour: userDoc?.localisationTour ?? "",
+					localisationEtagePorte: userDoc?.localisationEtagePorte ?? "",
+					phoneNumber: userDoc?.phoneNumber ?? "" // Added phoneNumber field
 				};
 				setCurrentUser(user);
 			} else {
@@ -122,9 +146,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		email: string,
 		password: string,
 		passwordConfirm: string,
+		pseudo: string,
 		firstName: string,
 		lastName: string,
-		direction: string
+		direction: string,
+		localisationTour: string,
+		localisationEtagePorte: string,
+		phoneNumber: string // Added phoneNumber parameter
 	): Promise<UserCredential> => {
 		if (password !== passwordConfirm) {
 			throw new Error("Les mots de passe ne correspondent pas");
@@ -145,9 +173,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				password
 			);
 			await setDoc(doc(db, "users", credential.user.uid), {
+				pseudo,
 				firstName,
 				lastName,
 				email,
+				direction,
+				localisationTour,
+				localisationEtagePorte,
+				phoneNumber // Added phoneNumber field
 			});
 			return credential;
 		} catch (error: any) {
@@ -157,10 +190,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 	const login = async (
 		email: string,
-		password: string
+		password: string,
+		pseudo?: string
 	): Promise<UserCredential> => {
 		try {
-			return await signInWithEmailAndPassword(auth, email, password);
+			const credential = await signInWithEmailAndPassword(auth, email, password);
+			
+			// Si un pseudo est fourni, mettons à jour le document utilisateur
+			if (pseudo) {
+				await setDoc(doc(db, "users", credential.user.uid), { pseudo }, { merge: true });
+			}
+			
+			return credential;
 		} catch (error: any) {
 			throw new Error(error.message);
 		}
@@ -169,6 +210,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const logout = async (): Promise<void> => {
 		try {
 			await signOut(auth);
+			setUserRoleState(null);
+			localStorage.removeItem('userRole');
+			setCurrentUser(null);
+			setUserId(null);
 		} catch (error: any) {
 			throw new Error(error.message);
 		}
@@ -176,7 +221,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 	const value = {
 		currentUser,
-		isAdmin: false, // Ajoutez cette ligne pour inclure la propriété isAdmin
+		isAdmin: false,
+		userRole: userRole,
+		setUserRole,
 		signup,
 		login,
 		logout,

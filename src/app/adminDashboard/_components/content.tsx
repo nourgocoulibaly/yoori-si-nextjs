@@ -196,21 +196,15 @@ export default function UserDashboardContent() {
 								</Link>
 							</Button>
 						</CardHeader>
-						<CardContent>
+						<CardContent className='overflow-x-auto'>
 									<Table>
 									{/* <div onClick={() => handleEditRequest(requests.id)} style={{ cursor: 'pointer' }}> */}
 										<TableHeader>
 											<TableRow>
 												<TableHead>Utilisateur</TableHead>
-												<TableHead className='hidden sm:table-cell'>
-												Nature de l&apos;Intervention
-												</TableHead>
-												<TableHead className='hidden sm:table-cell'>
-													Statut
-												</TableHead>
-												<TableHead className='hidden md:table-cell'>
-													Date
-												</TableHead>
+												<TableHead>Nature de l&apos;Intervention</TableHead>
+												<TableHead>Statut</TableHead>
+												<TableHead>Date</TableHead>
 											</TableRow>
 										</TableHeader>
 										<TableBody>
@@ -222,19 +216,19 @@ export default function UserDashboardContent() {
                 <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
                 style={{ cursor: 'pointer' }}>
 						
-										<TableCell className='hidden sm:table-cell'>
+										<TableCell>
 											<div className='font-medium'>{request.userName}</div>
-											<div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
+											<div className='text-sm text-muted-foreground'>{request.userDirection}</div>
 										</TableCell>
-										<TableCell className='hidden sm:table-cell'>
+										<TableCell>
 											{request.requestContent}
 										</TableCell>
-										<TableCell className='hidden sm:table-cell'>
+										<TableCell>
 											<Badge className='text-xs' variant='secondary'>
 												{request.requestStatus}
 											</Badge>
-										</TableCell>
-										<TableCell className='hidden sm:table-cell'>
+											</TableCell>
+										<TableCell>
 											{request.createdAt?.toDate()?.toLocaleString() || ''}
 										</TableCell>
 						

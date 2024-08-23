@@ -55,11 +55,17 @@ interface Request {
   id: string;
   userName: string;
   userDirection?: string;
+  userLocalisation?: string;
   requestContent: string;
   requestStatus: string;
   createdAt?: { toDate: () => Date };
   updatedAt?: { toDate: () => Date };
+  interventionDate?: { toDate: () => Date };
+  requestDomain?: string;
+  requestDescription?: string;
+  requestAdminSolved?: string[];
 }
+
 
 const styles = StyleSheet.create({
   header: {
@@ -226,6 +232,7 @@ const MyDocument = ({ requests }: { requests: Request[] }) => (
   </Document>
 );
 
+
 const AdminRequestsBeta = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<Request[]>([]);
@@ -244,11 +251,12 @@ const AdminRequestsBeta = () => {
         const userData = doc.data();
         const userName = userData.userName;
         const userDirection = userData.userDirection;
+        const userLocalisation = userData.userLocalisation;
         const requestContent = userData.requestContent;
         const requestStatus = userData.requestStatus;
         const createdAt = userData.createdAt;
         const updatedAt = userData.updatedAt;
-        requestsData.push({ id: doc.id, userName, userDirection, requestContent, requestStatus, createdAt, updatedAt });
+        requestsData.push({ id: doc.id, userName, userDirection, userLocalisation, requestContent, requestStatus, createdAt, updatedAt });
       });
 
       // Tri des requêtes par ordre décroissant de date
@@ -282,7 +290,7 @@ const AdminRequestsBeta = () => {
     console.log(requestToEdit);
     console.log("Chemin request/page.tsx");
 
-    // Rediriger vers la page request/page.tsx avec l'id de la requête
+    // Rediriger vers la page request/page.tsx avec l&apos;id de la requête
     router.push(`/adminRequests/request/${id}`);
   };
 
@@ -344,7 +352,7 @@ const AdminRequestsBeta = () => {
   const filterRequestsByTimeRef = useRef(filterRequestsByTime);
 
   return (
-    <div className='flex min-h-screen w-full flex-col bg-muted/40 '>
+    <div className='flex min-h-screen w-full flex-col '>
       <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3 mt-10'>
         <div className='grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2'>
           <div className='grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4'>
@@ -472,45 +480,39 @@ const AdminRequestsBeta = () => {
             {/* Tabs value Week */}
             <TabsContent value="all">
               <Card className='xl:col-span-2' x-chunk='dashboard-01-chunk-4'>
-                <CardHeader className='flex flex-row items-center'>
+              <CardHeader className='px-7'>
                   <CardTitle>Interventions</CardTitle>
                   <CardDescription>
                     Liste des demandes des Interventions
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='overflow-x-auto'>
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead>Utilisateur</TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Nature de l&apos;Intervention
-                        </TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Statut
-                        </TableHead>
-                        <TableHead className='hidden md:table-cell'>
-                          Date
-                        </TableHead>
+                        <TableHead>Nature de l&apos;Intervention</TableHead>
+                        <TableHead>Statut</TableHead>
+                        <TableHead>Date</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
                         <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
                           style={{ cursor: 'pointer' }}>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <div className='font-medium'>{request.userName}</div>
-                            <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
+                            <div className='text-sm text-muted-foreground'>{request.userDirection}</div>
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.requestContent}
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <Badge className='text-xs' variant='secondary'>
                               {request.requestStatus}
                             </Badge>       
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.createdAt?.toDate()?.toLocaleString() || ''}
                           </TableCell>
                         </TableRow>
@@ -528,39 +530,33 @@ const AdminRequestsBeta = () => {
                     Liste des demandes des Interventions
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='overflow-x-auto'>
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead>Utilisateur</TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Nature de l&apos;Intervention
-                        </TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Statut
-                        </TableHead>
-                        <TableHead className='hidden md:table-cell'>
-                          Date
-                        </TableHead>
+                        <TableHead>Nature de l&apos;Intervention</TableHead>
+                        <TableHead>Statut</TableHead>
+                        <TableHead>Date</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
                         <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
                           style={{ cursor: 'pointer' }}>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <div className='font-medium'>{request.userName}</div>
-                            <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
+                            <div className='text-sm text-muted-foreground'>{request.userDirection}</div>
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.requestContent}
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <Badge className='text-xs' variant='secondary'>
                               {request.requestStatus}
                             </Badge>       
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.createdAt?.toDate()?.toLocaleString() || ''}
                           </TableCell>
                         </TableRow>
@@ -579,39 +575,33 @@ const AdminRequestsBeta = () => {
                     Liste des demandes des Interventions
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='overflow-x-auto'>
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead>Utilisateur</TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Nature de l&apos;Intervention
-                        </TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Statut
-                        </TableHead>
-                        <TableHead className='hidden md:table-cell'>
-                          Date
-                        </TableHead>
+                        <TableHead>Nature de l&apos;Intervention</TableHead>
+                        <TableHead>Statut</TableHead>
+                        <TableHead>Date</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
                         <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
                           style={{ cursor: 'pointer' }}>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <div className='font-medium'>{request.userName}</div>
-                            <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
+                            <div className='text-sm text-muted-foreground'>{request.userDirection}</div>
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.requestContent}
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <Badge className='text-xs' variant='secondary'>
                               {request.requestStatus}
                             </Badge>       
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.createdAt?.toDate()?.toLocaleString() || ''}
                           </TableCell>
                         </TableRow>
@@ -630,39 +620,33 @@ const AdminRequestsBeta = () => {
                     Liste des demandes des Interventions
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='overflow-x-auto'>
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead>Utilisateur</TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Nature de l&apos;Intervention
-                        </TableHead>
-                        <TableHead className='hidden sm:table-cell'>
-                          Statut
-                        </TableHead>
-                        <TableHead className='hidden md:table-cell'>
-                          Date
-                        </TableHead>
+                        <TableHead>Nature de l&apos;Intervention</TableHead>
+                        <TableHead>Statut</TableHead>
+                        <TableHead>Date</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredRequests.map((request) => (
                         <TableRow key={request.id} onClick={() => handleEditRequest(request.id)} 
                           style={{ cursor: 'pointer' }}>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <div className='font-medium'>{request.userName}</div>
-                            <div className='hidden text-sm text-muted-foreground md:inline'>{request.userDirection}</div>
+                            <div className='text-sm text-muted-foreground'>{request.userDirection}</div>
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.requestContent}
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             <Badge className='text-xs' variant='secondary'>
                               {request.requestStatus}
                             </Badge>       
                           </TableCell>
-                          <TableCell className='hidden sm:table-cell'>
+                          <TableCell>
                             {request.createdAt?.toDate()?.toLocaleString() || ''}
                           </TableCell>
                         </TableRow>

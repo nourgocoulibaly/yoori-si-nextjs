@@ -1,4 +1,4 @@
-"use client";
+6"use client";
 
 import React from "react";
 
@@ -176,7 +176,7 @@ export default function Login({ updateProfile }: LoginProps) {
 										Pseudo
 									</Button>
 								</div>
-								{loginMethod === 'email' ? (
+								{loginMethod === 'pseudo' ? (
 									<div className='grid gap-2'>
 										<Label htmlFor='email'>Email</Label>
 										<Input
